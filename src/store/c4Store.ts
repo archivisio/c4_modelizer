@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { SystemBlock, C4Model, ContainerBlock } from '../types/c4';
+import { SystemBlock, C4Model, ContainerBlock, ComponentBlock } from '../types/c4';
 
 interface C4State {
   model: C4Model;
@@ -9,13 +9,19 @@ interface C4State {
   removeSystem: (id: string) => void;
   connectSystems: (fromId: string, toId: string) => void;
   // Container operations
-  addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId'>) => void;
+  addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (systemId: string, containerId: string, data: Partial<ContainerBlock>) => void;
   removeContainer: (systemId: string, containerId: string) => void;
   connectContainers: (systemId: string, fromId: string, toId: string) => void;
+  // Component operations
+  addComponent: (systemId: string, containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId'>) => void;
+  updateComponent: (systemId: string, containerId: string, componentId: string, data: Partial<ComponentBlock>) => void;
+  removeComponent: (systemId: string, containerId: string, componentId: string) => void;
+  connectComponents: (systemId: string, containerId: string, fromId: string, toId: string) => void;
   // Navigation
   setActiveSystem: (systemId: string | undefined) => void;
-  setViewLevel: (level: 'system' | 'container') => void;
+  setActiveContainer: (containerId: string | undefined) => void;
+  setViewLevel: (level: 'system' | 'container' | 'component') => void;
   // Model operations
   setModel: (model: C4Model) => void;
 }
@@ -130,26 +136,154 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: { ...state.model, systems: updatedSystems } };
     }),
   
+  // Component operations
+  addComponent: (systemId, containerId, component) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId) {
+                const components = container.components || [];
+                return {
+                  ...container,
+                  components: [
+                    ...components,
+                    { 
+                      ...component, 
+                      id: crypto.randomUUID(), 
+                      systemId, 
+                      containerId, 
+                      connections: [] 
+                    }
+                  ]
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+  
+  updateComponent: (systemId, containerId, componentId, data) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId && container.components) {
+                return {
+                  ...container,
+                  components: container.components.map(component =>
+                    component.id === componentId ? { ...component, ...data } : component
+                  )
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+    
+  removeComponent: (systemId, containerId, componentId) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId && container.components) {
+                return {
+                  ...container,
+                  components: container.components.filter(component => component.id !== componentId)
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+    
+  connectComponents: (systemId, containerId, fromId, toId) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId && container.components) {
+                return {
+                  ...container,
+                  components: container.components.map(component =>
+                    component.id === fromId && !component.connections.includes(toId)
+                      ? { ...component, connections: [...component.connections, toId] }
+                      : component
+                  )
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+
   // Navigation operations
   setActiveSystem: (systemId) =>
     set((state) => ({
       model: {
         ...state.model,
         activeSystemId: systemId,
-        // Switch to container view if selecting a system
-        viewLevel: systemId ? 'container' : 'system'
+        // Switch to container view if selecting a system and clear active container
+        viewLevel: systemId ? 'container' : 'system',
+        activeContainerId: undefined
+      }
+    })),
+    
+  setActiveContainer: (containerId) =>
+    set((state) => ({
+      model: {
+        ...state.model,
+        activeContainerId: containerId,
+        // Switch to component view if selecting a container
+        viewLevel: containerId ? 'component' : 'container'
       }
     })),
     
   setViewLevel: (level) =>
-    set((state) => ({
-      model: {
+    set((state) => {
+      const newState = {
         ...state.model,
-        viewLevel: level,
-        // Clear active system when going back to system view
-        activeSystemId: level === 'system' ? undefined : state.model.activeSystemId
+        viewLevel: level
+      };
+      
+      // Clear navigation state based on level
+      if (level === 'system') {
+        newState.activeSystemId = undefined;
+        newState.activeContainerId = undefined;
+      } else if (level === 'container') {
+        newState.activeContainerId = undefined;
       }
-    })),
+      
+      return { model: newState };
+    }),
   
   // Model operations
   setModel: (model) => set(() => ({ model })),

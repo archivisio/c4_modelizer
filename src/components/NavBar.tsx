@@ -6,15 +6,23 @@ import { useC4Store } from '../store/c4Store';
 
 interface NavBarProps {
   systemName?: string;
+  containerName?: string;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ systemName }) => {
+const NavBar: React.FC<NavBarProps> = ({ systemName, containerName }) => {
   const { setViewLevel, model } = useC4Store();
   const { t } = useTranslation();
   
   const handleSystemsClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setViewLevel('system');
+  };
+  
+  const handleContainersClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (model.activeSystemId) {
+      setViewLevel('container');
+    }
   };
   
   return (
@@ -30,9 +38,21 @@ const NavBar: React.FC<NavBarProps> = ({ systemName }) => {
           {t('systems')}
         </Link>
         
-        {model.viewLevel === 'container' && systemName && (
-          <Typography color="text.primary">
+        {(model.viewLevel === 'container' || model.viewLevel === 'component') && systemName && (
+          <Link
+            underline="hover"
+            color={model.viewLevel === 'container' ? 'text.primary' : 'inherit'}
+            href="#"
+            onClick={handleContainersClick}
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
             {systemName} {t('containers')}
+          </Link>
+        )}
+        
+        {model.viewLevel === 'component' && containerName && (
+          <Typography color="text.primary">
+            {containerName} {t('components')}
           </Typography>
         )}
       </Breadcrumbs>

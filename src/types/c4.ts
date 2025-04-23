@@ -1,4 +1,4 @@
-// Types de base pour le modèle C4 (niveaux Système et Container)
+// Types de base pour le modèle C4 (niveaux Système, Container et Composant)
 
 // Position commune à tous les éléments
 export type Position = { x: number; y: number };
@@ -21,11 +21,21 @@ export interface SystemBlock extends BaseBlock {
 export interface ContainerBlock extends BaseBlock {
   systemId: string; // Système parent
   connections: string[]; // Liste des ids des containers connectés
+  components?: ComponentBlock[]; // Composants à l'intérieur du container
+}
+
+// Niveau Composant
+export interface ComponentBlock extends BaseBlock {
+  containerId: string; // Container parent
+  systemId: string; // Système parent (pour faciliter la navigation)
+  connections: string[]; // Liste des ids des composants connectés
+  technology?: string; // Technologie utilisée pour ce composant
 }
 
 // Modèle C4 complet
 export type C4Model = {
   systems: SystemBlock[];
   activeSystemId?: string; // Pour la navigation, système actuellement affiché
-  viewLevel: 'system' | 'container'; // Niveau de vue actuel
+  activeContainerId?: string; // Pour la navigation, container actuellement affiché
+  viewLevel: 'system' | 'container' | 'component'; // Niveau de vue actuel
 };
