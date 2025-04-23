@@ -9,57 +9,68 @@ import {
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface SystemEditDialogProps {
+interface ComponentEditDialogProps {
   open: boolean;
   initialName?: string;
   initialDescription?: string;
-  onSave: (name: string, description: string) => void;
+  initialTechnology?: string;
+  onSave: (name: string, description: string, technology: string) => void;
   onClose: () => void;
 }
 
-export default function SystemEditDialog({
+export default function ComponentEditDialog({
   open,
   initialName = '',
   initialDescription = '',
+  initialTechnology = '',
   onSave,
   onClose,
-}: SystemEditDialogProps) {
+}: ComponentEditDialogProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
+  const [technology, setTechnology] = useState(initialTechnology);
   const { t } = useTranslation();
 
   useEffect(() => {
     setName(initialName);
     setDescription(initialDescription);
-  }, [initialName, initialDescription, open]);
-
+    setTechnology(initialTechnology || '');
+  }, [initialName, initialDescription, initialTechnology, open]);
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{t('edit_system')}</DialogTitle>
+      <DialogTitle>{t('edit_component')}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label={t('system_name')}
+          label={t('component_name')}
           fullWidth
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           margin="dense"
-          label={t('system_description')}
+          label={t('component_description')}
           fullWidth
           multiline
           minRows={2}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        <TextField
+          margin="dense"
+          label={t('component_technology')}
+          fullWidth
+          value={technology}
+          onChange={(e) => setTechnology(e.target.value)}
+          placeholder={t('technology_placeholder')}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('cancel')}</Button>
         <Button
-          onClick={() => onSave(name, description)}
+          onClick={() => onSave(name, description, technology)}
           variant="contained"
           disabled={!name.trim()}
         >

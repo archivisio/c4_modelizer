@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface SystemEditDialogProps {
+interface ContainerEditDialogProps {
   open: boolean;
   initialName?: string;
   initialDescription?: string;
@@ -17,13 +17,13 @@ interface SystemEditDialogProps {
   onClose: () => void;
 }
 
-export default function SystemEditDialog({
+export default function ContainerEditDialog({
   open,
   initialName = '',
   initialDescription = '',
   onSave,
   onClose,
-}: SystemEditDialogProps) {
+}: ContainerEditDialogProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
   const { t } = useTranslation();
@@ -33,22 +33,21 @@ export default function SystemEditDialog({
     setDescription(initialDescription);
   }, [initialName, initialDescription, open]);
 
-
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>{t('edit_system')}</DialogTitle>
+      <DialogTitle>{t('edit_container')}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label={t('system_name')}
+          label={t('container_name')}
           fullWidth
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           margin="dense"
-          label={t('system_description')}
+          label={t('container_description')}
           fullWidth
           multiline
           minRows={2}

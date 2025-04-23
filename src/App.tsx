@@ -8,9 +8,13 @@ import { handleExportModel, handleImportModel } from './components/FileOperation
 import FlowCanvas from './components/FlowCanvas';
 import NavBar from './components/NavBar';
 import SystemEditDialog from './components/SystemEditDialog';
+import ContainerEditDialog from './components/ContainerEditDialog';
+import ComponentEditDialog from './components/ComponentEditDialog';
+import CodeEditDialog from './components/CodeEditDialog';
 import Toolbar from './components/Toolbar';
 import './i18n';
 import { useC4Store } from './store/c4Store';
+import { SystemBlock, ContainerBlock, ComponentBlock, CodeBlock } from './types/c4';
 
 function App() {
   const { 
@@ -333,7 +337,7 @@ function App() {
       // Editing a system
       return model.systems.find(s => s.id === editId) || null;
     }
-  }, [editId, isEditingContainer, model.viewLevel, model.systems, activeSystem, activeContainer, activeComponent]);
+  }, [editId, isEditingContainer, model.viewLevel, model.systems, activeSystem, activeContainer, activeComponent]) as SystemBlock | ContainerBlock | ComponentBlock | CodeBlock | null;
 
   const handleDialogSave = (name: string, description: string, technology?: string, codeType?: 'class' | 'function' | 'interface' | 'variable' | 'other', language?: string, code?: string) => {
     if (editId) {
@@ -387,12 +391,63 @@ function App() {
           onNodeDoubleClick={handleNodeDoubleClick}
         />
         
-        {editingElement && (
+        {model.viewLevel === 'system' && editingElement && (
           <SystemEditDialog
             open={dialogOpen}
             initialName={editingElement.name}
             initialDescription={editingElement.description || ''}
-            onSave={handleDialogSave}
+            onSave={(name, description) => {
+              handleDialogSave(name, description);
+            }}
+            onClose={() => {
+              setDialogOpen(false);
+              setEditId(null);
+            }}
+          />
+        )}
+        
+        {isEditingContainer && editingElement && (
+          <ContainerEditDialog
+            open={dialogOpen}
+            initialName={editingElement.name}
+            initialDescription={editingElement.description || ''}
+            onSave={(name, description) => {
+              handleDialogSave(name, description);
+            }}
+            onClose={() => {
+              setDialogOpen(false);
+              setEditId(null);
+            }}
+          />
+        )}
+        
+        {model.viewLevel === 'component' && editingElement && (
+          <ComponentEditDialog
+            open={dialogOpen}
+            initialName={editingElement.name}
+            initialDescription={editingElement.description || ''}
+            initialTechnology={(editingElement as ComponentBlock).technology || ''}
+            onSave={(name, description, technology) => {
+              handleDialogSave(name, description, technology);
+            }}
+            onClose={() => {
+              setDialogOpen(false);
+              setEditId(null);
+            }}
+          />
+        )}
+        
+        {model.viewLevel === 'code' && editingElement && (
+          <CodeEditDialog
+            open={dialogOpen}
+            initialName={editingElement.name}
+            initialDescription={editingElement.description || ''}
+            initialCodeType={(editingElement as CodeBlock).codeType || 'class'}
+            initialLanguage={(editingElement as CodeBlock).language || ''}
+            initialCode={(editingElement as CodeBlock).code || ''}
+            onSave={(name, description, codeType, language, code) => {
+              handleDialogSave(name, description, undefined, codeType, language, code);
+            }}
             onClose={() => {
               setDialogOpen(false);
               setEditId(null);
