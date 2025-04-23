@@ -8,24 +8,24 @@ interface C4State {
   addSystem: (system: Omit<SystemBlock, 'id' | 'containers'>) => void;
   updateSystem: (id: string, data: Partial<SystemBlock>) => void;
   removeSystem: (id: string) => void;
-  connectSystems: (fromId: string, toId: string) => void;
+  connectSystems: (fromId: string, connection: ConnectionData) => void;
   updateConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string, data: Partial<ConnectionData>) => void;
   removeConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string) => void;
   // Container operations
   addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (systemId: string, containerId: string, data: Partial<ContainerBlock>) => void;
   removeContainer: (systemId: string, containerId: string) => void;
-  connectContainers: (systemId: string, fromId: string, toId: string) => void;
+  connectContainers: (systemId: string, fromId: string, connection: ConnectionData) => void;
   // Component operations
   addComponent: (systemId: string, containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>) => void;
   updateComponent: (systemId: string, containerId: string, componentId: string, data: Partial<ComponentBlock>) => void;
   removeComponent: (systemId: string, containerId: string, componentId: string) => void;
-  connectComponents: (systemId: string, containerId: string, fromId: string, toId: string) => void;
+  connectComponents: (systemId: string, containerId: string, fromId: string, connection: ConnectionData) => void;
   // Code operations
   addCodeElement: (systemId: string, containerId: string, componentId: string, codeElement: Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>) => void;
   updateCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string, data: Partial<CodeBlock>) => void;
   removeCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string) => void;
-  connectCodeElements: (systemId: string, containerId: string, componentId: string, fromId: string, toId: string) => void;
+  connectCodeElements: (systemId: string, containerId: string, componentId: string, fromId: string, connection: ConnectionData) => void;
   // Navigation
   setActiveSystem: (systemId: string | undefined) => void;
   setActiveContainer: (containerId: string | undefined) => void;
@@ -63,18 +63,18 @@ export const useC4Store = create<C4State>((set) => ({
         systems: state.model.systems.filter((s) => s.id !== id),
       },
     })),
-  connectSystems: (fromId, toId) =>
+  connectSystems: (fromId, connection) =>
     set((state) => ({
       model: {
         ...state.model,
         systems: state.model.systems.map((s) => {
           if (s.id === fromId) {
             // Vérifier si la connexion existe déjà
-            const connectionExists = s.connections.some(c => c.targetId === toId);
+            const connectionExists = s.connections.some(c => c.targetId === connection.targetId);
             if (!connectionExists) {
               return { 
                 ...s, 
-                connections: [...s.connections, { targetId: toId }] 
+                connections: [...s.connections, connection] 
               };
             }
           }
@@ -134,7 +134,7 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: { ...state.model, systems: updatedSystems } };
     }),
     
-  connectContainers: (systemId, fromId, toId) =>
+  connectContainers: (systemId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
         if (system.id === systemId && system.containers) {
@@ -142,11 +142,11 @@ export const useC4Store = create<C4State>((set) => ({
             ...system,
             containers: system.containers.map(container => {
               // Vérifier si la connexion existe déjà
-              const connectionExists = container.connections.some(c => c.targetId === toId);
+              const connectionExists = container.connections.some(c => c.targetId === connection.targetId);
               if (container.id === fromId && !connectionExists) {
                 return { 
                   ...container, 
-                  connections: [...container.connections, { targetId: toId }] 
+                  connections: [...container.connections, connection] 
                 };
               }
               return container;
@@ -241,7 +241,7 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: { ...state.model, systems: updatedSystems } };
     }),
     
-  connectComponents: (systemId, containerId, fromId, toId) =>
+  connectComponents: (systemId, containerId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
         if (system.id === systemId) {
@@ -253,11 +253,11 @@ export const useC4Store = create<C4State>((set) => ({
                   ...container,
                   components: container.components.map(component => {
                     // Vérifier si la connexion existe déjà
-                    const connectionExists = component.connections.some(c => c.targetId === toId);
+                    const connectionExists = component.connections.some(c => c.targetId === connection.targetId);
                     if (component.id === fromId && !connectionExists) {
                       return { 
                         ...component, 
-                        connections: [...component.connections, { targetId: toId }] 
+                        connections: [...component.connections, connection] 
                       };
                     }
                     return component;
@@ -381,7 +381,7 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: { ...state.model, systems: updatedSystems } };
     }),
     
-  connectCodeElements: (systemId, containerId, componentId, fromId, toId) =>
+  connectCodeElements: (systemId, containerId, componentId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
         if (system.id === systemId) {
@@ -392,16 +392,16 @@ export const useC4Store = create<C4State>((set) => ({
                 return {
                   ...container,
                   components: (container.components || []).map(component => {
-                    if (component.id === componentId && component.codeElements) {
+                    if (component.id === componentId) {
                       return {
                         ...component,
-                        codeElements: component.codeElements.map(codeElement => {
+                        codeElements: (component.codeElements || []).map(codeElement => {
                           // Vérifier si la connexion existe déjà
-                          const connectionExists = codeElement.connections.some(c => c.targetId === toId);
+                          const connectionExists = codeElement.connections.some(c => c.targetId === connection.targetId);
                           if (codeElement.id === fromId && !connectionExists) {
                             return { 
                               ...codeElement, 
-                              connections: [...codeElement.connections, { targetId: toId }] 
+                              connections: [...codeElement.connections, connection] 
                             };
                           }
                           return codeElement;

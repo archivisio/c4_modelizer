@@ -23,7 +23,10 @@ export default function SystemBlock({ data }: NodeProps) {
       onEdit={typedData.onEdit}
       type="system"
       variant="primary"
-      handlePositions={{ source: Position.Right, target: Position.Left }}
+      handlePositions={{ 
+        source: [Position.Right, Position.Bottom, Position.Top], 
+        target: [Position.Left, Position.Top, Position.Bottom] 
+      }}
     />
   );
 }

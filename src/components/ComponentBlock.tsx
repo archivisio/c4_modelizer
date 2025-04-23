@@ -29,7 +29,10 @@ const ComponentBlock: React.FC<ComponentBlockProps> = memo(({ data, selected }) 
       type="component"
       variant="tertiary"
       selected={selected}
-      handlePositions={{ source: Position.Bottom, target: Position.Top }}
+      handlePositions={{ 
+        source: [Position.Right, Position.Bottom, Position.Top], 
+        target: [Position.Left, Position.Top, Position.Bottom] 
+      }}
     />
   );
 });

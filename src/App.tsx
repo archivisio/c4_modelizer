@@ -174,6 +174,8 @@ function App() {
           id: `${sys.id}->${conn.targetId}`,
           source: sys.id,
           target: conn.targetId,
+          sourceHandle: conn.sourceHandle,
+          targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
           type: conn.technology || conn.label ? 'connection' : 'default',
@@ -186,6 +188,8 @@ function App() {
           id: `${container.id}->${conn.targetId}`,
           source: container.id,
           target: conn.targetId,
+          sourceHandle: conn.sourceHandle,
+          targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
           type: conn.technology || conn.label ? 'connection' : 'default',
@@ -198,6 +202,8 @@ function App() {
           id: `${component.id}->${conn.targetId}`,
           source: component.id,
           target: conn.targetId,
+          sourceHandle: conn.sourceHandle,
+          targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
           type: conn.technology || conn.label ? 'connection' : 'default',
@@ -210,6 +216,8 @@ function App() {
           id: `${codeElement.id}->${conn.targetId}`,
           source: codeElement.id,
           target: conn.targetId,
+          sourceHandle: conn.sourceHandle,
+          targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
           type: conn.technology || conn.label ? 'connection' : 'default',
@@ -229,17 +237,24 @@ function App() {
 
   const onConnect = useCallback(
     (connection: Edge | Connection) => {
-      const { source, target } = connection;
+      const { source, target, sourceHandle, targetHandle } = connection;
       if (source && target) {
-        // Créer d'abord la connexion
+        // Créer une connexion avec les informations des handles
+        const connectionData = {
+          targetId: target,
+          sourceHandle,
+          targetHandle
+        };
+        
         if (model.viewLevel === 'system') {
-          connectSystems(source, target);
+          // Mise à jour pour passer les informations des handles
+          connectSystems(source, connectionData);
         } else if (model.viewLevel === 'container' && model.activeSystemId) {
-          connectContainers(model.activeSystemId, source, target);
+          connectContainers(model.activeSystemId, source, connectionData);
         } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
-          connectComponents(model.activeSystemId, model.activeContainerId, source, target);
+          connectComponents(model.activeSystemId, model.activeContainerId, source, connectionData);
         } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
-          connectCodeElements(model.activeSystemId, model.activeContainerId, model.activeComponentId, source, target);
+          connectCodeElements(model.activeSystemId, model.activeContainerId, model.activeComponentId, source, connectionData);
         }
 
         // Ouvrir le dialogue d'édition de connexion
@@ -248,6 +263,8 @@ function App() {
           id: edgeId,
           sourceId: source,
           targetId: target,
+          sourceHandle,
+          targetHandle
         };
         setEditingConnection(connectionInfo);
         setConnectionDialogOpen(true);

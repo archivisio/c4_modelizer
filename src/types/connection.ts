@@ -9,6 +9,8 @@ export interface ConnectionInfo {
   label?: string;
   technology?: string;
   description?: string;
+  sourceHandle?: string | null; // ID du point de connexion source
+  targetHandle?: string | null; // ID du point de connexion cible
 }
 
 // Type pour stocker les connexions dans le store
@@ -17,6 +19,8 @@ export interface ConnectionData {
   label?: string;
   technology?: string;
   description?: string;
+  sourceHandle?: string | null; // ID du point de connexion source
+  targetHandle?: string | null; // ID du point de connexion cible
 }
 
 // Types pour les props du dialogue d'édition de connexion

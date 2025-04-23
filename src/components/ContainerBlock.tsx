@@ -24,12 +24,15 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(({ data, selected }) 
     <C4Block
       name={typedData.name}
       description={typedData.description}
-      technology={typedData.technology}
       onEdit={typedData.onEdit}
       type="container"
       variant="secondary"
+      technology={typedData.technology}
+      handlePositions={{ 
+        source: [Position.Right, Position.Bottom, Position.Top], 
+        target: [Position.Left, Position.Top, Position.Bottom] 
+      }}
       selected={selected}
-      handlePositions={{ source: Position.Bottom, target: Position.Top }}
     />
   );
 });

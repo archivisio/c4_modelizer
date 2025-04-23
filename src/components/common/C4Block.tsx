@@ -6,8 +6,8 @@ import TechnologyIcon from '../TechnologyIcon';
 
 // Types pour les positions des connecteurs
 export type HandlePositions = {
-  source: Position;
-  target: Position;
+  source: Position | Position[]; // Une position unique ou un tableau de positions pour les sorties
+  target: Position | Position[]; // Une position unique ou un tableau de positions pour les entrées
 };
 
 // Props communes à tous les blocs C4
@@ -133,16 +133,36 @@ const C4Block: React.FC<C4BlockProps> = ({
 
   return (
     <>
-      <Handle 
-        type="target" 
-        position={handlePositions.target} 
-        style={{ 
-          background: colors.border, 
-          border: `2px solid ${colors.border}`,
-          width: 8,
-          height: 8 
-        }} 
-      />
+      {/* Points d'entrée (targets) */}
+      {Array.isArray(handlePositions.target) ? (
+        // Plusieurs points d'entrée
+        handlePositions.target.map((position, index) => (
+          <Handle 
+            key={`target-${index}`}
+            type="target" 
+            position={position}
+            id={`target-${position}-${index}`}
+            style={{ 
+              background: colors.border, 
+              border: `2px solid ${colors.border}`,
+              width: 8,
+              height: 8
+            }} 
+          />
+        ))
+      ) : (
+        // Un seul point d'entrée
+        <Handle 
+          type="target" 
+          position={handlePositions.target} 
+          style={{ 
+            background: colors.border, 
+            border: `2px solid ${colors.border}`,
+            width: 8,
+            height: 8
+          }} 
+        />
+      )}
       
       <Card sx={cardStyle}>
         <CardContent sx={{ position: 'relative', padding: 2, '&:last-child': { pb: 2 } }}>
@@ -264,16 +284,36 @@ const C4Block: React.FC<C4BlockProps> = ({
         </CardContent>
       </Card>
       
-      <Handle 
-        type="source" 
-        position={handlePositions.source} 
-        style={{ 
-          background: colors.border, 
-          border: `2px solid ${colors.border}`,
-          width: 8,
-          height: 8
-        }} 
-      />
+      {/* Points de sortie (sources) */}
+      {Array.isArray(handlePositions.source) ? (
+        // Plusieurs points de sortie
+        handlePositions.source.map((position, index) => (
+          <Handle 
+            key={`source-${index}`}
+            type="source" 
+            position={position}
+            id={`source-${position}-${index}`}
+            style={{ 
+              background: colors.border, 
+              border: `2px solid ${colors.border}`,
+              width: 8,
+              height: 8
+            }} 
+          />
+        ))
+      ) : (
+        // Un seul point de sortie
+        <Handle 
+          type="source" 
+          position={handlePositions.source} 
+          style={{ 
+            background: colors.border, 
+            border: `2px solid ${colors.border}`,
+            width: 8,
+            height: 8
+          }} 
+        />
+      )}
     </>
   );
 };

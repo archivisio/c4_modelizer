@@ -49,7 +49,10 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
       code={typedData.code}
       variant={getVariantFromCodeType()}
       selected={selected}
-      handlePositions={{ source: Position.Bottom, target: Position.Top }}
+      handlePositions={{ 
+        source: [Position.Right, Position.Bottom, Position.Top], 
+        target: [Position.Left, Position.Top, Position.Bottom] 
+      }}
     />
   );
 });
