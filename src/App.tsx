@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CodeEditDialog from './components/CodeEditDialog';
 import ComponentEditDialog from './components/ComponentEditDialog';
+import ConnectionEditDialog from './components/ConnectionEditDialog';
 import ContainerEditDialog from './components/ContainerEditDialog';
 import ErrorNotification from './components/ErrorNotification';
 import { handleExportModel, handleImportModel } from './components/FileOperations';
@@ -14,7 +15,8 @@ import SystemEditDialog from './components/SystemEditDialog';
 import Toolbar from './components/Toolbar';
 import './i18n';
 import { useC4Store } from './store/c4Store';
-import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from './types/c4';
+import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, TechnologyLevel } from './types/c4';
+import { ConnectionInfo } from './types/connection';
 
 function App() {
   const { 
@@ -31,6 +33,7 @@ function App() {
     addCodeElement,
     updateCodeElement,
     connectCodeElements,
+    updateConnection,
     setActiveSystem,
     setActiveContainer,
     setActiveComponent,
@@ -41,6 +44,10 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditingContainer, setIsEditingContainer] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
+  
+  // State for connection editing
+  const [connectionDialogOpen, setConnectionDialogOpen] = useState(false);
+  const [editingConnection, setEditingConnection] = useState<ConnectionInfo | null>(null);
   const { t } = useTranslation();
 
   // Get current active system, container and component
@@ -158,37 +165,49 @@ function App() {
     if (model.viewLevel === 'system') {
       // System level connections
       return model.systems.flatMap((sys) =>
-        sys.connections.map((targetId) => ({
-          id: `${sys.id}->${targetId}`,
+        sys.connections.map((conn) => ({
+          id: `${sys.id}->${conn.targetId}`,
           source: sys.id,
-          target: targetId,
+          target: conn.targetId,
+          label: conn.label,
+          data: { technology: conn.technology, description: conn.description },
+          type: conn.technology || conn.label ? 'connection' : 'default',
         }))
       );
     } else if (model.viewLevel === 'container' && activeSystem && activeSystem.containers) {
       // Container level connections
       return activeSystem.containers.flatMap((container) =>
-        container.connections.map((targetId) => ({
-          id: `${container.id}->${targetId}`,
+        container.connections.map((conn) => ({
+          id: `${container.id}->${conn.targetId}`,
           source: container.id,
-          target: targetId,
+          target: conn.targetId,
+          label: conn.label,
+          data: { technology: conn.technology, description: conn.description },
+          type: conn.technology || conn.label ? 'connection' : 'default',
         }))
       );
     } else if (model.viewLevel === 'component' && activeContainer && activeContainer.components) {
       // Component level connections
       return activeContainer.components.flatMap((component) =>
-        component.connections.map((targetId) => ({
-          id: `${component.id}->${targetId}`,
+        component.connections.map((conn) => ({
+          id: `${component.id}->${conn.targetId}`,
           source: component.id,
-          target: targetId,
+          target: conn.targetId,
+          label: conn.label,
+          data: { technology: conn.technology, description: conn.description },
+          type: conn.technology || conn.label ? 'connection' : 'default',
         }))
       );
     } else if (model.viewLevel === 'code' && activeComponent && activeComponent.codeElements) {
       // Code level connections
       return activeComponent.codeElements.flatMap((codeElement) =>
-        codeElement.connections.map((targetId) => ({
-          id: `${codeElement.id}->${targetId}`,
+        codeElement.connections.map((conn) => ({
+          id: `${codeElement.id}->${conn.targetId}`,
           source: codeElement.id,
-          target: targetId,
+          target: conn.targetId,
+          label: conn.label,
+          data: { technology: conn.technology, description: conn.description },
+          type: conn.technology || conn.label ? 'connection' : 'default',
         }))
       );
     }
@@ -204,29 +223,32 @@ function App() {
   }, [model.viewLevel, systemNodes, containerNodes, componentNodes, codeNodes]);
 
   const onConnect = useCallback(
-    (params: Edge | Connection) => {
-      if (params.source && params.target) {
+    (connection: Edge | Connection) => {
+      const { source, target } = connection;
+      if (source && target) {
+        // Créer d'abord la connexion
         if (model.viewLevel === 'system') {
-          connectSystems(params.source, params.target);
+          connectSystems(source, target);
         } else if (model.viewLevel === 'container' && model.activeSystemId) {
-          connectContainers(model.activeSystemId, params.source, params.target);
+          connectContainers(model.activeSystemId, source, target);
         } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
-          connectComponents(model.activeSystemId, model.activeContainerId, params.source, params.target);
+          connectComponents(model.activeSystemId, model.activeContainerId, source, target);
         } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
-          connectCodeElements(model.activeSystemId, model.activeContainerId, model.activeComponentId, params.source, params.target);
+          connectCodeElements(model.activeSystemId, model.activeContainerId, model.activeComponentId, source, target);
         }
+
+        // Ouvrir le dialogue d'édition de connexion
+        const edgeId = `${source}->${target}`;
+        const connectionInfo: ConnectionInfo = {
+          id: edgeId,
+          sourceId: source,
+          targetId: target,
+        };
+        setEditingConnection(connectionInfo);
+        setConnectionDialogOpen(true);
       }
     },
-    [
-      connectSystems, 
-      connectContainers, 
-      connectComponents, 
-      connectCodeElements, 
-      model.viewLevel, 
-      model.activeSystemId, 
-      model.activeContainerId, 
-      model.activeComponentId
-    ]
+    [model.viewLevel, model.activeSystemId, model.activeContainerId, model.activeComponentId, connectSystems, connectContainers, connectComponents, connectCodeElements]
   );
 
   // Handle adding new elements based on current view
@@ -368,6 +390,43 @@ function App() {
 
 
 
+  // Gérer la sauvegarde des informations de connexion
+  const handleConnectionSave = useCallback(
+    (connectionInfo: ConnectionInfo) => {
+      // Déterminer le niveau actuel et appeler la fonction de mise à jour appropriée
+      const level = model.viewLevel as TechnologyLevel;
+      const systemId = model.activeSystemId || '';
+      const data = {
+        label: connectionInfo.label,
+        technology: connectionInfo.technology,
+        description: connectionInfo.description,
+      };
+
+      updateConnection(level, systemId, connectionInfo.sourceId, connectionInfo.targetId, data);
+      setConnectionDialogOpen(false);
+      setEditingConnection(null);
+    },
+    [model.viewLevel, model.activeSystemId, updateConnection]
+  );
+
+  // Gérer le clic sur une connexion pour l'éditer
+  const handleEdgeClick = useCallback(
+    (_: React.MouseEvent, edge: Edge) => {
+      // Créer l'objet ConnectionInfo à partir de l'edge sélectionnée
+      const connectionInfo: ConnectionInfo = {
+        id: edge.id,
+        sourceId: edge.source,
+        targetId: edge.target,
+        label: edge.label as string | undefined,
+        technology: edge.data?.technology as string | undefined,
+        description: edge.data?.description as string | undefined,
+      };
+      setEditingConnection(connectionInfo);
+      setConnectionDialogOpen(true);
+    },
+    []
+  );
+
   return (
     <ReactFlowProvider>
       <Box sx={{ height: '100vh', bgcolor: '#f4f6fa' }}>
@@ -390,6 +449,7 @@ function App() {
           onNodePositionChange={handleNodePositionChange}
           viewLevel={model.viewLevel}
           onNodeDoubleClick={handleNodeDoubleClick}
+          onEdgeClick={handleEdgeClick}
         />
         
         {model.viewLevel === 'system' && editingElement && (
@@ -458,6 +518,20 @@ function App() {
         )}
         
         <ErrorNotification message={importError} />
+
+        {/* Dialog d'édition de connexion */}
+        {connectionDialogOpen && (
+          <ConnectionEditDialog
+            open={connectionDialogOpen}
+            connection={editingConnection}
+            level={model.viewLevel as TechnologyLevel}
+            onClose={() => {
+              setConnectionDialogOpen(false);
+              setEditingConnection(null);
+            }}
+            onSave={handleConnectionSave}
+          />
+        )}
       </Box>
     </ReactFlowProvider>
   );

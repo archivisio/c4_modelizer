@@ -24,6 +24,7 @@ interface FlowCanvasProps {
   onNodePositionChange: (id: string, position: { x: number; y: number }) => void;
   viewLevel: 'system' | 'container' | 'component' | 'code';
   onNodeDoubleClick?: (nodeId: string) => void;
+  onEdgeClick?: (event: React.MouseEvent, edge: Edge) => void;
 }
 
 const nodeTypes = { 
@@ -39,7 +40,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onConnect, 
   onNodePositionChange,
   viewLevel,
-  onNodeDoubleClick
+  onNodeDoubleClick,
+  onEdgeClick
 }) => {
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -74,6 +76,17 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     style: { strokeWidth: 2 },
   };
 
+  // Gestionnaire pour les clics sur les connexions
+  const handleEdgeClick = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      event.stopPropagation(); // Empêcher la propagation aux autres éléments
+      if (onEdgeClick) {
+        onEdgeClick(event, edge);
+      }
+    },
+    [onEdgeClick]
+  );
+
   return (
     <Box sx={{ width: '100vw', height: 'calc(100vh - 100px)' }}>
       <ReactFlow
@@ -83,6 +96,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         onNodesChange={handleNodesChange}
         nodeTypes={nodeTypes}
         onNodeDoubleClick={handleNodeDoubleClick}
+        onEdgeClick={onEdgeClick ? handleEdgeClick : undefined}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: '100%', height: '100%' }}

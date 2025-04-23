@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { SystemBlock, C4Model, ContainerBlock, ComponentBlock, CodeBlock } from '../types/c4';
+import { ConnectionData } from '../types/connection';
 
 interface C4State {
   model: C4Model;
@@ -8,6 +9,7 @@ interface C4State {
   updateSystem: (id: string, data: Partial<SystemBlock>) => void;
   removeSystem: (id: string) => void;
   connectSystems: (fromId: string, toId: string) => void;
+  updateConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string, data: Partial<ConnectionData>) => void;
   // Container operations
   addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (systemId: string, containerId: string, data: Partial<ContainerBlock>) => void;
@@ -64,11 +66,19 @@ export const useC4Store = create<C4State>((set) => ({
     set((state) => ({
       model: {
         ...state.model,
-        systems: state.model.systems.map((s) =>
-          s.id === fromId && !s.connections.includes(toId)
-            ? { ...s, connections: [...s.connections, toId] }
-            : s
-        ),
+        systems: state.model.systems.map((s) => {
+          if (s.id === fromId) {
+            // Vérifier si la connexion existe déjà
+            const connectionExists = s.connections.some(c => c.targetId === toId);
+            if (!connectionExists) {
+              return { 
+                ...s, 
+                connections: [...s.connections, { targetId: toId }] 
+              };
+            }
+          }
+          return s;
+        }),
       },
     })),
   // New container operations
@@ -129,11 +139,17 @@ export const useC4Store = create<C4State>((set) => ({
         if (system.id === systemId && system.containers) {
           return {
             ...system,
-            containers: system.containers.map(container =>
-              container.id === fromId && !container.connections.includes(toId)
-                ? { ...container, connections: [...container.connections, toId] }
-                : container
-            )
+            containers: system.containers.map(container => {
+              // Vérifier si la connexion existe déjà
+              const connectionExists = container.connections.some(c => c.targetId === toId);
+              if (container.id === fromId && !connectionExists) {
+                return { 
+                  ...container, 
+                  connections: [...container.connections, { targetId: toId }] 
+                };
+              }
+              return container;
+            })
           };
         }
         return system;
@@ -234,11 +250,17 @@ export const useC4Store = create<C4State>((set) => ({
               if (container.id === containerId && container.components) {
                 return {
                   ...container,
-                  components: container.components.map(component =>
-                    component.id === fromId && !component.connections.includes(toId)
-                      ? { ...component, connections: [...component.connections, toId] }
-                      : component
-                  )
+                  components: container.components.map(component => {
+                    // Vérifier si la connexion existe déjà
+                    const connectionExists = component.connections.some(c => c.targetId === toId);
+                    if (component.id === fromId && !connectionExists) {
+                      return { 
+                        ...component, 
+                        connections: [...component.connections, { targetId: toId }] 
+                      };
+                    }
+                    return component;
+                  })
                 };
               }
               return container;
@@ -372,11 +394,17 @@ export const useC4Store = create<C4State>((set) => ({
                     if (component.id === componentId && component.codeElements) {
                       return {
                         ...component,
-                        codeElements: component.codeElements.map(codeElement =>
-                          codeElement.id === fromId && !codeElement.connections.includes(toId)
-                            ? { ...codeElement, connections: [...codeElement.connections, toId] }
-                            : codeElement
-                        )
+                        codeElements: component.codeElements.map(codeElement => {
+                          // Vérifier si la connexion existe déjà
+                          const connectionExists = codeElement.connections.some(c => c.targetId === toId);
+                          if (codeElement.id === fromId && !connectionExists) {
+                            return { 
+                              ...codeElement, 
+                              connections: [...codeElement.connections, { targetId: toId }] 
+                            };
+                          }
+                          return codeElement;
+                        })
                       };
                     }
                     return component;
@@ -449,6 +477,108 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: newState };
     }),
   
+  // Connection operations
+  updateConnection: (level, systemId, sourceId, targetId, data) =>
+    set((state) => {
+      let updatedSystems = [...state.model.systems];
+
+      // Handle different levels
+      if (level === 'system') {
+        // Update system-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === sourceId) {
+            return {
+              ...system,
+              connections: system.connections.map(conn =>
+                conn.targetId === targetId ? { ...conn, ...data } : conn
+              )
+            };
+          }
+          return system;
+        });
+      } else if (level === 'container') {
+        // Update container-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                if (container.id === sourceId) {
+                  return {
+                    ...container,
+                    connections: container.connections.map(conn =>
+                      conn.targetId === targetId ? { ...conn, ...data } : conn
+                    )
+                  };
+                }
+                return container;
+              })
+            };
+          }
+          return system;
+        });
+      } else if (level === 'component') {
+        // Update component-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === sourceId) {
+                      return {
+                        ...component,
+                        connections: component.connections.map(conn =>
+                          conn.targetId === targetId ? { ...conn, ...data } : conn
+                        )
+                      };
+                    }
+                    return component;
+                  })
+                };
+              })
+            };
+          }
+          return system;
+        });
+      } else if (level === 'code') {
+        // Update code-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    return {
+                      ...component,
+                      codeElements: (component.codeElements || []).map(codeElement => {
+                        if (codeElement.id === sourceId) {
+                          return {
+                            ...codeElement,
+                            connections: codeElement.connections.map(conn =>
+                              conn.targetId === targetId ? { ...conn, ...data } : conn
+                            )
+                          };
+                        }
+                        return codeElement;
+                      })
+                    };
+                  })
+                };
+              })
+            };
+          }
+          return system;
+        });
+      }
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+
   // Model operations
   setModel: (model) => set(() => ({ model })),
 }));

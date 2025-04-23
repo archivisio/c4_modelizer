@@ -11,16 +11,19 @@ export interface BaseBlock {
   position: Position;
 }
 
+// Import des types de connexion
+import { ConnectionData } from './connection';
+
 // Niveau Système
 export interface SystemBlock extends BaseBlock {
-  connections: string[]; // Liste des ids des systèmes connectés
+  connections: ConnectionData[]; // Connexions enrichies avec des informations supplémentaires
   containers?: ContainerBlock[]; // Containers à l'intérieur du système
 }
 
 // Niveau Container
 export interface ContainerBlock extends BaseBlock {
   systemId: string; // Système parent
-  connections: string[]; // Liste des ids des containers connectés
+  connections: ConnectionData[]; // Connexions enrichies avec des informations supplémentaires
   technology?: string; // Technologie utilisée pour ce container
   components?: ComponentBlock[]; // Composants à l'intérieur du container
 }
@@ -29,7 +32,7 @@ export interface ContainerBlock extends BaseBlock {
 export interface ComponentBlock extends BaseBlock {
   containerId: string; // Container parent
   systemId: string; // Système parent (pour faciliter la navigation)
-  connections: string[]; // Liste des ids des composants connectés
+  connections: ConnectionData[]; // Connexions enrichies avec des informations supplémentaires
   technology?: string; // Technologie utilisée pour ce composant
   codeElements?: CodeBlock[]; // Éléments de code dans ce composant
 }
@@ -42,7 +45,7 @@ export interface CodeBlock extends BaseBlock {
   codeType: 'class' | 'function' | 'interface' | 'variable' | 'other'; // Type d'élément de code
   language?: string; // Langage de programmation
   code?: string; // Extrait de code (optionnel)
-  connections: string[]; // Liste des ids des éléments de code connectés
+  connections: ConnectionData[]; // Connexions enrichies avec des informations supplémentaires
 }
 
 // Modèle C4 complet
