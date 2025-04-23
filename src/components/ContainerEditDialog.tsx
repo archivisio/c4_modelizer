@@ -58,6 +58,7 @@ export default function ContainerEditDialog({
           minRows={2}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          sx={{ mb: 2 }}
         />
         <TechnologySelect
           level="container"

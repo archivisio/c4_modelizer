@@ -2,6 +2,7 @@ import { Card, CardContent, Box, Typography, IconButton, Chip, SxProps, Theme } 
 import EditIcon from '@mui/icons-material/Edit';
 import { Handle, Position } from 'reactflow';
 import TechnologyIcon from '../TechnologyIcon';
+import { getTechnologyById } from '../../data/technologies';
 
 // Types pour les positions des connecteurs
 export type HandlePositions = {
@@ -65,6 +66,20 @@ const TYPE_TO_VARIANT: Record<string, 'primary' | 'secondary' | 'tertiary' | 'qu
   other: 'quaternary'
 };
 
+// Fonction utilitaire pour convertir une couleur hex en RGB
+const hexToRgb = (hex: string): string => {
+  // Supprimer le # si présent
+  const cleanHex = hex.startsWith('#') ? hex.slice(1) : hex;
+  
+  // Convertir en RGB
+  const bigint = parseInt(cleanHex, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  
+  return `${r}, ${g}, ${b}`;
+};
+
 // Composant de bloc C4 réutilisable
 const C4Block: React.FC<C4BlockProps> = ({
   name,
@@ -79,9 +94,20 @@ const C4Block: React.FC<C4BlockProps> = ({
   handlePositions = { source: Position.Bottom, target: Position.Top },
   additionalContent
 }) => {
-  // Déterminer la variante de couleur à utiliser
+  // Récupérer la technologie et sa couleur si disponible
+  const techData = technology ? getTechnologyById(technology) : undefined;
+  
+  // Déterminer la variante de couleur à utiliser (priorité à la technologie)
   const colorVariant = variant || TYPE_TO_VARIANT[codeType || type] || 'primary';
-  const colors = COLORS[colorVariant];
+  const defaultColors = COLORS[colorVariant];
+  
+  // Créer les couleurs personnalisées si une technologie est présente
+  const colors = techData ? {
+    background: `rgba(${hexToRgb(techData.color)}, 0.1)`,
+    gradient: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.15) 0%, rgba(${hexToRgb(techData.color)}, 0.05) 100%)`,
+    border: techData.color,
+    hover: techData.color
+  } : defaultColors;
   
   // Styles pour la carte
   const cardStyle: SxProps<Theme> = {

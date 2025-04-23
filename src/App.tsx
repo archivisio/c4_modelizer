@@ -91,6 +91,7 @@ function App() {
         data: {
           name: container.name,
           description: container.description,
+          technology: container.technology,
           onEdit: () => {
             setEditId(container.id);
             setIsEditingContainer(true);

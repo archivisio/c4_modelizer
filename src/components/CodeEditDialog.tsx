@@ -69,14 +69,15 @@ export default function CodeEditDialog({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, mt: 1, mb: 2, alignItems: 'flex-start' }}>
           <TextField
             select
-            margin="dense"
             label={t('code_type')}
-            fullWidth
             value={codeType}
             onChange={(e) => setCodeType(e.target.value as 'class' | 'function' | 'interface' | 'variable' | 'other')}
+            sx={{ flex: 1, minWidth: '140px' }}
+            size="medium"
+            InputLabelProps={{ shrink: true }}
           >
             <MenuItem value="class">{t('class')}</MenuItem>
             <MenuItem value="function">{t('function')}</MenuItem>
@@ -85,13 +86,15 @@ export default function CodeEditDialog({
             <MenuItem value="other">{t('other')}</MenuItem>
           </TextField>
           
-          <TechnologySelect
-            level="code"
-            value={language}
-            onChange={setLanguage}
-            label={t('language')}
-            placeholder={t('select_language')}
-          />
+          <Box sx={{ flex: 2, minWidth: '200px' }}>
+            <TechnologySelect
+              level="code"
+              value={language}
+              onChange={setLanguage}
+              label={t('language')}
+              placeholder={t('select_language')}
+            />
+          </Box>
         </Box>
         
         <TextField
