@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
-import React, { useCallback } from 'react';
-import ReactFlow, {
+import {
   Background,
   BackgroundVariant,
   Connection,
@@ -9,11 +8,13 @@ import ReactFlow, {
   MiniMap,
   Node,
   NodeChange,
-} from 'reactflow';
-import SystemBlock from './SystemBlock';
-import ContainerBlock from './ContainerBlock';
-import ComponentBlock from './ComponentBlock';
+  ReactFlow,
+} from '@xyflow/react';
+import React, { useCallback } from 'react';
 import CodeBlock from './CodeBlock';
+import ComponentBlock from './ComponentBlock';
+import ContainerBlock from './ContainerBlock';
+import SystemBlock from './SystemBlock';
 
 interface FlowCanvasProps {
   nodes: Node[];

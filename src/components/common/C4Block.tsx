@@ -1,8 +1,8 @@
-import { Card, CardContent, Box, Typography, IconButton, Chip, SxProps, Theme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { Handle, Position } from 'reactflow';
-import TechnologyIcon from '../TechnologyIcon';
+import { Box, Card, CardContent, Chip, IconButton, SxProps, Theme, Typography } from '@mui/material';
+import { Handle, Position } from '@xyflow/react';
 import { getTechnologyById } from '../../data/technologies';
+import TechnologyIcon from '../TechnologyIcon';
 
 // Types pour les positions des connecteurs
 export type HandlePositions = {

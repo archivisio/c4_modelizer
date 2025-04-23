@@ -1,23 +1,30 @@
+import { Position } from '@xyflow/react';
 import { memo } from 'react';
-import { Position } from 'reactflow';
 import C4Block from './common/C4Block';
 
+// Définition des données spécifiques au code
+export type CodeBlockData = {
+  name: string;
+  description?: string;
+  codeType: 'class' | 'function' | 'interface' | 'variable' | 'other';
+  language?: string;
+  code?: string;
+  onEdit: () => void;
+};
+
+// Interface pour les props que ReactFlow v12 passe au composant
 interface CodeBlockProps {
-  data: {
-    name: string;
-    description?: string;
-    codeType: 'class' | 'function' | 'interface' | 'variable' | 'other';
-    language?: string;
-    code?: string;
-    onEdit: () => void;
-  };
+  data: Record<string, unknown>; // Record<string, unknown> au lieu de any
   selected: boolean;
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
+  // Typage explicite pour ReactFlow v12
+  const typedData = data as CodeBlockData;
+  
   // Determine the variant based on the code type
   const getVariantFromCodeType = () => {
-    switch (data.codeType) {
+    switch (typedData.codeType) {
       case 'class':
         return 'quaternary'; // Purple variant
       case 'function':
@@ -33,13 +40,13 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
 
   return (
     <C4Block
-      name={data.name}
-      description={data.description}
-      technology={data.language}
-      onEdit={data.onEdit}
+      name={typedData.name}
+      description={typedData.description}
+      technology={typedData.language}
+      onEdit={typedData.onEdit}
       type="code"
-      codeType={data.codeType}
-      code={data.code}
+      codeType={typedData.codeType}
+      code={typedData.code}
       variant={getVariantFromCodeType()}
       selected={selected}
       handlePositions={{ source: Position.Bottom, target: Position.Top }}

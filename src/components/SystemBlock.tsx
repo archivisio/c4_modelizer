@@ -1,4 +1,4 @@
-import { NodeProps, Position } from 'reactflow';
+import { Position } from '@xyflow/react';
 import C4Block from './common/C4Block';
 
 export type SystemBlockData = {
@@ -7,12 +7,20 @@ export type SystemBlockData = {
   onEdit: () => void;
 };
 
-export default function SystemBlock({ data }: NodeProps<SystemBlockData>) {
+// Interface simplifu00e9e pour u00e9viter les problèmes de typage avec ReactFlow v12
+type NodeProps = {
+  data: Record<string, unknown>;
+}
+
+export default function SystemBlock({ data }: NodeProps) {
+  // Typage explicite du data pour ReactFlow v12
+  const typedData = data as SystemBlockData;
+  
   return (
     <C4Block
-      name={data.name}
-      description={data.description}
-      onEdit={data.onEdit}
+      name={typedData.name}
+      description={typedData.description}
+      onEdit={typedData.onEdit}
       type="system"
       variant="primary"
       handlePositions={{ source: Position.Right, target: Position.Left }}

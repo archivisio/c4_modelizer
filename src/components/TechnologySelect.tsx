@@ -1,5 +1,5 @@
 import { Autocomplete, Box, TextField, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getTechnologiesByLevel, Technology } from '../data/technologies';
 import { TechnologyLevel } from '../types/c4';

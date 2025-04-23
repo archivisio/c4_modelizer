@@ -8,7 +8,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TechnologySelect from './TechnologySelect';
 

@@ -1,20 +1,20 @@
 import { Box } from '@mui/material';
+import { Connection, Edge, Node, ReactFlowProvider } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Connection, Edge, Node, ReactFlowProvider } from 'reactflow';
-import 'reactflow/dist/style.css';
+import CodeEditDialog from './components/CodeEditDialog';
+import ComponentEditDialog from './components/ComponentEditDialog';
+import ContainerEditDialog from './components/ContainerEditDialog';
 import ErrorNotification from './components/ErrorNotification';
 import { handleExportModel, handleImportModel } from './components/FileOperations';
 import FlowCanvas from './components/FlowCanvas';
 import NavBar from './components/NavBar';
 import SystemEditDialog from './components/SystemEditDialog';
-import ContainerEditDialog from './components/ContainerEditDialog';
-import ComponentEditDialog from './components/ComponentEditDialog';
-import CodeEditDialog from './components/CodeEditDialog';
 import Toolbar from './components/Toolbar';
 import './i18n';
 import { useC4Store } from './store/c4Store';
-import { SystemBlock, ContainerBlock, ComponentBlock, CodeBlock } from './types/c4';
+import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from './types/c4';
 
 function App() {
   const { 
