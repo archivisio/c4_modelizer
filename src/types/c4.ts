@@ -46,10 +46,15 @@ export interface CodeBlock extends BaseBlock {
 }
 
 // Modèle C4 complet
+// Type de niveau pour la compatibilité des technologies
+export type TechnologyLevel = 'container' | 'component' | 'code';
+
+export type ViewLevel = 'system' | 'container' | 'component' | 'code';
+
 export type C4Model = {
   systems: SystemBlock[];
   activeSystemId?: string; // Pour la navigation, système actuellement affiché
   activeContainerId?: string; // Pour la navigation, container actuellement affiché
   activeComponentId?: string; // Pour la navigation, composant actuellement affiché
-  viewLevel: 'system' | 'container' | 'component' | 'code'; // Niveau de vue actuel
+  viewLevel: ViewLevel; // Niveau de vue actuel
 };

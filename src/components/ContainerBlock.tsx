@@ -1,7 +1,8 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, IconButton, Typography } from '@mui/material';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
+import TechnologyIcon from './TechnologyIcon';
 
 interface ContainerBlockProps {
   data: {
@@ -46,9 +47,12 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(({ data, selected }) 
       )}
       
       {data.technology && (
-        <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: '#555' }}>
-          [<span style={{ color: '#0d47a1' }}>{data.technology}</span>]
-        </Typography>
+        <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <TechnologyIcon technologyId={data.technology} size={18} />
+          <Typography variant="body2" sx={{ color: '#555' }}>
+            {data.technology}
+          </Typography>
+        </Box>
       )}
       
       <Typography variant="caption" sx={{ position: 'absolute', bottom: 4, right: 8 }}>

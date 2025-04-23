@@ -16,6 +16,7 @@
     "@mui/material": "^7.0.2",
     "i18next": "^25.0.1",
     "react": "^19.0.0",
+    "react-devicons": "^2.16.2",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.5.1",
     "reactflow": "^11.11.4",

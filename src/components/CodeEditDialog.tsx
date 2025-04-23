@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import TechnologySelect from './TechnologySelect';
 
 interface CodeEditDialogProps {
   open: boolean;
@@ -84,13 +85,12 @@ export default function CodeEditDialog({
             <MenuItem value="other">{t('other')}</MenuItem>
           </TextField>
           
-          <TextField
-            margin="dense"
-            label={t('language')}
-            fullWidth
+          <TechnologySelect
+            level="code"
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            placeholder={t('language_placeholder')}
+            onChange={setLanguage}
+            label={t('language')}
+            placeholder={t('select_language')}
           />
         </Box>
         

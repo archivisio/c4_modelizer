@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import TechnologySelect from './TechnologySelect';
 
 interface ContainerEditDialogProps {
   open: boolean;
@@ -58,13 +59,12 @@ export default function ContainerEditDialog({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <TextField
-          margin="dense"
-          label={t('container_technology')}
-          fullWidth
+        <TechnologySelect
+          level="container"
           value={technology}
-          onChange={(e) => setTechnology(e.target.value)}
-          placeholder={t('technology_placeholder')}
+          onChange={setTechnology}
+          label={t('container_technology')}
+          placeholder={t('select_technology')}
         />
       </DialogContent>
       <DialogActions>

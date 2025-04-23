@@ -1,8 +1,8 @@
-import CodeIcon from '@mui/icons-material/Code';
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Chip, IconButton, Typography } from '@mui/material';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { Handle, Position } from 'reactflow';
+import TechnologyIcon from './TechnologyIcon';
 
 interface CodeBlockProps {
   data: {
@@ -55,19 +55,18 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
             {data.name}
           </Typography>
           <Chip 
-            icon={<CodeIcon fontSize="small" />} 
             label={data.codeType} 
             size="small" 
             variant="outlined"
             sx={{ mt: 0.5, mb: 0.5 }}
           />
           {data.language && (
-            <Chip 
-              label={data.language} 
-              size="small" 
-              variant="outlined"
-              sx={{ ml: 0.5, mt: 0.5, mb: 0.5 }}
-            />
+            <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5 }}>
+              <TechnologyIcon technologyId={data.language} size={16} />
+              <Typography variant="caption" sx={{ ml: 0.5 }}>
+                {data.language}
+              </Typography>
+            </Box>
           )}
         </Box>
         <IconButton size="small" onClick={data.onEdit}>
