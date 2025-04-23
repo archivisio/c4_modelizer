@@ -1,8 +1,6 @@
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, Chip, IconButton, Typography } from '@mui/material';
 import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
-import TechnologyIcon from './TechnologyIcon';
+import { Position } from 'reactflow';
+import C4Block from './common/C4Block';
 
 interface CodeBlockProps {
   data: {
@@ -17,91 +15,35 @@ interface CodeBlockProps {
 }
 
 const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
-  // Helper to get the right background color based on the code type
-  const getBackgroundColor = () => {
+  // Determine the variant based on the code type
+  const getVariantFromCodeType = () => {
     switch (data.codeType) {
       case 'class':
-        return '#e3f2fd'; // Light blue
+        return 'quaternary'; // Purple variant
       case 'function':
-        return '#e8f5e9'; // Light green
+        return 'secondary'; // Green variant
       case 'interface':
-        return '#fff8e1'; // Light amber
+        return 'tertiary'; // Yellow variant
       case 'variable':
-        return '#f3e5f5'; // Light purple
+        return 'primary'; // Blue variant
       default:
-        return '#fafafa'; // Light grey
+        return 'quaternary'; // Default is purple
     }
   };
 
   return (
-    <Box
-      sx={{
-        padding: 2,
-        borderRadius: 1,
-        backgroundColor: getBackgroundColor(),
-        border: selected ? '2px solid #1976d2' : '1px solid #ccc',
-        minWidth: 160,
-        maxWidth: 240,
-        position: 'relative',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
-      }}
-    >
-      <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
-      
-      <Box display="flex" justifyContent="space-between" alignItems="flex-start">
-        <Box>
-          <Typography variant="subtitle1" fontWeight="bold">
-            {data.name}
-          </Typography>
-          <Chip 
-            label={data.codeType} 
-            size="small" 
-            variant="outlined"
-            sx={{ mt: 0.5, mb: 0.5 }}
-          />
-          {data.language && (
-            <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5 }}>
-              <TechnologyIcon technologyId={data.language} size={16} />
-              <Typography variant="caption" sx={{ ml: 0.5 }}>
-                {data.language}
-              </Typography>
-            </Box>
-          )}
-        </Box>
-        <IconButton size="small" onClick={data.onEdit}>
-          <EditIcon fontSize="small" />
-        </IconButton>
-      </Box>
-      
-      {data.description && (
-        <Typography variant="body2" sx={{ mt: 1 }}>
-          {data.description}
-        </Typography>
-      )}
-      
-      {data.code && (
-        <Box 
-          sx={{ 
-            mt: 1, 
-            p: 1, 
-            backgroundColor: 'rgba(0,0,0,0.04)', 
-            borderRadius: 1,
-            fontSize: '0.75rem',
-            fontFamily: 'monospace',
-            overflowX: 'auto',
-            maxHeight: '60px',
-            overflowY: 'auto'
-          }}
-        >
-          {data.code}
-        </Box>
-      )}
-      
-      <Typography variant="caption" sx={{ position: 'absolute', bottom: 4, right: 8 }}>
-        Code
-      </Typography>
-    </Box>
+    <C4Block
+      name={data.name}
+      description={data.description}
+      technology={data.language}
+      onEdit={data.onEdit}
+      type="code"
+      codeType={data.codeType}
+      code={data.code}
+      variant={getVariantFromCodeType()}
+      selected={selected}
+      handlePositions={{ source: Position.Bottom, target: Position.Top }}
+    />
   );
 });
 

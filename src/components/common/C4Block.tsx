@@ -1,0 +1,249 @@
+import { Card, CardContent, Box, Typography, IconButton, Chip, SxProps, Theme } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import { Handle, Position } from 'reactflow';
+import TechnologyIcon from '../TechnologyIcon';
+
+// Types pour les positions des connecteurs
+export type HandlePositions = {
+  source: Position;
+  target: Position;
+};
+
+// Props communes à tous les blocs C4
+export interface C4BlockProps {
+  name: string;
+  description?: string;
+  technology?: string;
+  selected?: boolean;
+  type: 'system' | 'container' | 'component' | 'code';
+  codeType?: 'class' | 'function' | 'interface' | 'variable' | 'other';
+  code?: string;
+  onEdit: () => void;
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'quaternary';
+  handlePositions?: HandlePositions;
+  additionalContent?: React.ReactNode;
+}
+
+// Constantes pour les couleurs et styles
+const COLORS = {
+  primary: {
+    background: '#e3f2fd',
+    gradient: 'linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%)',
+    border: '#2196f3',
+    hover: '#90caf9'
+  },
+  secondary: {
+    background: '#e8f5e9',
+    gradient: 'linear-gradient(135deg, #c8e6c9 0%, #e8f5e9 100%)',
+    border: '#4caf50',
+    hover: '#a5d6a7'
+  },
+  tertiary: {
+    background: '#fff8e1',
+    gradient: 'linear-gradient(135deg, #ffecb3 0%, #fff8e1 100%)',
+    border: '#ffc107',
+    hover: '#ffe082'
+  },
+  quaternary: {
+    background: '#f3e5f5',
+    gradient: 'linear-gradient(135deg, #e1bee7 0%, #f3e5f5 100%)',
+    border: '#9c27b0',
+    hover: '#ce93d8'
+  }
+};
+
+// Map des types de blocs aux variantes de couleurs par défaut
+const TYPE_TO_VARIANT: Record<string, 'primary' | 'secondary' | 'tertiary' | 'quaternary'> = {
+  system: 'primary',
+  container: 'secondary',
+  component: 'tertiary',
+  code: 'quaternary',
+  class: 'quaternary',
+  function: 'secondary',
+  interface: 'tertiary',
+  variable: 'primary',
+  other: 'quaternary'
+};
+
+// Composant de bloc C4 réutilisable
+const C4Block: React.FC<C4BlockProps> = ({
+  name,
+  description,
+  technology,
+  selected = false,
+  type,
+  codeType,
+  code,
+  onEdit,
+  variant,
+  handlePositions = { source: Position.Bottom, target: Position.Top },
+  additionalContent
+}) => {
+  // Déterminer la variante de couleur à utiliser
+  const colorVariant = variant || TYPE_TO_VARIANT[codeType || type] || 'primary';
+  const colors = COLORS[colorVariant];
+  
+  // Styles pour la carte
+  const cardStyle: SxProps<Theme> = {
+    minWidth: type === 'system' ? 220 : type === 'container' ? 200 : type === 'component' ? 180 : 160,
+    maxWidth: type === 'system' ? 350 : type === 'container' ? 300 : type === 'component' ? 250 : 240,
+    borderRadius: 2,
+    transition: 'all 0.3s ease',
+    background: colors.gradient,
+    boxShadow: selected 
+      ? `0 8px 16px rgba(0,0,0,0.2), 0 0 0 2px ${colors.border}`
+      : '0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)',
+    '&:hover': {
+      boxShadow: `0 8px 20px rgba(0,0,0,0.15), 0 0 0 1px ${colors.hover}`,
+      transform: 'translateY(-2px)'
+    },
+  };
+
+  return (
+    <>
+      <Handle 
+        type="target" 
+        position={handlePositions.target} 
+        style={{ 
+          background: colors.border, 
+          border: `2px solid ${colors.border}`,
+          width: 8,
+          height: 8 
+        }} 
+      />
+      
+      <Card sx={cardStyle}>
+        <CardContent sx={{ position: 'relative', padding: 2, '&:last-child': { pb: 2 } }}>
+          <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+            <Box>
+              <Typography variant="h6" fontWeight="bold" sx={{ mb: 0.5 }}>
+                {name}
+              </Typography>
+              
+              {/* Elements spécifiques au type de code */}
+              {codeType && (
+                <Chip 
+                  label={codeType} 
+                  size="small" 
+                  sx={{ 
+                    fontSize: '0.7rem', 
+                    height: 20, 
+                    mb: 0.5,
+                    backgroundColor: `${COLORS[TYPE_TO_VARIANT[codeType || 'other']].background}`, 
+                    borderColor: `${COLORS[TYPE_TO_VARIANT[codeType || 'other']].border}`,
+                    color: 'text.secondary',
+                    fontWeight: 'medium'
+                  }} 
+                  variant="outlined"
+                />
+              )}
+              
+              {/* Affichage de la technologie avec icône */}
+              {technology && (
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5, gap: 0.5 }}>
+                  <TechnologyIcon technologyId={technology} size={16} />
+                  <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 'medium' }}>
+                    {technology}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+            
+            <IconButton 
+              size="small" 
+              onClick={onEdit} 
+              sx={{ 
+                backgroundColor: 'rgba(255,255,255,0.5)', 
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.8)' },
+                width: 28, 
+                height: 28 
+              }}
+            >
+              <EditIcon fontSize="small" />
+            </IconButton>
+          </Box>
+          
+          {/* Description */}
+          {description && (
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                mt: 1, 
+                color: 'text.secondary',
+                backgroundColor: 'rgba(255,255,255,0.4)',
+                p: 1,
+                borderRadius: 1
+              }}
+            >
+              {description}
+            </Typography>
+          )}
+          
+          {/* Contenu supplémentaire (comme le code) */}
+          {additionalContent}
+          {code && (
+            <Box 
+              sx={{ 
+                mt: 1, 
+                p: 1, 
+                backgroundColor: 'rgba(0,0,0,0.03)', 
+                borderRadius: 1,
+                fontSize: '0.75rem',
+                fontFamily: 'monospace',
+                overflowX: 'auto',
+                maxHeight: '60px',
+                overflowY: 'auto',
+                border: '1px solid rgba(0,0,0,0.08)'
+              }}
+            >
+              {code}
+            </Box>
+          )}
+          
+          {/* Label de type */}
+          <Box 
+            sx={{ 
+              position: 'absolute', 
+              bottom: 4, 
+              right: 8, 
+              backgroundColor: 'rgba(255,255,255,0.7)',
+              px: 1,
+              py: 0.2,
+              borderRadius: 5,
+              border: `1px solid ${colors.border}`,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <Typography 
+              variant="caption" 
+              sx={{ 
+                fontWeight: 'bold', 
+                fontSize: '0.65rem',
+                color: colors.border,
+                textTransform: 'uppercase',
+                letterSpacing: 0.5
+              }}
+            >
+              {type}
+            </Typography>
+          </Box>
+        </CardContent>
+      </Card>
+      
+      <Handle 
+        type="source" 
+        position={handlePositions.source} 
+        style={{ 
+          background: colors.border, 
+          border: `2px solid ${colors.border}`,
+          width: 8,
+          height: 8
+        }} 
+      />
+    </>
+  );
+};
+
+export default C4Block;

@@ -1,8 +1,6 @@
-import EditIcon from '@mui/icons-material/Edit';
-import { Box, IconButton, Typography } from '@mui/material';
 import { memo } from 'react';
-import { Handle, Position } from 'reactflow';
-import TechnologyIcon from './TechnologyIcon';
+import { Position } from 'reactflow';
+import C4Block from './common/C4Block';
 
 interface ContainerBlockProps {
   data: {
@@ -16,49 +14,16 @@ interface ContainerBlockProps {
 
 const ContainerBlock: React.FC<ContainerBlockProps> = memo(({ data, selected }) => {
   return (
-    <Box
-      sx={{
-        padding: 2,
-        borderRadius: 1,
-        backgroundColor: '#f0f8ff',
-        border: selected ? '2px solid #1976d2' : '1px solid #ccc',
-        minWidth: 200,
-        maxWidth: 300,
-        position: 'relative',
-        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-      }}
-    >
-      <Handle type="target" position={Position.Top} style={{ background: '#555' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: '#555' }} />
-      
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="subtitle1" fontWeight="bold">
-          {data.name}
-        </Typography>
-        <IconButton size="small" onClick={data.onEdit}>
-          <EditIcon fontSize="small" />
-        </IconButton>
-      </Box>
-      
-      {data.description && (
-        <Typography variant="body2" sx={{ mt: 1 }}>
-          {data.description}
-        </Typography>
-      )}
-      
-      {data.technology && (
-        <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <TechnologyIcon technologyId={data.technology} size={18} />
-          <Typography variant="body2" sx={{ color: '#555' }}>
-            {data.technology}
-          </Typography>
-        </Box>
-      )}
-      
-      <Typography variant="caption" sx={{ position: 'absolute', bottom: 4, right: 8 }}>
-        Container
-      </Typography>
-    </Box>
+    <C4Block
+      name={data.name}
+      description={data.description}
+      technology={data.technology}
+      onEdit={data.onEdit}
+      type="container"
+      variant="secondary"
+      selected={selected}
+      handlePositions={{ source: Position.Bottom, target: Position.Top }}
+    />
   );
 });
 
