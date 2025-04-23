@@ -12,9 +12,6 @@ import Toolbar from './components/Toolbar';
 import './i18n';
 import { useC4Store } from './store/c4Store';
 
-
-
-
 function App() {
   const { 
     model, 
@@ -27,8 +24,12 @@ function App() {
     addComponent,
     updateComponent,
     connectComponents,
+    addCodeElement,
+    updateCodeElement,
+    connectCodeElements,
     setActiveSystem,
     setActiveContainer,
+    setActiveComponent,
     setModel 
   } = useC4Store();
   
@@ -38,7 +39,7 @@ function App() {
   const [importError, setImportError] = useState<string | null>(null);
   const { t } = useTranslation();
 
-  // Get current active system and container
+  // Get current active system, container and component
   const activeSystem = useMemo(
     () => model.activeSystemId ? model.systems.find(s => s.id === model.activeSystemId) : undefined,
     [model.activeSystemId, model.systems]
@@ -48,6 +49,11 @@ function App() {
     if (!activeSystem || !model.activeContainerId || !activeSystem.containers) return undefined;
     return activeSystem.containers.find(c => c.id === model.activeContainerId);
   }, [activeSystem, model.activeContainerId]);
+  
+  const activeComponent = useMemo(() => {
+    if (!activeContainer || !model.activeComponentId || !activeContainer.components) return undefined;
+    return activeContainer.components.find(c => c.id === model.activeComponentId);
+  }, [activeContainer, model.activeComponentId]);
 
   // Convert systems to React Flow nodes for system level view
   const systemNodes: Node[] = useMemo(
@@ -115,6 +121,32 @@ function App() {
     },
     [activeContainer]
   );
+  
+  // Convert code elements to React Flow nodes for code level view
+  const codeNodes: Node[] = useMemo(
+    () => {
+      if (!activeComponent || !activeComponent.codeElements) return [];
+      
+      return activeComponent.codeElements.map((codeElement) => ({
+        id: codeElement.id,
+        type: 'code',
+        position: codeElement.position,
+        data: {
+          name: codeElement.name,
+          description: codeElement.description,
+          codeType: codeElement.codeType,
+          language: codeElement.language,
+          code: codeElement.code,
+          onEdit: () => {
+            setEditId(codeElement.id);
+            setIsEditingContainer(false);
+            setDialogOpen(true);
+          },
+        },
+      }));
+    },
+    [activeComponent]
+  );
 
   // Convert connections to React Flow edges based on current view level
   const edges: Edge[] = useMemo(() => {
@@ -145,16 +177,26 @@ function App() {
           target: targetId,
         }))
       );
+    } else if (model.viewLevel === 'code' && activeComponent && activeComponent.codeElements) {
+      // Code level connections
+      return activeComponent.codeElements.flatMap((codeElement) =>
+        codeElement.connections.map((targetId) => ({
+          id: `${codeElement.id}->${targetId}`,
+          source: codeElement.id,
+          target: targetId,
+        }))
+      );
     }
     return [];
-  }, [model.systems, model.viewLevel, activeSystem, activeContainer]);
+  }, [model.systems, model.viewLevel, activeSystem, activeContainer, activeComponent]);
 
   // Get current nodes based on view level
   const currentNodes = useMemo(() => {
     if (model.viewLevel === 'system') return systemNodes;
     if (model.viewLevel === 'container') return containerNodes;
-    return componentNodes;
-  }, [model.viewLevel, systemNodes, containerNodes, componentNodes]);
+    if (model.viewLevel === 'component') return componentNodes;
+    return codeNodes;
+  }, [model.viewLevel, systemNodes, containerNodes, componentNodes, codeNodes]);
 
   const onConnect = useCallback(
     (params: Edge | Connection) => {
@@ -165,10 +207,21 @@ function App() {
           connectContainers(model.activeSystemId, params.source, params.target);
         } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
           connectComponents(model.activeSystemId, model.activeContainerId, params.source, params.target);
+        } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+          connectCodeElements(model.activeSystemId, model.activeContainerId, model.activeComponentId, params.source, params.target);
         }
       }
     },
-    [connectSystems, connectContainers, connectComponents, model.viewLevel, model.activeSystemId, model.activeContainerId]
+    [
+      connectSystems, 
+      connectContainers, 
+      connectComponents, 
+      connectCodeElements, 
+      model.viewLevel, 
+      model.activeSystemId, 
+      model.activeContainerId, 
+      model.activeComponentId
+    ]
   );
 
   // Handle adding new elements based on current view
@@ -198,6 +251,16 @@ function App() {
         position: { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 },
         connections: [],
       });
+    } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+      // Add a new code element to the active component
+      addCodeElement(model.activeSystemId, model.activeContainerId, model.activeComponentId, {
+        name: t('new_code_element'),
+        description: '',
+        codeType: 'class',
+        language: '',
+        position: { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 },
+        connections: [],
+      });
     }
   };
 
@@ -220,9 +283,12 @@ function App() {
       } else if (model.viewLevel === 'container') {
         // Double-click on container to view its components
         setActiveContainer(nodeId);
+      } else if (model.viewLevel === 'component') {
+        // Double-click on component to view its code elements
+        setActiveComponent(nodeId);
       }
     },
-    [model.viewLevel, setActiveSystem, setActiveContainer]
+    [model.viewLevel, setActiveSystem, setActiveContainer, setActiveComponent]
   );
 
   // Handle node position changes based on current view level
@@ -234,16 +300,30 @@ function App() {
         updateContainer(model.activeSystemId, id, { position });
       } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
         updateComponent(model.activeSystemId, model.activeContainerId, id, { position });
+      } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+        updateCodeElement(model.activeSystemId, model.activeContainerId, model.activeComponentId, id, { position });
       }
     },
-    [model.viewLevel, model.activeSystemId, model.activeContainerId, updateSystem, updateContainer, updateComponent]
+    [
+      model.viewLevel, 
+      model.activeSystemId, 
+      model.activeContainerId, 
+      model.activeComponentId, 
+      updateSystem, 
+      updateContainer, 
+      updateComponent, 
+      updateCodeElement
+    ]
   );
 
   // Element editing logic
   const editingElement = useMemo(() => {
     if (!editId) return null;
     
-    if (model.viewLevel === 'component' && activeContainer && activeContainer.components) {
+    if (model.viewLevel === 'code' && activeComponent && activeComponent.codeElements) {
+      // Editing a code element
+      return activeComponent.codeElements.find(c => c.id === editId) || null;
+    } else if (model.viewLevel === 'component' && activeContainer && activeContainer.components) {
       // Editing a component
       return activeContainer.components.find(c => c.id === editId) || null;
     } else if (isEditingContainer && activeSystem && activeSystem.containers) {
@@ -253,11 +333,20 @@ function App() {
       // Editing a system
       return model.systems.find(s => s.id === editId) || null;
     }
-  }, [editId, isEditingContainer, model.viewLevel, model.systems, activeSystem, activeContainer]);
+  }, [editId, isEditingContainer, model.viewLevel, model.systems, activeSystem, activeContainer, activeComponent]);
 
-  const handleDialogSave = (name: string, description: string, technology?: string) => {
+  const handleDialogSave = (name: string, description: string, technology?: string, codeType?: 'class' | 'function' | 'interface' | 'variable' | 'other', language?: string, code?: string) => {
     if (editId) {
-      if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
+      if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+        // Saving a code element
+        updateCodeElement(model.activeSystemId, model.activeContainerId, model.activeComponentId, editId, { 
+          name, 
+          description, 
+          codeType: codeType || 'other',
+          language,
+          code
+        });
+      } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
         // Saving a component
         updateComponent(model.activeSystemId, model.activeContainerId, editId, { name, description, technology });
       } else if (isEditingContainer && model.activeSystemId) {
@@ -285,7 +374,8 @@ function App() {
         
         <NavBar 
           systemName={activeSystem?.name} 
-          containerName={activeContainer?.name} 
+          containerName={activeContainer?.name}
+          componentName={activeComponent?.name}
         />
         
         <FlowCanvas 

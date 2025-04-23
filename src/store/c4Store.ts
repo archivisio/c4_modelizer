@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { SystemBlock, C4Model, ContainerBlock, ComponentBlock } from '../types/c4';
+import { SystemBlock, C4Model, ContainerBlock, ComponentBlock, CodeBlock } from '../types/c4';
 
 interface C4State {
   model: C4Model;
@@ -14,14 +14,20 @@ interface C4State {
   removeContainer: (systemId: string, containerId: string) => void;
   connectContainers: (systemId: string, fromId: string, toId: string) => void;
   // Component operations
-  addComponent: (systemId: string, containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId'>) => void;
+  addComponent: (systemId: string, containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>) => void;
   updateComponent: (systemId: string, containerId: string, componentId: string, data: Partial<ComponentBlock>) => void;
   removeComponent: (systemId: string, containerId: string, componentId: string) => void;
   connectComponents: (systemId: string, containerId: string, fromId: string, toId: string) => void;
+  // Code operations
+  addCodeElement: (systemId: string, containerId: string, componentId: string, codeElement: Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>) => void;
+  updateCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string, data: Partial<CodeBlock>) => void;
+  removeCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string) => void;
+  connectCodeElements: (systemId: string, containerId: string, componentId: string, fromId: string, toId: string) => void;
   // Navigation
   setActiveSystem: (systemId: string | undefined) => void;
   setActiveContainer: (containerId: string | undefined) => void;
-  setViewLevel: (level: 'system' | 'container' | 'component') => void;
+  setActiveComponent: (componentId: string | undefined) => void;
+  setViewLevel: (level: 'system' | 'container' | 'component' | 'code') => void;
   // Model operations
   setModel: (model: C4Model) => void;
 }
@@ -245,6 +251,148 @@ export const useC4Store = create<C4State>((set) => ({
       return { model: { ...state.model, systems: updatedSystems } };
     }),
 
+  // Code operations
+  addCodeElement: (systemId, containerId, componentId, codeElement) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId) {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === componentId) {
+                      const codeElements = component.codeElements || [];
+                      return {
+                        ...component,
+                        codeElements: [
+                          ...codeElements,
+                          { 
+                            ...codeElement, 
+                            id: crypto.randomUUID(), 
+                            systemId, 
+                            containerId,
+                            componentId, 
+                            connections: [] 
+                          }
+                        ]
+                      };
+                    }
+                    return component;
+                  })
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+  
+  updateCodeElement: (systemId, containerId, componentId, codeElementId, data) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId) {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === componentId && component.codeElements) {
+                      return {
+                        ...component,
+                        codeElements: component.codeElements.map(codeElement =>
+                          codeElement.id === codeElementId ? { ...codeElement, ...data } : codeElement
+                        )
+                      };
+                    }
+                    return component;
+                  })
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+    
+  removeCodeElement: (systemId, containerId, componentId, codeElementId) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId) {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === componentId && component.codeElements) {
+                      return {
+                        ...component,
+                        codeElements: component.codeElements.filter(codeElement => codeElement.id !== codeElementId)
+                      };
+                    }
+                    return component;
+                  })
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+    
+  connectCodeElements: (systemId, containerId, componentId, fromId, toId) =>
+    set((state) => {
+      const updatedSystems = state.model.systems.map(system => {
+        if (system.id === systemId) {
+          return {
+            ...system,
+            containers: (system.containers || []).map(container => {
+              if (container.id === containerId) {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === componentId && component.codeElements) {
+                      return {
+                        ...component,
+                        codeElements: component.codeElements.map(codeElement =>
+                          codeElement.id === fromId && !codeElement.connections.includes(toId)
+                            ? { ...codeElement, connections: [...codeElement.connections, toId] }
+                            : codeElement
+                        )
+                      };
+                    }
+                    return component;
+                  })
+                };
+              }
+              return container;
+            })
+          };
+        }
+        return system;
+      });
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+
   // Navigation operations
   setActiveSystem: (systemId) =>
     set((state) => ({
@@ -253,7 +401,8 @@ export const useC4Store = create<C4State>((set) => ({
         activeSystemId: systemId,
         // Switch to container view if selecting a system and clear active container
         viewLevel: systemId ? 'container' : 'system',
-        activeContainerId: undefined
+        activeContainerId: undefined,
+        activeComponentId: undefined
       }
     })),
     
@@ -263,10 +412,21 @@ export const useC4Store = create<C4State>((set) => ({
         ...state.model,
         activeContainerId: containerId,
         // Switch to component view if selecting a container
-        viewLevel: containerId ? 'component' : 'container'
+        viewLevel: containerId ? 'component' : 'container',
+        activeComponentId: undefined
       }
     })),
-    
+
+  setActiveComponent: (componentId) =>
+    set((state) => ({
+      model: {
+        ...state.model,
+        activeComponentId: componentId,
+        // Switch to code view if selecting a component
+        viewLevel: componentId ? 'code' : 'component'
+      }
+    })),
+      
   setViewLevel: (level) =>
     set((state) => {
       const newState = {
@@ -278,8 +438,12 @@ export const useC4Store = create<C4State>((set) => ({
       if (level === 'system') {
         newState.activeSystemId = undefined;
         newState.activeContainerId = undefined;
+        newState.activeComponentId = undefined;
       } else if (level === 'container') {
         newState.activeContainerId = undefined;
+        newState.activeComponentId = undefined;
+      } else if (level === 'component') {
+        newState.activeComponentId = undefined;
       }
       
       return { model: newState };

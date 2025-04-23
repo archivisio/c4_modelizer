@@ -10,20 +10,26 @@ import ReactFlow, {
   Node,
   NodeChange,
 } from 'reactflow';
-import ComponentBlock from './ComponentBlock';
-import ContainerBlock from './ContainerBlock';
 import SystemBlock from './SystemBlock';
+import ContainerBlock from './ContainerBlock';
+import ComponentBlock from './ComponentBlock';
+import CodeBlock from './CodeBlock';
 
 interface FlowCanvasProps {
   nodes: Node[];
   edges: Edge[];
   onConnect: (params: Edge | Connection) => void;
   onNodePositionChange: (id: string, position: { x: number; y: number }) => void;
-  viewLevel: 'system' | 'container' | 'component';
+  viewLevel: 'system' | 'container' | 'component' | 'code';
   onNodeDoubleClick?: (nodeId: string) => void;
 }
 
-const nodeTypes = { system: SystemBlock, container: ContainerBlock, component: ComponentBlock };
+const nodeTypes = { 
+  system: SystemBlock, 
+  container: ContainerBlock, 
+  component: ComponentBlock, 
+  code: CodeBlock 
+};
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({ 
   nodes, 
@@ -47,8 +53,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   const handleNodeDoubleClick = useCallback(
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
-      // Permet le double-clic aux niveaux système et container pour naviguer vers les niveaux container et composant
-      if (onNodeDoubleClick && (viewLevel === 'system' || viewLevel === 'container')) {
+      // Permet le double-clic pour naviguer à chaque niveau sauf le niveau code
+      if (onNodeDoubleClick && viewLevel !== 'code') {
         onNodeDoubleClick(node.id);
       }
     },

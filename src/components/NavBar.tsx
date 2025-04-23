@@ -7,9 +7,10 @@ import { useC4Store } from '../store/c4Store';
 interface NavBarProps {
   systemName?: string;
   containerName?: string;
+  componentName?: string;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ systemName, containerName }) => {
+const NavBar: React.FC<NavBarProps> = ({ systemName, containerName, componentName }) => {
   const { setViewLevel, model } = useC4Store();
   const { t } = useTranslation();
   
@@ -22,6 +23,13 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName }) => {
     e.preventDefault();
     if (model.activeSystemId) {
       setViewLevel('container');
+    }
+  };
+
+  const handleComponentsClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (model.activeSystemId && model.activeContainerId) {
+      setViewLevel('component');
     }
   };
   
@@ -38,7 +46,7 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName }) => {
           {t('systems')}
         </Link>
         
-        {(model.viewLevel === 'container' || model.viewLevel === 'component') && systemName && (
+        {(model.viewLevel === 'container' || model.viewLevel === 'component' || model.viewLevel === 'code') && systemName && (
           <Link
             underline="hover"
             color={model.viewLevel === 'container' ? 'text.primary' : 'inherit'}
@@ -50,9 +58,21 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName }) => {
           </Link>
         )}
         
-        {model.viewLevel === 'component' && containerName && (
-          <Typography color="text.primary">
+        {(model.viewLevel === 'component' || model.viewLevel === 'code') && containerName && (
+          <Link
+            underline="hover"
+            color={model.viewLevel === 'component' ? 'text.primary' : 'inherit'}
+            href="#"
+            onClick={handleComponentsClick}
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
             {containerName} {t('components')}
+          </Link>
+        )}
+
+        {model.viewLevel === 'code' && componentName && (
+          <Typography color="text.primary">
+            {componentName} {t('code')}
           </Typography>
         )}
       </Breadcrumbs>
