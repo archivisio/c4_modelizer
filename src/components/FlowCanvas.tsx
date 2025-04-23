@@ -5,6 +5,7 @@ import {
   Connection,
   Controls,
   Edge,
+  MarkerType,
   MiniMap,
   Node,
   NodeChange,
@@ -62,6 +63,17 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [onNodeDoubleClick, viewLevel]
   );
 
+  // Default edge options with arrow marker and animation
+  const defaultEdgeOptions = {
+    animated: true,
+    markerEnd: {
+      type: MarkerType.ArrowClosed,
+      width: 15,
+      height: 15,
+    },
+    style: { strokeWidth: 2 },
+  };
+
   return (
     <Box sx={{ width: '100vw', height: 'calc(100vh - 100px)' }}>
       <ReactFlow
@@ -71,6 +83,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         onNodesChange={handleNodesChange}
         nodeTypes={nodeTypes}
         onNodeDoubleClick={handleNodeDoubleClick}
+        defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: '100%', height: '100%' }}
       >
