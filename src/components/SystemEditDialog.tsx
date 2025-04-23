@@ -7,6 +7,7 @@ import {
   TextField,
 } from '@mui/material';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface SystemEditDialogProps {
   open: boolean;
@@ -25,6 +26,7 @@ export default function SystemEditDialog({
 }: SystemEditDialogProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     setName(initialName);
@@ -33,19 +35,19 @@ export default function SystemEditDialog({
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Éditer le système</DialogTitle>
+      <DialogTitle>{t('edit_system')}</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
           margin="dense"
-          label="Nom du système"
+          label={t('system_name')}
           fullWidth
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <TextField
           margin="dense"
-          label="Description"
+          label={t('system_description')}
           fullWidth
           multiline
           minRows={2}
@@ -54,13 +56,13 @@ export default function SystemEditDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Annuler</Button>
+        <Button onClick={onClose}>{t('cancel')}</Button>
         <Button
           onClick={() => onSave(name, description)}
           variant="contained"
           disabled={!name.trim()}
         >
-          Sauvegarder
+          {t('save')}
         </Button>
       </DialogActions>
     </Dialog>

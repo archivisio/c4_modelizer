@@ -1,0 +1,14 @@
+{
+  "app_title": "C4 Modeling – System Level",
+  "add_system": "Add system",
+  "export_json": "Export JSON",
+  "import_json": "Import JSON",
+  "edit_system": "Edit system",
+  "system_name": "System name",
+  "system_description": "Description",
+  "cancel": "Cancel",
+  "save": "Save",
+  "invalid_json": "Invalid JSON file.",
+  "file_read_error": "Error reading file.",
+  "new_system": "New system"
+}

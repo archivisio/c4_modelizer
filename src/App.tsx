@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Box, Button, AppBar, Toolbar, Typography, IconButton, Tooltip, Container } from '@mui/material';
+import { Box, AppBar, Toolbar, Typography, IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -10,7 +10,6 @@ import ReactFlow, {
   Node,
   Edge,
   Connection,
-  addEdge,
   ReactFlowProvider,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -19,6 +18,8 @@ import SystemBlock from './components/SystemBlock';
 import SystemEditDialog from './components/SystemEditDialog';
 import { exportModel, importModel } from './utils/jsonIO';
 import { SystemBlock as SystemBlockType } from './types/c4';
+import { useTranslation } from 'react-i18next';
+import './i18n';
 
 const nodeTypes = { system: SystemBlock };
 
@@ -28,6 +29,7 @@ function App() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { t } = useTranslation();
 
   // Convert systems to React Flow nodes
   const nodes: Node[] = useMemo(
@@ -70,7 +72,7 @@ function App() {
 
   const handleAddSystem = () => {
     addSystem({
-      name: 'Nouveau système',
+      name: t('new_system'),
       description: '',
       position: { x: Math.random() * 400 + 100, y: Math.random() * 300 + 100 },
       connections: [],
@@ -125,19 +127,19 @@ function App() {
         <AppBar position="static" color="primary" elevation={1}>
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
-              Modélisation C4 – Niveau Systèmes
+              {t('app_title')}
             </Typography>
-            <Tooltip title="Ajouter un système">
+            <Tooltip title={t('add_system')}>
               <IconButton color="inherit" onClick={handleAddSystem}>
                 <AddIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Exporter JSON">
+            <Tooltip title={t('export_json')}>
               <IconButton color="inherit" onClick={handleExport}>
                 <DownloadIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Importer JSON">
+            <Tooltip title={t('import_json')}>
               <IconButton color="inherit" component="span" onClick={() => fileInputRef.current?.click()}>
                 <UploadFileIcon />
                 <input
@@ -189,7 +191,7 @@ function App() {
         )}
         {importError && (
           <Box sx={{ position: 'absolute', bottom: 16, left: 16, bgcolor: 'error.main', color: 'white', p: 2, borderRadius: 1 }}>
-            {importError}
+            {t(importError)}
           </Box>
         )}
       </Box>
