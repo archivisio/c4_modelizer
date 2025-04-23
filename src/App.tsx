@@ -1,25 +1,25 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { Box, AppBar, Toolbar, Typography, IconButton, Tooltip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import DownloadIcon from '@mui/icons-material/Download';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import { AppBar, Box, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import ReactFlow, {
   Background,
+  BackgroundVariant,
+  Connection,
   Controls,
+  Edge,
   MiniMap,
   Node,
-  Edge,
-  Connection,
   ReactFlowProvider,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { useC4Store } from './store/c4Store';
 import SystemBlock from './components/SystemBlock';
 import SystemEditDialog from './components/SystemEditDialog';
-import { exportModel, importModel } from './utils/jsonIO';
-import { SystemBlock as SystemBlockType } from './types/c4';
-import { useTranslation } from 'react-i18next';
 import './i18n';
+import { useC4Store } from './store/c4Store';
+import { exportModel, importModel } from './utils/jsonIO';
 
 const nodeTypes = { system: SystemBlock };
 
@@ -172,7 +172,7 @@ function App() {
             fitView
             style={{ width: '100%', height: '100%' }}
           >
-            <Background variant="dots" gap={16} size={1} />
+            <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
             <MiniMap />
             <Controls />
           </ReactFlow>
