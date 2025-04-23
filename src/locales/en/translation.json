@@ -1,6 +1,6 @@
 {
   "app_title": "C4 Modeling – System Level",
-  "add_system": "Add system",
+  "add_block": "Add block",
   "export_json": "Export JSON",
   "import_json": "Import JSON",
   "edit_system": "Edit system",

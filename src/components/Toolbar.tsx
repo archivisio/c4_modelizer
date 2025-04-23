@@ -21,7 +21,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAddSystem, onExport, onImport }) =>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           {t('app_title')}
         </Typography>
-        <Tooltip title={t('add_system')}>
+        <Tooltip title={t('add_block')}>
           <IconButton color="inherit" onClick={onAddSystem}>
             <AddIcon />
           </IconButton>
