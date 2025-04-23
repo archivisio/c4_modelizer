@@ -28,26 +28,30 @@ export interface C4BlockProps {
 // Constantes pour les couleurs et styles
 const COLORS = {
   primary: {
-    background: '#e3f2fd',
-    gradient: 'linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%)',
+    background: 'rgba(227, 242, 253, 0.7)',
+    gradient: 'linear-gradient(135deg, rgba(187, 222, 251, 0.7) 0%, rgba(227, 242, 253, 0.7) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(187, 222, 251, 1) 0%, rgba(227, 242, 253, 1) 100%)',
     border: '#2196f3',
     hover: '#90caf9'
   },
   secondary: {
-    background: '#e8f5e9',
-    gradient: 'linear-gradient(135deg, #c8e6c9 0%, #e8f5e9 100%)',
+    background: 'rgba(232, 245, 233, 0.7)',
+    gradient: 'linear-gradient(135deg, rgba(200, 230, 201, 0.7) 0%, rgba(232, 245, 233, 0.7) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(200, 230, 201, 1) 0%, rgba(232, 245, 233, 1) 100%)',
     border: '#4caf50',
     hover: '#a5d6a7'
   },
   tertiary: {
-    background: '#fff8e1',
-    gradient: 'linear-gradient(135deg, #ffecb3 0%, #fff8e1 100%)',
+    background: 'rgba(255, 248, 225, 0.7)',
+    gradient: 'linear-gradient(135deg, rgba(255, 236, 179, 0.7) 0%, rgba(255, 248, 225, 0.7) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(255, 236, 179, 1) 0%, rgba(255, 248, 225, 1) 100%)',
     border: '#ffc107',
     hover: '#ffe082'
   },
   quaternary: {
-    background: '#f3e5f5',
-    gradient: 'linear-gradient(135deg, #e1bee7 0%, #f3e5f5 100%)',
+    background: 'rgba(243, 229, 245, 0.7)',
+    gradient: 'linear-gradient(135deg, rgba(225, 190, 231, 0.7) 0%, rgba(243, 229, 245, 0.7) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(225, 190, 231, 1) 0%, rgba(243, 229, 245, 1) 100%)',
     border: '#9c27b0',
     hover: '#ce93d8'
   }
@@ -105,6 +109,7 @@ const C4Block: React.FC<C4BlockProps> = ({
   const colors = techData ? {
     background: `rgba(${hexToRgb(techData.color)}, 0.1)`,
     gradient: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.15) 0%, rgba(${hexToRgb(techData.color)}, 0.05) 100%)`,
+    gradientHover: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.6) 0%, rgba(${hexToRgb(techData.color)}, 0.4) 100%)`,
     border: techData.color,
     hover: techData.color
   } : defaultColors;
@@ -121,7 +126,8 @@ const C4Block: React.FC<C4BlockProps> = ({
       : '0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)',
     '&:hover': {
       boxShadow: `0 8px 20px rgba(0,0,0,0.15), 0 0 0 1px ${colors.hover}`,
-      transform: 'translateY(-2px)'
+      transform: 'translateY(-2px)',
+      background: colors.gradientHover,
     },
   };
 
