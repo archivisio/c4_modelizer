@@ -21,6 +21,7 @@ export interface SystemBlock extends BaseBlock {
 export interface ContainerBlock extends BaseBlock {
   systemId: string; // Système parent
   connections: string[]; // Liste des ids des containers connectés
+  technology?: string; // Technologie utilisée pour ce container
   components?: ComponentBlock[]; // Composants à l'intérieur du container
 }
 

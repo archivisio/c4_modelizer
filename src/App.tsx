@@ -355,7 +355,7 @@ function App() {
         updateComponent(model.activeSystemId, model.activeContainerId, editId, { name, description, technology });
       } else if (isEditingContainer && model.activeSystemId) {
         // Saving a container
-        updateContainer(model.activeSystemId, editId, { name, description });
+        updateContainer(model.activeSystemId, editId, { name, description, technology });
       } else {
         // Saving a system
         updateSystem(editId, { name, description });
@@ -411,8 +411,9 @@ function App() {
             open={dialogOpen}
             initialName={editingElement.name}
             initialDescription={editingElement.description || ''}
-            onSave={(name, description) => {
-              handleDialogSave(name, description);
+            initialTechnology={(editingElement as ContainerBlock).technology || ''}
+            onSave={(name, description, technology) => {
+              handleDialogSave(name, description, technology);
             }}
             onClose={() => {
               setDialogOpen(false);

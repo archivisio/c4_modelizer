@@ -13,7 +13,8 @@ interface ContainerEditDialogProps {
   open: boolean;
   initialName?: string;
   initialDescription?: string;
-  onSave: (name: string, description: string) => void;
+  initialTechnology?: string;
+  onSave: (name: string, description: string, technology: string) => void;
   onClose: () => void;
 }
 
@@ -21,17 +22,20 @@ export default function ContainerEditDialog({
   open,
   initialName = '',
   initialDescription = '',
+  initialTechnology = '',
   onSave,
   onClose,
 }: ContainerEditDialogProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
+  const [technology, setTechnology] = useState(initialTechnology);
   const { t } = useTranslation();
 
   useEffect(() => {
     setName(initialName);
     setDescription(initialDescription);
-  }, [initialName, initialDescription, open]);
+    setTechnology(initialTechnology || '');
+  }, [initialName, initialDescription, initialTechnology, open]);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -54,11 +58,19 @@ export default function ContainerEditDialog({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        <TextField
+          margin="dense"
+          label={t('container_technology')}
+          fullWidth
+          value={technology}
+          onChange={(e) => setTechnology(e.target.value)}
+          placeholder={t('technology_placeholder')}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t('cancel')}</Button>
         <Button
-          onClick={() => onSave(name, description)}
+          onClick={() => onSave(name, description, technology)}
           variant="contained"
           disabled={!name.trim()}
         >

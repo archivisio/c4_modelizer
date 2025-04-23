@@ -7,6 +7,7 @@ interface ContainerBlockProps {
   data: {
     name: string;
     description?: string;
+    technology?: string;
     onEdit: () => void;
   };
   selected: boolean;
@@ -41,6 +42,12 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(({ data, selected }) 
       {data.description && (
         <Typography variant="body2" sx={{ mt: 1 }}>
           {data.description}
+        </Typography>
+      )}
+      
+      {data.technology && (
+        <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic', color: '#555' }}>
+          [<span style={{ color: '#0d47a1' }}>{data.technology}</span>]
         </Typography>
       )}
       
