@@ -23,17 +23,22 @@ function App() {
     model, 
     addSystem, 
     updateSystem, 
+    removeSystem,
     connectSystems, 
     addContainer,
     updateContainer,
+    removeContainer,
     connectContainers,
     addComponent,
     updateComponent,
+    removeComponent,
     connectComponents,
     addCodeElement,
     updateCodeElement,
+    removeCodeElement,
     connectCodeElements,
     updateConnection,
+    removeConnection,
     setActiveSystem,
     setActiveContainer,
     setActiveComponent,
@@ -427,6 +432,39 @@ function App() {
     []
   );
 
+  // Gestion de la suppression d'un bloc
+  const handleNodeDelete = useCallback(
+    (nodeId: string) => {
+      if (model.viewLevel === 'system') {
+        // Supprimer un système
+        removeSystem(nodeId);
+      } else if (model.viewLevel === 'container' && model.activeSystemId) {
+        // Supprimer un container
+        removeContainer(model.activeSystemId, nodeId);
+      } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
+        // Supprimer un component
+        removeComponent(model.activeSystemId, model.activeContainerId, nodeId);
+      } else if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+        // Supprimer un élément de code
+        removeCodeElement(model.activeSystemId, model.activeContainerId, model.activeComponentId, nodeId);
+      }
+    },
+    [model.viewLevel, model.activeSystemId, model.activeContainerId, model.activeComponentId, removeSystem, removeContainer, removeComponent, removeCodeElement]
+  );
+
+  // Gestion de la suppression d'une connexion
+  const handleEdgeDelete = useCallback(
+    (edge: Edge) => {
+      const sourceId = edge.source;
+      const targetId = edge.target;
+      const level = model.viewLevel as 'system' | 'container' | 'component' | 'code';
+      const systemId = model.activeSystemId || '';
+      
+      removeConnection(level, systemId, sourceId, targetId);
+    },
+    [model.viewLevel, model.activeSystemId, removeConnection]
+  );
+
   return (
     <ReactFlowProvider>
       <Box sx={{ height: '100vh', bgcolor: '#f4f6fa' }}>
@@ -450,6 +488,8 @@ function App() {
           viewLevel={model.viewLevel}
           onNodeDoubleClick={handleNodeDoubleClick}
           onEdgeClick={handleEdgeClick}
+          onNodeDelete={handleNodeDelete}
+          onEdgeDelete={handleEdgeDelete}
         />
         
         {model.viewLevel === 'system' && editingElement && (

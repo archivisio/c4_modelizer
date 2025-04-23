@@ -10,6 +10,7 @@ interface C4State {
   removeSystem: (id: string) => void;
   connectSystems: (fromId: string, toId: string) => void;
   updateConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string, data: Partial<ConnectionData>) => void;
+  removeConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string) => void;
   // Container operations
   addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (systemId: string, containerId: string, data: Partial<ContainerBlock>) => void;
@@ -562,6 +563,100 @@ export const useC4Store = create<C4State>((set) => ({
                             connections: codeElement.connections.map(conn =>
                               conn.targetId === targetId ? { ...conn, ...data } : conn
                             )
+                          };
+                        }
+                        return codeElement;
+                      })
+                    };
+                  })
+                };
+              })
+            };
+          }
+          return system;
+        });
+      }
+      
+      return { model: { ...state.model, systems: updatedSystems } };
+    }),
+
+  // Remove connection at any level
+  removeConnection: (level, systemId, sourceId, targetId) =>
+    set((state) => {
+      let updatedSystems = [...state.model.systems];
+
+      // Handle different levels
+      if (level === 'system') {
+        // Remove system-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === sourceId) {
+            return {
+              ...system,
+              connections: system.connections.filter(conn => conn.targetId !== targetId)
+            };
+          }
+          return system;
+        });
+      } else if (level === 'container') {
+        // Remove container-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                if (container.id === sourceId) {
+                  return {
+                    ...container,
+                    connections: container.connections.filter(conn => conn.targetId !== targetId)
+                  };
+                }
+                return container;
+              })
+            };
+          }
+          return system;
+        });
+      } else if (level === 'component') {
+        // Remove component-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    if (component.id === sourceId) {
+                      return {
+                        ...component,
+                        connections: component.connections.filter(conn => conn.targetId !== targetId)
+                      };
+                    }
+                    return component;
+                  })
+                };
+              })
+            };
+          }
+          return system;
+        });
+      } else if (level === 'code') {
+        // Remove code-level connection
+        updatedSystems = updatedSystems.map(system => {
+          if (system.id === systemId) {
+            return {
+              ...system,
+              containers: (system.containers || []).map(container => {
+                return {
+                  ...container,
+                  components: (container.components || []).map(component => {
+                    return {
+                      ...component,
+                      codeElements: (component.codeElements || []).map(codeElement => {
+                        if (codeElement.id === sourceId) {
+                          return {
+                            ...codeElement,
+                            connections: codeElement.connections.filter(conn => conn.targetId !== targetId)
                           };
                         }
                         return codeElement;

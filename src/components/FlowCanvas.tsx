@@ -1,4 +1,5 @@
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Background,
   BackgroundVariant,
@@ -11,7 +12,7 @@ import {
   NodeChange,
   ReactFlow,
 } from '@xyflow/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import CodeBlock from './CodeBlock';
 import ComponentBlock from './ComponentBlock';
 import ContainerBlock from './ContainerBlock';
@@ -25,6 +26,8 @@ interface FlowCanvasProps {
   viewLevel: 'system' | 'container' | 'component' | 'code';
   onNodeDoubleClick?: (nodeId: string) => void;
   onEdgeClick?: (event: React.MouseEvent, edge: Edge) => void;
+  onNodeDelete?: (nodeId: string) => void;
+  onEdgeDelete?: (edge: Edge) => void;
 }
 
 const nodeTypes = { 
@@ -41,7 +44,9 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onNodePositionChange,
   viewLevel,
   onNodeDoubleClick,
-  onEdgeClick
+  onEdgeClick,
+  onNodeDelete,
+  onEdgeDelete
 }) => {
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
@@ -76,6 +81,69 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     style: { strokeWidth: 2 },
   };
 
+  // State pour le menu contextuel
+  const [contextMenu, setContextMenu] = useState<{
+    id: string;
+    type: 'node' | 'edge';
+    top: number;
+    left: number;
+    edge?: Edge;
+  } | null>(null);
+  
+  // Gestionnaire pour le clic droit sur un nœud (bloc)
+  const handleNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: Node) => {
+      // Prevent default context menu
+      event.preventDefault();
+            
+      setContextMenu({
+        id: node.id,
+        type: 'node',
+        top: event.clientY,
+        left: event.clientX
+      });
+    },
+    []
+  );
+  
+  // Gestionnaire pour le clic droit sur une connexion (edge)
+  const handleEdgeContextMenu = useCallback(
+    (event: React.MouseEvent, edge: Edge) => {
+      // Prevent default context menu
+      event.preventDefault();
+            
+      setContextMenu({
+        id: edge.id,
+        type: 'edge',
+        top: event.clientY,
+        left: event.clientX,
+        edge
+      });
+    },
+    []
+  );
+  
+  // Gestionnaire pour la suppression d'un nœud
+  const handleNodeDelete = useCallback(() => {
+    if (contextMenu && contextMenu.type === 'node' && onNodeDelete) {
+      onNodeDelete(contextMenu.id);
+      setContextMenu(null);
+    }
+  }, [contextMenu, onNodeDelete]);
+  
+  // Gestionnaire pour la suppression d'une connexion
+  const handleEdgeDelete = useCallback(() => {
+    if (contextMenu && contextMenu.type === 'edge' && contextMenu.edge && onEdgeDelete) {
+      onEdgeDelete(contextMenu.edge);
+      setContextMenu(null);
+    }
+  }, [contextMenu, onEdgeDelete]);
+  
+  // Fermer le menu contextuel lors d'un clic sur le canvas
+  const handlePaneClick = useCallback(() => {
+    setContextMenu(null);
+  }, []);
+  
   // Gestionnaire pour les clics sur les connexions
   const handleEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
@@ -97,6 +165,9 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         nodeTypes={nodeTypes}
         onNodeDoubleClick={handleNodeDoubleClick}
         onEdgeClick={onEdgeClick ? handleEdgeClick : undefined}
+        onNodeContextMenu={handleNodeContextMenu}
+        onEdgeContextMenu={handleEdgeContextMenu}
+        onPaneClick={handlePaneClick}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: '100%', height: '100%' }}
@@ -104,6 +175,27 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
         <MiniMap />
         <Controls />
+        
+        {contextMenu && (
+          <div
+            style={{
+              position: 'fixed',
+              zIndex: 10,
+              top: contextMenu.top,
+              left: contextMenu.left
+            }}
+          >
+            <Paper elevation={3} sx={{ borderRadius: 1 }}>
+              <div 
+                style={{ cursor: 'pointer', padding: '8px 16px', display: 'flex', alignItems: 'center' }}
+                onClick={contextMenu.type === 'node' ? handleNodeDelete : handleEdgeDelete}
+              >
+                <DeleteIcon style={{ marginRight: 8 }} />
+                {contextMenu.type === 'node' ? 'Supprimer le bloc' : 'Supprimer la connexion'}
+              </div>
+            </Paper>
+          </div>
+        )}
       </ReactFlow>
     </Box>
   );
