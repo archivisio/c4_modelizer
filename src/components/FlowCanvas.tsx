@@ -17,6 +17,7 @@ import CodeBlock from './CodeBlock';
 import ComponentBlock from './ComponentBlock';
 import ContainerBlock from './ContainerBlock';
 import SystemBlock from './SystemBlock';
+import { getTechnologyById } from '../data/technologies';
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -36,6 +37,13 @@ const nodeTypes = {
   component: ComponentBlock, 
   code: CodeBlock 
 };
+
+// Fonction utilitaire pour obtenir la couleur d'une techno
+function getEdgeColorForTechnology(technologyId?: string): string | undefined {
+  if (!technologyId) return undefined;
+  const tech = getTechnologyById(technologyId);
+  return tech?.color;
+}
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({ 
   nodes, 
@@ -80,6 +88,23 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     },
     style: { strokeWidth: 2 },
   };
+
+  // Appliquer la couleur de techno à chaque edge si dispo
+  const coloredEdges = edges.map(edge => {
+    // La techno peut être dans edge.data?.technology ou edge.technology
+    const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) || (edge as any).technology;
+    const color = getEdgeColorForTechnology(technologyId);
+    return {
+      ...edge,
+      style: {
+        ...(edge.style || {}),
+        stroke: color || (edge.style && edge.style.stroke),
+        strokeWidth: 2,
+      },
+      markerEnd: edge.markerEnd || defaultEdgeOptions.markerEnd,
+      animated: edge.animated !== undefined ? edge.animated : true,
+    };
+  });
 
   // State pour le menu contextuel
   const [contextMenu, setContextMenu] = useState<{
@@ -159,7 +184,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     <Box sx={{ width: '100vw', height: 'calc(100vh - 100px)' }}>
       <ReactFlow
         nodes={nodes}
-        edges={edges}
+        edges={coloredEdges}
         onConnect={onConnect}
         onNodesChange={handleNodesChange}
         nodeTypes={nodeTypes}
