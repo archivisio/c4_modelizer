@@ -581,7 +581,6 @@ function App() {
           <ConnectionEditDialog
             open={connectionDialogOpen}
             connection={editingConnection}
-            level={model.viewLevel as TechnologyLevel}
             onClose={() => {
               setConnectionDialogOpen(false);
               setEditingConnection(null);

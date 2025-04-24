@@ -212,8 +212,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         style={{ width: '100%', height: '100%' }}
       >
         <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(81, 162, 255, 0.2)" />
-        <MiniMap style={{ backgroundColor: 'rgba(19, 47, 76, 0.9)', borderColor: 'rgba(81, 162, 255, 0.3)' }} nodeColor={'rgba(81, 162, 255, 0.6)'} nodeStrokeWidth={3} />
-        <Controls style={{ backgroundColor: 'rgba(19, 47, 76, 0.8)', borderColor: 'rgba(81, 162, 255, 0.3)', color: '#fff', borderRadius: '4px', padding: '4px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)' }} />
+        <MiniMap />
+        <Controls />
+        
+
         
         {contextMenu && (
           <div

@@ -9,13 +9,11 @@ import {
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ConnectionInfo } from '../types/connection';
-import { TechnologyLevel } from '../types/c4';
 import TechnologySelect from './TechnologySelect';
 
 interface ConnectionEditDialogProps {
   open: boolean;
   connection: ConnectionInfo | null;
-  level: TechnologyLevel;
   onClose: () => void;
   onSave: (connectionInfo: ConnectionInfo) => void;
 }
@@ -23,7 +21,6 @@ interface ConnectionEditDialogProps {
 const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
   open,
   connection,
-  level,
   onClose,
   onSave,
 }) => {
