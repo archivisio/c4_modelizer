@@ -66,3 +66,46 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Styles pour la minimap et sa zone de focus */
+.react-flow__minimap {
+  background-color: rgba(19, 47, 76, 0.9) !important;
+  border: 1px solid rgba(81, 162, 255, 0.3) !important;
+  border-radius: 4px !important;
+  overflow: hidden !important;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(81, 162, 255, 0.15) !important;
+  stroke: rgba(81, 162, 255, 0.8) !important;
+  stroke-width: 2px !important;
+  stroke-dasharray: none !important;
+}
+
+.react-flow__minimap-node {
+  fill: rgba(81, 162, 255, 0.6) !important;
+  stroke: rgba(81, 162, 255, 0.8) !important;
+  stroke-width: 1px !important;
+}
+
+/* Styles pour les boutons de contrôle */
+.react-flow__controls button {
+  background-color: rgba(81, 162, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(81, 162, 255, 0.3) !important;
+  border-radius: 4px !important;
+  margin: 2px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.react-flow__controls button:hover {
+  background-color: rgba(81, 162, 255, 0.4) !important;
+}
+
+.react-flow__controls button svg {
+  fill: white !important;
+  width: 16px !important;
+  height: 16px !important;
+}
