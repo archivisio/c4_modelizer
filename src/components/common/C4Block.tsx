@@ -126,7 +126,8 @@ const C4Block: React.FC<C4BlockProps> = ({
               mb: 1,
             }}
           >
-            <Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              {technology && <TechnologyIcon technologyId={technology} size={16} />}
               <Typography
                 variant="subtitle1"
                 sx={{
@@ -138,34 +139,6 @@ const C4Block: React.FC<C4BlockProps> = ({
               >
                 {name}
               </Typography>
-
-              {technology && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    mt: 1,
-                    gap: 0.8,
-                    backgroundColor: "rgba(0,0,0,0.2)",
-                    px: 1,
-                    py: 0.5,
-                    borderRadius: 1,
-                    backdropFilter: "blur(4px)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                  }}
-                >
-                  <TechnologyIcon technologyId={technology} size={16} />
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      color: "rgba(255,255,255,0.8)",
-                      fontWeight: "medium",
-                    }}
-                  >
-                    {technology}
-                  </Typography>
-                </Box>
-              )}
             </Box>
 
             <IconButton
