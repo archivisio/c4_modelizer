@@ -1,0 +1,12 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="15" y="15" width="90" height="90" rx="18" fill="#1976D2"/>
+  <rect x="30" y="30" width="25" height="25" rx="6" fill="#fff"/>
+  <rect x="65" y="30" width="25" height="25" rx="6" fill="#fff"/>
+  <rect x="30" y="65" width="25" height="25" rx="6" fill="#fff"/>
+  <rect x="65" y="65" width="25" height="25" rx="6" fill="#fff"/>
+  <line x1="42.5" y1="55" x2="42.5" y2="65" stroke="#1976D2" stroke-width="4"/>
+  <line x1="77.5" y1="55" x2="77.5" y2="65" stroke="#1976D2" stroke-width="4"/>
+  <line x1="55" y1="42.5" x2="65" y2="42.5" stroke="#1976D2" stroke-width="4"/>
+  <line x1="55" y1="77.5" x2="65" y2="77.5" stroke="#1976D2" stroke-width="4"/>
+  <text x="60" y="115" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#263238" font-weight="bold">C4 Modelizer</text>
+</svg>
