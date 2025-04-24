@@ -10,7 +10,25 @@ export interface BaseBlock {
 import { ConnectionData } from './connection';
 
 
+export type SystemType =
+  | 'web_application'
+  | 'mobile_application'
+  | 'public_api'
+  | 'microservices'
+  | 'enterprise_information_system'
+  | 'data_management_system'
+  | 'notification_or_messaging_system'
+  | 'payment_system'
+  | 'authentication_and_authorization_system'
+  | 'external_system'
+  | 'desktop_application'
+  | 'iot_or_embedded_system'
+  | 'batch_or_async_processing_system'
+  | 'monitoring_and_observability_system'
+  | 'security_system';
+
 export interface SystemBlock extends BaseBlock {
+  systemType: SystemType;
   connections: ConnectionData[];
   containers?: ContainerBlock[];
 }
