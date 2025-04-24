@@ -75,6 +75,9 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
             backgroundColor: "rgba(0,0,0,0.2)",
             backdropFilter: "blur(4px)",
             "& .MuiChip-label": { px: 1.5 },
+            position: "absolute",
+            top: 50,
+            right: 10,
           }}
           variant="outlined"
         />

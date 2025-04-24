@@ -117,7 +117,7 @@ const C4Block: React.FC<C4BlockProps> = ({
       )}
 
       <Card sx={cardSx} className="tech-card">
-        <CardContent sx={{ p: 2.5, color: "#fff" }}>
+        <CardContent sx={{ p: 1.5, color: "#fff" }}>
           <Box
             sx={{
               display: "flex",
