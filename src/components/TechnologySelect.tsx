@@ -41,6 +41,11 @@ const TechnologySelect = ({
     }
   }, [level, value]);
 
+  //@ts-ignore
+  if(level === "system") {
+    return null;
+  }
+
   return (
     <Autocomplete
       options={options}
