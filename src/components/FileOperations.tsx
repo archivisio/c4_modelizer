@@ -1,13 +1,13 @@
-import { C4Model } from '../types/c4';
-import { exportModel, importModel } from '../utils/jsonIO';
+import { C4Model } from "../types/c4";
+import { exportModel, importModel } from "../utils/jsonIO";
 
 export const handleExportModel = (model: C4Model): void => {
   const json = exportModel(model);
-  const blob = new Blob([json], { type: 'application/json' });
+  const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   a.href = url;
-  a.download = 'c4model.json';
+  a.download = "c4model.json";
   a.click();
   URL.revokeObjectURL(url);
 };
@@ -26,10 +26,10 @@ export const handleImportModel = (
         setModel(imported);
         setImportError(null);
       } else {
-        setImportError('Fichier JSON invalide.');
+        setImportError("Fichier JSON invalide.");
       }
     } catch {
-      setImportError('Erreur lors de la lecture du fichier.');
+      setImportError("Erreur lors de la lecture du fichier.");
     }
   };
   reader.readAsText(file);
