@@ -1,5 +1,5 @@
-import { Box, Paper } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Box, Paper } from '@mui/material';
 import {
   Background,
   BackgroundVariant,
@@ -13,11 +13,12 @@ import {
   ReactFlow,
 } from '@xyflow/react';
 import React, { useCallback, useState } from 'react';
+import { getTechnologyById } from '../data/technologies';
 import CodeBlock from './CodeBlock';
 import ComponentBlock from './ComponentBlock';
 import ContainerBlock from './ContainerBlock';
 import SystemBlock from './SystemBlock';
-import { getTechnologyById } from '../data/technologies';
+import TechnologyEdge from './TechnologyEdge';
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -96,6 +97,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     const color = getEdgeColorForTechnology(technologyId);
     return {
       ...edge,
+      type: technologyId ? 'technology' : edge.type,
       style: {
         ...(edge.style || {}),
         stroke: color || (edge.style && edge.style.stroke),
@@ -185,6 +187,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
       <ReactFlow
         nodes={nodes}
         edges={coloredEdges}
+        edgeTypes={{ technology: TechnologyEdge }}
         onConnect={onConnect}
         onNodesChange={handleNodesChange}
         nodeTypes={nodeTypes}
