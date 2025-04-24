@@ -31,6 +31,12 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
     targetX,
     targetY,
   });
+  
+  // Du00e9terminer si la connexion va de gauche u00e0 droite ou de droite u00e0 gauche
+  const isLeftToRight = sourceX < targetX;
+  
+  // Ajuster le style de la flu00e8che en fonction de la direction
+  const adjustedMarkerEnd = markerEnd;
 
   // Afficher l'icône au centre de la courbe
   return (
@@ -40,7 +46,7 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
         style={style}
         className="react-flow__edge-path"
         d={edgePath}
-        markerEnd={typeof markerEnd === 'string' ? markerEnd : undefined}
+        markerEnd={typeof adjustedMarkerEnd === 'string' ? adjustedMarkerEnd : undefined}
       />
       {technologyId && (
         <foreignObject
@@ -48,7 +54,7 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
           y={labelY - ICON_SIZE / 2 - 8}
           width={80}
           height={40}
-          style={{ overflow: 'visible' }}
+          style={{ overflow: 'visible', transform: isLeftToRight ? 'none' : 'rotate(180deg)', transformOrigin: 'center center' }}
         >
           <div style={{
             display: 'flex',
@@ -56,6 +62,7 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
             alignItems: 'center',
             justifyContent: 'center',
             pointerEvents: 'auto',
+            transform: isLeftToRight ? 'none' : 'rotate(180deg)', // Rotation inverse pour corriger l'orientation des u00e9lu00e9ments
           }}>
             <TechnologyIcon technologyId={technologyId} size={ICON_SIZE} showTooltip={true} />
             {props.label && (
