@@ -282,14 +282,17 @@ const C4Block: React.FC<C4BlockProps> = ({
                 backgroundColor: "rgba(0,0,0,0.3)",
                 color: "#fff",
                 "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" },
-                width: 32,
-                height: 32,
+                width: 22,
+                height: 22,
+                minWidth: 22,
+                minHeight: 22,
                 border: "1px solid rgba(255,255,255,0.2)",
                 backdropFilter: "blur(4px)",
                 transition: "all 0.2s ease",
+                p: 0.5,
               }}
             >
-              <EditIcon fontSize="small" />
+              <EditIcon fontSize="inherit" />
             </IconButton>
           </Box>
 
