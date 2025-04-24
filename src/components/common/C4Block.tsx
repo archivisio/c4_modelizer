@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
+import { ColorStyle } from "../../data/colors";
 import { getTechnologyById } from "../../data/technologies";
 import TechnologyIcon from "../TechnologyIcon";
 
@@ -23,64 +24,10 @@ export interface C4BlockProps {
   technology?: string;
   selected?: boolean;
   onEdit: () => void;
-  variant?: "primary" | "secondary" | "tertiary" | "quaternary";
+  colors: ColorStyle;
   handlePositions?: HandlePositions;
   children?: React.ReactNode;
 }
-
-interface ColorStyle {
-  background: string;
-  gradient: string;
-  gradientHover: string;
-  border: string;
-  hover: string;
-  glow: string;
-}
-
-const COLORS: Record<string, ColorStyle> = {
-  primary: {
-    background: "rgba(13, 71, 161, 0.1)",
-    gradient:
-      "linear-gradient(135deg, rgba(25, 118, 210, 0.15) 0%, rgba(13, 71, 161, 0.1) 100%)",
-    gradientHover:
-      "linear-gradient(135deg, rgba(25, 118, 210, 0.25) 0%, rgba(13, 71, 161, 0.2) 100%)",
-    border: "#1976d2",
-    hover: "#42a5f5",
-    glow: "0 0 15px rgba(33, 150, 243, 0.3)",
-  },
-  secondary: {
-    background: "rgba(0, 121, 107, 0.1)",
-    gradient:
-      "linear-gradient(135deg, rgba(0, 150, 136, 0.15) 0%, rgba(0, 121, 107, 0.1) 100%)",
-    gradientHover:
-      "linear-gradient(135deg, rgba(0, 150, 136, 0.25) 0%, rgba(0, 121, 107, 0.2) 100%)",
-    border: "#00897b",
-    hover: "#26a69a",
-    glow: "0 0 15px rgba(0, 150, 136, 0.3)",
-  },
-  tertiary: {
-    background: "rgba(245, 124, 0, 0.1)",
-    gradient:
-      "linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(245, 124, 0, 0.1) 100%)",
-    gradientHover:
-      "linear-gradient(135deg, rgba(255, 152, 0, 0.25) 0%, rgba(245, 124, 0, 0.2) 100%)",
-    border: "#f57c00",
-    hover: "#ffa726",
-    glow: "0 0 15px rgba(255, 152, 0, 0.3)",
-  },
-  quaternary: {
-    background: "rgba(123, 31, 162, 0.1)",
-    gradient:
-      "linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(123, 31, 162, 0.1) 100%)",
-    gradientHover:
-      "linear-gradient(135deg, rgba(156, 39, 176, 0.25) 0%, rgba(123, 31, 162, 0.2) 100%)",
-    border: "#7b1fa2",
-    hover: "#ab47bc",
-    glow: "0 0 15px rgba(156, 39, 176, 0.3)",
-  },
-};
-
-// Les mappings de type à variante ont été déplacés dans les composants spécifiques
 
 const hexToRgb = (hex: string): string => {
   const cleanHex = hex.startsWith("#") ? hex.slice(1) : hex;
@@ -99,17 +46,13 @@ const C4Block: React.FC<C4BlockProps> = ({
   technology,
   selected = false,
   onEdit,
-  variant,
+  colors,
   handlePositions = { source: Position.Bottom, target: Position.Top },
   children,
 }) => {
   const techData = technology ? getTechnologyById(technology) : undefined;
-
-  // Utiliser directement la variante fournie ou primary par défaut
-  const colorVariant = variant || "primary";
-  const defaultColors = COLORS[colorVariant];
-
-  const colors: ColorStyle = techData
+  const defaultColorStyle = colors;
+  const colorStyles: ColorStyle = techData
     ? {
         background: `rgba(${hexToRgb(techData.color)}, 0.1)`,
         gradient: `linear-gradient(135deg, rgba(${hexToRgb(
@@ -122,36 +65,24 @@ const C4Block: React.FC<C4BlockProps> = ({
         hover: techData.color,
         glow: `0 0 15px rgba(${hexToRgb(techData.color)}, 0.3)`,
       }
-    : defaultColors;
+    : defaultColorStyle;
 
   const cardSx: SxProps<Theme> = {
     minWidth: 200,
-    maxWidth: 280,
+    width: "100%",
+    height: "100%",
     borderRadius: 2,
-    border: `1px solid ${colors.border}`,
-    background: colors.gradient,
-    transition: "all 0.2s ease-in-out",
-    boxShadow: selected
-      ? `0 0 0 2px ${colors.border}, ${colors.glow}`
-      : "0 4px 20px rgba(0,0,0,0.15)",
-    backdropFilter: "blur(8px)",
-    "&:hover": {
-      background: colors.gradientHover,
-      boxShadow: `0 8px 32px rgba(0,0,0,0.2), ${colors.glow}`,
-      transform: "translateY(-3px)",
-    },
-    overflow: "visible",
     position: "relative",
-    "&::after": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      height: "4px",
-      background: `linear-gradient(90deg, transparent, ${colors.border}, transparent)`,
-      borderTopLeftRadius: "2px",
-      borderTopRightRadius: "2px",
+    overflow: "visible",
+    transition: "all 0.2s ease",
+    boxShadow: selected
+      ? `0 0 0 2px ${colorStyles.border}, ${colorStyles.glow}`
+      : "0 4px 20px rgba(0,0,0,0.15)",
+    background: colorStyles.gradient,
+    border: `1px solid ${colorStyles.border}`,
+    "&:hover": {
+      boxShadow: `0 0 0 2px ${colorStyles.hover}, ${colorStyles.glow}`,
+      background: colorStyles.gradientHover,
     },
   };
 
@@ -165,8 +96,8 @@ const C4Block: React.FC<C4BlockProps> = ({
             position={position}
             id={`target-${position}-${index}`}
             style={{
-              background: colors.border,
-              border: `2px solid ${colors.border}`,
+              background: colorStyles.border,
+              border: `2px solid ${colorStyles.border}`,
               width: 8,
               height: 8,
             }}
@@ -177,8 +108,8 @@ const C4Block: React.FC<C4BlockProps> = ({
           type="target"
           position={handlePositions.target}
           style={{
-            background: colors.border,
-            border: `2px solid ${colors.border}`,
+            background: colorStyles.border,
+            border: `2px solid ${colorStyles.border}`,
             width: 8,
             height: 8,
           }}
@@ -248,7 +179,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                 height: 22,
                 minWidth: 22,
                 minHeight: 22,
-                border: "1px solid rgba(255,255,255,0.2)",
+                border: `1px solid ${colorStyles.border}`,
                 backdropFilter: "blur(4px)",
                 transition: "all 0.2s ease",
                 p: 0.5,
@@ -287,11 +218,11 @@ const C4Block: React.FC<C4BlockProps> = ({
             position={position}
             id={`source-${position}-${index}`}
             style={{
-              background: colors.border,
-              border: `2px solid ${colors.border}`,
+              background: colorStyles.border,
+              border: `2px solid ${colorStyles.border}`,
               width: 10,
               height: 10,
-              boxShadow: `0 0 5px ${colors.border}`,
+              boxShadow: `0 0 5px ${colorStyles.border}`,
             }}
           />
         ))
@@ -300,11 +231,11 @@ const C4Block: React.FC<C4BlockProps> = ({
           type="source"
           position={handlePositions.source}
           style={{
-            background: colors.border,
-            border: `2px solid ${colors.border}`,
+            background: colorStyles.border,
+            border: `2px solid ${colorStyles.border}`,
             width: 10,
             height: 10,
-            boxShadow: `0 0 5px ${colors.border}`,
+            boxShadow: `0 0 5px ${colorStyles.border}`,
           }}
         />
       )}

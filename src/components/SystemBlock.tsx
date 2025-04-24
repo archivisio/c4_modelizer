@@ -1,4 +1,5 @@
 import { Position } from "@xyflow/react";
+import { COLORS } from "../data/colors";
 import C4Block from "./common/C4Block";
 
 export type SystemBlockData = {
@@ -22,7 +23,7 @@ export default function SystemBlock({ data }: NodeProps) {
       name={typedData.name}
       description={typedData.description}
       onEdit={typedData.onEdit}
-      variant="primary"
+      colors={COLORS.primary}
       handlePositions={{
         source: [Position.Right, Position.Bottom, Position.Top],
         target: [Position.Left, Position.Top, Position.Bottom],

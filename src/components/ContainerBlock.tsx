@@ -1,5 +1,6 @@
 import { Position } from "@xyflow/react";
 import { memo } from "react";
+import { COLORS } from "../data/colors";
 import C4Block from "./common/C4Block";
 
 export type ContainerBlockData = {
@@ -23,7 +24,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(
         name={typedData.name}
         description={typedData.description}
         onEdit={typedData.onEdit}
-        variant="secondary"
+        colors={COLORS.secondary}
         technology={typedData.technology}
         handlePositions={{
           source: [Position.Right, Position.Bottom, Position.Top],
