@@ -98,9 +98,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   };
 
   const coloredEdges = edges.map((edge) => {
-    const technologyId =
-      (edge.data && (edge.data.technology || edge.data.technologyId)) ||
-      edge.technology;
+    const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) as string | undefined;
     const color = getEdgeColorForTechnology(technologyId);
     return {
       ...edge,
