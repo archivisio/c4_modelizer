@@ -1,54 +1,68 @@
-# React + TypeScript + Vite
+# C4 Modelizer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![C4 Modelizer Logo](/public/logo.svg)
 
-Currently, two official plugins are available:
+C4 Modelizer is a web application for visually modeling the software architecture of a system using the C4 method. It enables the creation, editing, and documentation of C4 diagrams (System, Container, Component, Code) in an interactive and collaborative way.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Purpose
 
-## Expanding the ESLint configuration
+- Help teams design and document software architecture graphically.
+- Facilitate communication between stakeholders with clear visual representations.
+- Provide a modern and ergonomic interface based on React, TypeScript, and Material UI.
+- Support customization of blocks (technologies, system types, icons, etc.).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Main Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Create and edit C4 blocks (System, Container, Component, Code)
+- Select system type with icon
+- Associate technologies with blocks
+- Manage connections and dependencies
+- Import/export the model (with schema versioning)
+- Responsive and multilingual interface (i18n)
+
+## Requirements
+
+- Node.js >= 18
+- npm >= 9
+
+## Installation & Usage
+
+```bash
+# Clone the repository
+git clone https://github.com/eth3rnit3/c4_modelizer.git
+cd c4_modelizer
+
+# Install dependencies
+npm install
+
+# Start the application in development mode
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will be available at http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Contributing or Bug Fixes
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. **Fork** this repository and create a new descriptive branch (e.g. `fix/bug-description` or `feature/new-block-type`).
+2. **Develop** your changes following the project’s structure and style (TypeScript, React, RSpec for Ruby tests if needed on backend).
+3. **Test** your modifications locally.
+4. **Open a Pull Request** to the main repository, clearly describing the problem or feature you are addressing.
+5. A maintainer will review your contribution.
+
+## Reporting Bugs or Suggestions
+
+Open an issue using the "Issues" tab on GitHub, describing the problem or improvement idea in detail.
+
+## License
+
+This project is distributed under the Creative Commons BY-NC 4.0 International License.
+
+You are free to:
+- Share — copy, distribute and transmit the work by any means and in any format
+- Adapt — remix, transform, and build upon the material
+
+**Under the following conditions:**
+- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- NonCommercial — You may not use the material for commercial purposes.
+
+See the full license text: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)

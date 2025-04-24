@@ -1,8 +1,10 @@
 {
   "name": "c4_modelizer",
   "private": true,
+  "author": "eth3rnit3",
   "version": "0.0.0",
   "type": "module",
+  "license": "CC-BY-NC-4.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
