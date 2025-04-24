@@ -25,35 +25,49 @@ export interface C4BlockProps {
   additionalContent?: React.ReactNode;
 }
 
+// Interface pour les couleurs
+interface ColorStyle {
+  background: string;
+  gradient: string;
+  gradientHover: string;
+  border: string;
+  hover: string;
+  glow: string;
+}
+
 // Constantes pour les couleurs et styles
-const COLORS = {
+const COLORS: Record<string, ColorStyle> = {
   primary: {
-    background: 'rgba(227, 242, 253, 0.7)',
-    gradient: 'linear-gradient(135deg, rgba(187, 222, 251, 0.7) 0%, rgba(227, 242, 253, 0.7) 100%)',
-    gradientHover: 'linear-gradient(135deg, rgba(187, 222, 251, 1) 0%, rgba(227, 242, 253, 1) 100%)',
-    border: '#2196f3',
-    hover: '#90caf9'
+    background: 'rgba(13, 71, 161, 0.1)',
+    gradient: 'linear-gradient(135deg, rgba(25, 118, 210, 0.15) 0%, rgba(13, 71, 161, 0.1) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(25, 118, 210, 0.25) 0%, rgba(13, 71, 161, 0.2) 100%)',
+    border: '#1976d2',
+    hover: '#42a5f5',
+    glow: '0 0 15px rgba(33, 150, 243, 0.3)'
   },
   secondary: {
-    background: 'rgba(232, 245, 233, 0.7)',
-    gradient: 'linear-gradient(135deg, rgba(200, 230, 201, 0.7) 0%, rgba(232, 245, 233, 0.7) 100%)',
-    gradientHover: 'linear-gradient(135deg, rgba(200, 230, 201, 1) 0%, rgba(232, 245, 233, 1) 100%)',
-    border: '#4caf50',
-    hover: '#a5d6a7'
+    background: 'rgba(0, 121, 107, 0.1)',
+    gradient: 'linear-gradient(135deg, rgba(0, 150, 136, 0.15) 0%, rgba(0, 121, 107, 0.1) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(0, 150, 136, 0.25) 0%, rgba(0, 121, 107, 0.2) 100%)',
+    border: '#00897b',
+    hover: '#26a69a',
+    glow: '0 0 15px rgba(0, 150, 136, 0.3)'
   },
   tertiary: {
-    background: 'rgba(255, 248, 225, 0.7)',
-    gradient: 'linear-gradient(135deg, rgba(255, 236, 179, 0.7) 0%, rgba(255, 248, 225, 0.7) 100%)',
-    gradientHover: 'linear-gradient(135deg, rgba(255, 236, 179, 1) 0%, rgba(255, 248, 225, 1) 100%)',
-    border: '#ffc107',
-    hover: '#ffe082'
+    background: 'rgba(245, 124, 0, 0.1)',
+    gradient: 'linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(245, 124, 0, 0.1) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(255, 152, 0, 0.25) 0%, rgba(245, 124, 0, 0.2) 100%)',
+    border: '#f57c00',
+    hover: '#ffa726',
+    glow: '0 0 15px rgba(255, 152, 0, 0.3)'
   },
   quaternary: {
-    background: 'rgba(243, 229, 245, 0.7)',
-    gradient: 'linear-gradient(135deg, rgba(225, 190, 231, 0.7) 0%, rgba(243, 229, 245, 0.7) 100%)',
-    gradientHover: 'linear-gradient(135deg, rgba(225, 190, 231, 1) 0%, rgba(243, 229, 245, 1) 100%)',
-    border: '#9c27b0',
-    hover: '#ce93d8'
+    background: 'rgba(123, 31, 162, 0.1)',
+    gradient: 'linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(123, 31, 162, 0.1) 100%)',
+    gradientHover: 'linear-gradient(135deg, rgba(156, 39, 176, 0.25) 0%, rgba(123, 31, 162, 0.2) 100%)',
+    border: '#7b1fa2',
+    hover: '#ab47bc',
+    glow: '0 0 15px rgba(156, 39, 176, 0.3)'
   }
 };
 
@@ -106,29 +120,43 @@ const C4Block: React.FC<C4BlockProps> = ({
   const defaultColors = COLORS[colorVariant];
   
   // Créer les couleurs personnalisées si une technologie est présente
-  const colors = techData ? {
+  const colors: ColorStyle = techData ? {
     background: `rgba(${hexToRgb(techData.color)}, 0.1)`,
     gradient: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.15) 0%, rgba(${hexToRgb(techData.color)}, 0.05) 100%)`,
-    gradientHover: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.6) 0%, rgba(${hexToRgb(techData.color)}, 0.4) 100%)`,
+    gradientHover: `linear-gradient(135deg, rgba(${hexToRgb(techData.color)}, 0.25) 0%, rgba(${hexToRgb(techData.color)}, 0.15) 100%)`,
     border: techData.color,
-    hover: techData.color
+    hover: techData.color,
+    glow: `0 0 15px rgba(${hexToRgb(techData.color)}, 0.3)`
   } : defaultColors;
   
   // Styles pour la carte
-  const cardStyle: SxProps<Theme> = {
-    minWidth: type === 'system' ? 220 : type === 'container' ? 200 : type === 'component' ? 180 : 160,
-    maxWidth: type === 'system' ? 350 : type === 'container' ? 300 : type === 'component' ? 250 : 240,
+  const cardSx: SxProps<Theme> = {
+    minWidth: 200,
+    maxWidth: 280,
     borderRadius: 2,
-    transition: 'all 0.3s ease',
+    border: `1px solid ${colors.border}`,
     background: colors.gradient,
-    boxShadow: selected 
-      ? `0 8px 16px rgba(0,0,0,0.2), 0 0 0 2px ${colors.border}`
-      : '0 4px 12px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.05)',
+    transition: 'all 0.2s ease-in-out',
+    boxShadow: selected ? `0 0 0 2px ${colors.border}, ${colors.glow}` : '0 4px 20px rgba(0,0,0,0.15)',
+    backdropFilter: 'blur(8px)',
     '&:hover': {
-      boxShadow: `0 8px 20px rgba(0,0,0,0.15), 0 0 0 1px ${colors.hover}`,
-      transform: 'translateY(-2px)',
       background: colors.gradientHover,
+      boxShadow: `0 8px 32px rgba(0,0,0,0.2), ${colors.glow}`,
+      transform: 'translateY(-3px)'
     },
+    overflow: 'visible',
+    position: 'relative',
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: '4px',
+      background: `linear-gradient(90deg, transparent, ${colors.border}, transparent)`,
+      borderTopLeftRadius: '2px',
+      borderTopRightRadius: '2px'
+    }
   };
 
   return (
@@ -164,27 +192,26 @@ const C4Block: React.FC<C4BlockProps> = ({
         />
       )}
       
-      <Card sx={cardStyle}>
-        <CardContent sx={{ position: 'relative', padding: 2, '&:last-child': { pb: 2 } }}>
-          <Box display="flex" justifyContent="space-between" alignItems="flex-start">
+      <Card sx={cardSx} className="tech-card">
+        <CardContent sx={{ p: 2.5, color: '#fff' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
             <Box>
-              <Typography variant="h6" fontWeight="bold" sx={{ mb: 0.5 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 0.5, color: '#fff', textShadow: '0 0 10px rgba(255,255,255,0.3)' }}>
                 {name}
               </Typography>
               
               {/* Elements spécifiques au type de code */}
               {codeType && (
                 <Chip 
-                  label={codeType} 
                   size="small" 
+                  label={codeType} 
                   sx={{ 
-                    fontSize: '0.7rem', 
-                    height: 20, 
-                    mb: 0.5,
-                    backgroundColor: `${COLORS[TYPE_TO_VARIANT[codeType || 'other']].background}`, 
                     borderColor: `${COLORS[TYPE_TO_VARIANT[codeType || 'other']].border}`,
-                    color: 'text.secondary',
-                    fontWeight: 'medium'
+                    color: '#fff',
+                    fontWeight: 'medium',
+                    backgroundColor: 'rgba(0,0,0,0.2)',
+                    backdropFilter: 'blur(4px)',
+                    '& .MuiChip-label': { px: 1.5 }
                   }} 
                   variant="outlined"
                 />
@@ -192,9 +219,9 @@ const C4Block: React.FC<C4BlockProps> = ({
               
               {/* Affichage de la technologie avec icône */}
               {technology && (
-                <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5, gap: 0.5 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, gap: 0.8, backgroundColor: 'rgba(0,0,0,0.2)', px: 1, py: 0.5, borderRadius: 1, backdropFilter: 'blur(4px)', border: '1px solid rgba(255,255,255,0.1)' }}>
                   <TechnologyIcon technologyId={technology} size={16} />
-                  <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 'medium' }}>
+                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)', fontWeight: 'medium' }}>
                     {technology}
                   </Typography>
                 </Box>
@@ -205,10 +232,14 @@ const C4Block: React.FC<C4BlockProps> = ({
               size="small" 
               onClick={onEdit} 
               sx={{ 
-                backgroundColor: 'rgba(255,255,255,0.5)', 
-                '&:hover': { backgroundColor: 'rgba(255,255,255,0.8)' },
-                width: 28, 
-                height: 28 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
+                color: '#fff',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+                width: 32, 
+                height: 32,
+                border: '1px solid rgba(255,255,255,0.2)',
+                backdropFilter: 'blur(4px)',
+                transition: 'all 0.2s ease'
               }}
             >
               <EditIcon fontSize="small" />
@@ -220,11 +251,13 @@ const C4Block: React.FC<C4BlockProps> = ({
             <Typography 
               variant="body2" 
               sx={{ 
-                mt: 1, 
-                color: 'text.secondary',
-                backgroundColor: 'rgba(255,255,255,0.4)',
-                p: 1,
-                borderRadius: 1
+                mt: 1.5, 
+                color: 'rgba(255,255,255,0.8)',
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                p: 1.5,
+                borderRadius: 1,
+                backdropFilter: 'blur(4px)',
+                border: '1px solid rgba(255,255,255,0.1)'
               }}
             >
               {description}
@@ -236,16 +269,19 @@ const C4Block: React.FC<C4BlockProps> = ({
           {code && (
             <Box 
               sx={{ 
-                mt: 1, 
-                p: 1, 
-                backgroundColor: 'rgba(0,0,0,0.03)', 
+                mt: 1.5, 
+                p: 1.5, 
+                backgroundColor: 'rgba(0,0,0,0.3)', 
                 borderRadius: 1,
                 fontSize: '0.75rem',
-                fontFamily: 'monospace',
+                fontFamily: '"Fira Code", "Roboto Mono", monospace',
                 overflowX: 'auto',
-                maxHeight: '60px',
+                maxHeight: '80px',
                 overflowY: 'auto',
-                border: '1px solid rgba(0,0,0,0.08)'
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: '#e0e0e0',
+                backdropFilter: 'blur(4px)',
+                boxShadow: 'inset 0 0 10px rgba(0,0,0,0.2)'
               }}
             >
               {code}
@@ -258,14 +294,16 @@ const C4Block: React.FC<C4BlockProps> = ({
               position: 'absolute', 
               bottom: 4, 
               right: 8, 
-              backgroundColor: 'rgba(255,255,255,0.7)',
-              px: 1,
-              py: 0.2,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              px: 1.5,
+              py: 0.3,
               borderRadius: 5,
               border: `1px solid ${colors.border}`,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              backdropFilter: 'blur(4px)',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
             }}
           >
             <Typography 
@@ -273,9 +311,10 @@ const C4Block: React.FC<C4BlockProps> = ({
               sx={{ 
                 fontWeight: 'bold', 
                 fontSize: '0.65rem',
-                color: colors.border,
+                color: '#fff',
                 textTransform: 'uppercase',
-                letterSpacing: 0.5
+                letterSpacing: 1,
+                textShadow: `0 0 5px ${colors.border}`
               }}
             >
               {type}
@@ -296,8 +335,9 @@ const C4Block: React.FC<C4BlockProps> = ({
             style={{ 
               background: colors.border, 
               border: `2px solid ${colors.border}`,
-              width: 8,
-              height: 8
+              width: 10,
+              height: 10,
+              boxShadow: `0 0 5px ${colors.border}`
             }} 
           />
         ))
@@ -309,8 +349,9 @@ const C4Block: React.FC<C4BlockProps> = ({
           style={{ 
             background: colors.border, 
             border: `2px solid ${colors.border}`,
-            width: 8,
-            height: 8
+            width: 10,
+            height: 10,
+            boxShadow: `0 0 5px ${colors.border}`
           }} 
         />
       )}

@@ -16,23 +16,23 @@ const Toolbar: React.FC<ToolbarProps> = ({ onAddSystem, onExport, onImport }) =>
   const { t } = useTranslation();
 
   return (
-    <AppBar position="static" color="primary" elevation={1}>
+    <AppBar position="static" elevation={0} sx={{ background: 'linear-gradient(90deg, #051937 0%, #004d7a 100%)', borderBottom: '1px solid rgba(81, 162, 255, 0.2)' }}>
       <MuiToolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600, background: 'linear-gradient(90deg, #51a2ff 0%, #8ed6ff 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', letterSpacing: '0.5px' }}>
           {t('app_title')}
         </Typography>
         <Tooltip title={t('add_block')}>
-          <IconButton color="inherit" onClick={onAddSystem}>
+          <IconButton onClick={onAddSystem} sx={{ color: '#fff', background: 'rgba(81, 162, 255, 0.1)', backdropFilter: 'blur(4px)', mr: 1, transition: 'all 0.2s ease', '&:hover': { background: 'rgba(81, 162, 255, 0.2)' } }}>
             <AddIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title={t('export_json')}>
-          <IconButton color="inherit" onClick={onExport}>
+          <IconButton onClick={onExport} sx={{ color: '#fff', background: 'rgba(81, 162, 255, 0.1)', backdropFilter: 'blur(4px)', mr: 1, transition: 'all 0.2s ease', '&:hover': { background: 'rgba(81, 162, 255, 0.2)' } }}>
             <DownloadIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title={t('import_json')}>
-          <IconButton color="inherit" component="span" onClick={() => fileInputRef.current?.click()}>
+          <IconButton component="span" onClick={() => fileInputRef.current?.click()} sx={{ color: '#fff', background: 'rgba(81, 162, 255, 0.1)', backdropFilter: 'blur(4px)', transition: 'all 0.2s ease', '&:hover': { background: 'rgba(81, 162, 255, 0.2)' } }}>
             <UploadFileIcon />
             <input
               type="file"

@@ -24,6 +24,51 @@ const TechnologySelect = ({
   placeholder,
 }: TechnologySelectProps) => {
   const { t } = useTranslation();
+  
+  // Définir les couleurs en fonction du niveau
+  const getLevelColors = () => {
+    switch(level) {
+      case 'container':
+        return {
+          border: 'rgba(0, 150, 136, 0.3)',
+          borderHover: 'rgba(0, 150, 136, 0.5)',
+          borderFocus: '#00897b',
+          labelFocus: '#4db6ac'
+        };
+      case 'component':
+        return {
+          border: 'rgba(255, 152, 0, 0.3)',
+          borderHover: 'rgba(255, 152, 0, 0.5)',
+          borderFocus: '#f57c00',
+          labelFocus: '#ffb74d'
+        };
+      case 'code':
+        return {
+          border: 'rgba(156, 39, 176, 0.3)',
+          borderHover: 'rgba(156, 39, 176, 0.5)',
+          borderFocus: '#9c27b0',
+          labelFocus: '#ce93d8'
+        };
+      // Pour les connexions, utiliser un cas spécial
+      // même si ce n'est pas un TechnologyLevel standard
+      case 'connection' as any:
+        return {
+          border: 'rgba(0, 176, 255, 0.3)',
+          borderHover: 'rgba(0, 176, 255, 0.5)',
+          borderFocus: '#0288d1',
+          labelFocus: '#29b6f6'
+        };
+      default:
+        return {
+          border: 'rgba(81, 162, 255, 0.3)',
+          borderHover: 'rgba(81, 162, 255, 0.5)',
+          borderFocus: '#1976d2',
+          labelFocus: '#51a2ff'
+        };
+    }
+  };
+  
+  const colors = getLevelColors();
   const [options, setOptions] = useState<Technology[]>([]);
   const [selectedTech, setSelectedTech] = useState<Technology | null>(null);
 
@@ -67,10 +112,11 @@ const TechnologySelect = ({
               borderRadius: '50%',
               backgroundColor: option.color,
               display: 'inline-block',
-              mr: 1
+              mr: 1,
+              boxShadow: `0 0 5px ${option.color}80`
             }}
           />
-          <Typography variant="body2">{option.name}</Typography>
+          <Typography variant="body2" sx={{ color: '#0a1929' }}>{option.name}</Typography>
         </Box>
         );
       }}
@@ -80,6 +126,17 @@ const TechnologySelect = ({
           label={label || t('technology')}
           placeholder={placeholder || t('select_technology')}
           fullWidth
+          sx={{ 
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': { borderColor: colors.border },
+              '&:hover fieldset': { borderColor: colors.borderHover },
+              '&.Mui-focused fieldset': { borderColor: colors.borderFocus }
+            },
+            '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+            '& .MuiInputLabel-root.Mui-focused': { color: colors.labelFocus },
+            '& .MuiInputBase-input': { color: '#fff' },
+            '& .MuiSvgIcon-root': { color: 'rgba(255, 255, 255, 0.7)' }
+          }}
         />
       )}
     />

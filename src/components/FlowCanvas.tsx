@@ -84,15 +84,21 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     animated: true,
     markerEnd: {
       type: MarkerType.ArrowClosed,
-      width: 15,
-      height: 15,
+      width: 18,
+      height: 18,
+      color: '#51a2ff',
     },
-    style: { strokeWidth: 2 },
+    style: { 
+      strokeWidth: 2.5, 
+      stroke: '#51a2ff',
+      opacity: 0.8,
+      filter: 'drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))'
+    },
   };
 
   // Appliquer la couleur de techno à chaque edge si dispo
   const coloredEdges = edges.map(edge => {
-    // La techno peut être dans edge.data?.technology ou edge.technology
+    // La techno peut être dans edge.data?.technology ou edge.data.technologyId
     const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) || (edge as any).technology;
     const color = getEdgeColorForTechnology(technologyId);
     return {
@@ -100,10 +106,15 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
       type: technologyId ? 'technology' : edge.type,
       style: {
         ...(edge.style || {}),
-        stroke: color || (edge.style && edge.style.stroke),
-        strokeWidth: 2,
+        stroke: color || (edge.style && edge.style.stroke) || '#51a2ff',
+        strokeWidth: 2.5,
+        opacity: 0.8,
+        filter: `drop-shadow(0 0 5px ${color ? color + '80' : 'rgba(81, 162, 255, 0.5)'})`
       },
-      markerEnd: edge.markerEnd || defaultEdgeOptions.markerEnd,
+      markerEnd: {
+        ...defaultEdgeOptions.markerEnd,
+        color: color || '#51a2ff'
+      },
       animated: edge.animated !== undefined ? edge.animated : true,
     };
   });
@@ -183,7 +194,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   );
 
   return (
-    <Box sx={{ width: '100vw', height: 'calc(100vh - 100px)' }}>
+    <Box sx={{ width: '100vw', height: 'calc(100vh - 100px)', bgcolor: '#0a1929' }}>
       <ReactFlow
         nodes={nodes}
         edges={coloredEdges}
@@ -200,9 +211,9 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         fitView
         style={{ width: '100%', height: '100%' }}
       >
-        <Background variant={BackgroundVariant.Dots} gap={16} size={1} />
-        <MiniMap />
-        <Controls />
+        <Background variant={BackgroundVariant.Dots} gap={20} size={1} color="rgba(81, 162, 255, 0.2)" />
+        <MiniMap style={{ backgroundColor: 'rgba(19, 47, 76, 0.9)', borderColor: 'rgba(81, 162, 255, 0.3)' }} nodeColor={'rgba(81, 162, 255, 0.6)'} nodeStrokeWidth={3} />
+        <Controls style={{ backgroundColor: 'rgba(19, 47, 76, 0.8)', borderColor: 'rgba(81, 162, 255, 0.3)', color: '#fff', borderRadius: '4px', padding: '4px', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)' }} />
         
         {contextMenu && (
           <div
@@ -213,12 +224,14 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
               left: contextMenu.left
             }}
           >
-            <Paper elevation={3} sx={{ borderRadius: 1 }}>
+            <Paper elevation={3} sx={{ borderRadius: 1, bgcolor: '#132f4c', color: '#fff', border: '1px solid rgba(81, 162, 255, 0.3)' }}>
               <div 
-                style={{ cursor: 'pointer', padding: '8px 16px', display: 'flex', alignItems: 'center' }}
+                style={{ cursor: 'pointer', padding: '10px 16px', display: 'flex', alignItems: 'center', transition: 'all 0.2s ease' }}
                 onClick={contextMenu.type === 'node' ? handleNodeDelete : handleEdgeDelete}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(81, 162, 255, 0.2)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
               >
-                <DeleteIcon style={{ marginRight: 8 }} />
+                <DeleteIcon style={{ marginRight: 8, color: '#ff5252' }} />
                 {contextMenu.type === 'node' ? 'Supprimer le bloc' : 'Supprimer la connexion'}
               </div>
             </Paper>

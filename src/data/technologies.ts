@@ -17,7 +17,7 @@ export const technologies: Technology[] = [
     name: 'Java',
     icon: 'java',
     color: '#f89820',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'spring-boot',
@@ -31,14 +31,14 @@ export const technologies: Technology[] = [
     name: 'Node.js',
     icon: 'nodejs',
     color: '#339933',
-    levels: ['container', 'component']
+    levels: ['container', 'component', 'connection']
   },
   {
     id: 'ruby',
     name: 'Ruby',
     icon: 'ruby',
     color: '#CC342D',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'rails',
@@ -52,7 +52,7 @@ export const technologies: Technology[] = [
     name: 'Python',
     icon: 'python',
     color: '#3776AB',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'django',
@@ -66,28 +66,28 @@ export const technologies: Technology[] = [
     name: 'PHP',
     icon: 'php',
     color: '#777BB4',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'csharp',
     name: 'C#',
     icon: 'csharp',
     color: '#239120',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'dotnet',
     name: '.NET',
     icon: 'dot-net',
     color: '#512BD4',
-    levels: ['container', 'component']
+    levels: ['container', 'component', 'connection']
   },
   {
     id: 'go',
     name: 'Go',
     icon: 'go',
     color: '#00ADD8',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   
   // Frontend frameworks
@@ -124,7 +124,7 @@ export const technologies: Technology[] = [
     name: 'JavaScript',
     icon: 'javascript',
     color: '#F7DF1E',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   },
   {
     id: 'typescript',
@@ -140,28 +140,28 @@ export const technologies: Technology[] = [
     name: 'PostgreSQL',
     icon: 'postgresql',
     color: '#4169E1',
-    levels: ['container']
+    levels: ['container', 'connection']
   },
   {
     id: 'mysql',
     name: 'MySQL',
     icon: 'mysql',
     color: '#4479A1',
-    levels: ['container']
+    levels: ['container', 'connection']
   },
   {
     id: 'mongodb',
     name: 'MongoDB',
     icon: 'mongodb',
     color: '#47A248',
-    levels: ['container']
+    levels: ['container', 'connection']
   },
   {
     id: 'redis',
     name: 'Redis',
     icon: 'redis',
     color: '#DC382D',
-    levels: ['container']
+    levels: ['container', 'connection']
   },
   
   // Infrastructure
@@ -191,7 +191,7 @@ export const technologies: Technology[] = [
     name: 'GraphQL',
     icon: 'graphql',
     color: '#E10098',
-    levels: ['container', 'component']
+    levels: ['container', 'component', 'connection']
   },
   {
     id: 'aws',
@@ -230,7 +230,7 @@ export const technologies: Technology[] = [
     name: 'Other',
     icon: 'code',
     color: '#546E7A',
-    levels: ['container', 'component', 'code']
+    levels: ['container', 'component', 'code', 'connection']
   }
 ];
 

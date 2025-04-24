@@ -50,7 +50,7 @@ export interface CodeBlock extends BaseBlock {
 
 // Modèle C4 complet
 // Type de niveau pour la compatibilité des technologies
-export type TechnologyLevel = 'container' | 'component' | 'code';
+export type TechnologyLevel = 'system' | 'container' | 'component' | 'code' | 'connection';
 
 export type ViewLevel = 'system' | 'container' | 'component' | 'code';
 

@@ -416,7 +416,7 @@ function App() {
   const handleConnectionSave = useCallback(
     (connectionInfo: ConnectionInfo) => {
       // Déterminer le niveau actuel et appeler la fonction de mise à jour appropriée
-      const level = model.viewLevel as TechnologyLevel;
+      const level = model.viewLevel;
       const systemId = model.activeSystemId || '';
       const data = {
         label: connectionInfo.label,
@@ -484,7 +484,7 @@ function App() {
 
   return (
     <ReactFlowProvider>
-      <Box sx={{ height: '100vh', bgcolor: '#f4f6fa' }}>
+      <Box sx={{ height: '100vh', bgcolor: '#0a1929', color: '#fff' }}>
         <Toolbar 
           onAddSystem={handleAddElement} 
           onExport={handleExport} 

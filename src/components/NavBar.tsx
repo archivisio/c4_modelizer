@@ -34,14 +34,14 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName, componentNam
   };
   
   return (
-    <Box sx={{ p: 1, bgcolor: '#f5f5f5' }}>
-      <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+    <Box sx={{ p: 1.5, bgcolor: '#132f4c', borderBottom: '1px solid rgba(81, 162, 255, 0.2)', backdropFilter: 'blur(8px)' }}>
+      <Breadcrumbs separator={<NavigateNextIcon fontSize="small" sx={{ color: '#51a2ff' }} />} aria-label="breadcrumb">
         <Link
           underline="hover"
-          color={model.viewLevel === 'system' ? 'text.primary' : 'inherit'}
+          color={model.viewLevel === 'system' ? '#51a2ff' : 'rgba(255, 255, 255, 0.7)'}
           href="#"
           onClick={handleSystemsClick}
-          sx={{ display: 'flex', alignItems: 'center' }}
+          sx={{ display: 'flex', alignItems: 'center', fontWeight: 500, transition: 'all 0.2s ease', '&:hover': { color: '#51a2ff' } }}
         >
           {t('systems')}
         </Link>
@@ -49,10 +49,10 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName, componentNam
         {(model.viewLevel === 'container' || model.viewLevel === 'component' || model.viewLevel === 'code') && systemName && (
           <Link
             underline="hover"
-            color={model.viewLevel === 'container' ? 'text.primary' : 'inherit'}
+            color={model.viewLevel === 'container' ? '#51a2ff' : 'rgba(255, 255, 255, 0.7)'}
             href="#"
             onClick={handleContainersClick}
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{ display: 'flex', alignItems: 'center', fontWeight: 500, transition: 'all 0.2s ease', '&:hover': { color: '#51a2ff' } }}
           >
             {systemName} {t('containers')}
           </Link>
@@ -61,17 +61,17 @@ const NavBar: React.FC<NavBarProps> = ({ systemName, containerName, componentNam
         {(model.viewLevel === 'component' || model.viewLevel === 'code') && containerName && (
           <Link
             underline="hover"
-            color={model.viewLevel === 'component' ? 'text.primary' : 'inherit'}
+            color={model.viewLevel === 'component' ? '#51a2ff' : 'rgba(255, 255, 255, 0.7)'}
             href="#"
             onClick={handleComponentsClick}
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{ display: 'flex', alignItems: 'center', fontWeight: 500, transition: 'all 0.2s ease', '&:hover': { color: '#51a2ff' } }}
           >
             {containerName} {t('components')}
           </Link>
         )}
 
         {model.viewLevel === 'code' && componentName && (
-          <Typography color="text.primary">
+          <Typography color="#51a2ff" sx={{ fontWeight: 500 }}>
             {componentName} {t('code')}
           </Typography>
         )}
