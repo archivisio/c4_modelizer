@@ -63,7 +63,7 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "auto",
-              transform: isLeftToRight ? "none" : "rotate(180deg)", // Rotation inverse pour corriger l'orientation des u00e9lu00e9ments
+              transform: isLeftToRight ? "none" : "rotate(180deg)",
             }}
           >
             <TechnologyIcon

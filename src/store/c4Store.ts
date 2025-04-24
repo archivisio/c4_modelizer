@@ -4,34 +4,28 @@ import { ConnectionData } from '../types/connection';
 
 interface C4State {
   model: C4Model;
-  // System operations
   addSystem: (system: Omit<SystemBlock, 'id' | 'containers'>) => void;
   updateSystem: (id: string, data: Partial<SystemBlock>) => void;
   removeSystem: (id: string) => void;
   connectSystems: (fromId: string, connection: ConnectionData) => void;
   updateConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string, data: Partial<ConnectionData>) => void;
   removeConnection: (level: 'system' | 'container' | 'component' | 'code', systemId: string, sourceId: string, targetId: string) => void;
-  // Container operations
   addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (systemId: string, containerId: string, data: Partial<ContainerBlock>) => void;
   removeContainer: (systemId: string, containerId: string) => void;
   connectContainers: (systemId: string, fromId: string, connection: ConnectionData) => void;
-  // Component operations
   addComponent: (systemId: string, containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>) => void;
   updateComponent: (systemId: string, containerId: string, componentId: string, data: Partial<ComponentBlock>) => void;
   removeComponent: (systemId: string, containerId: string, componentId: string) => void;
   connectComponents: (systemId: string, containerId: string, fromId: string, connection: ConnectionData) => void;
-  // Code operations
   addCodeElement: (systemId: string, containerId: string, componentId: string, codeElement: Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>) => void;
   updateCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string, data: Partial<CodeBlock>) => void;
   removeCodeElement: (systemId: string, containerId: string, componentId: string, codeElementId: string) => void;
   connectCodeElements: (systemId: string, containerId: string, componentId: string, fromId: string, connection: ConnectionData) => void;
-  // Navigation
   setActiveSystem: (systemId: string | undefined) => void;
   setActiveContainer: (containerId: string | undefined) => void;
   setActiveComponent: (componentId: string | undefined) => void;
   setViewLevel: (level: 'system' | 'container' | 'component' | 'code') => void;
-  // Model operations
   setModel: (model: C4Model) => void;
 }
 
@@ -69,12 +63,12 @@ export const useC4Store = create<C4State>((set) => ({
         ...state.model,
         systems: state.model.systems.map((s) => {
           if (s.id === fromId) {
-            // Vérifier si la connexion existe déjà
+
             const connectionExists = s.connections.some(c => c.targetId === connection.targetId);
             if (!connectionExists) {
-              return { 
-                ...s, 
-                connections: [...s.connections, connection] 
+              return {
+                ...s,
+                connections: [...s.connections, connection]
               };
             }
           }
@@ -82,7 +76,7 @@ export const useC4Store = create<C4State>((set) => ({
         }),
       },
     })),
-  // New container operations
+
   addContainer: (systemId, container) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -98,10 +92,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   updateContainer: (systemId, containerId, data) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -115,10 +109,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   removeContainer: (systemId, containerId) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -130,10 +124,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   connectContainers: (systemId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -141,12 +135,12 @@ export const useC4Store = create<C4State>((set) => ({
           return {
             ...system,
             containers: system.containers.map(container => {
-              // Vérifier si la connexion existe déjà
+
               const connectionExists = container.connections.some(c => c.targetId === connection.targetId);
               if (container.id === fromId && !connectionExists) {
-                return { 
-                  ...container, 
-                  connections: [...container.connections, connection] 
+                return {
+                  ...container,
+                  connections: [...container.connections, connection]
                 };
               }
               return container;
@@ -155,11 +149,11 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-  
-  // Component operations
+
+
   addComponent: (systemId, containerId, component) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -173,12 +167,12 @@ export const useC4Store = create<C4State>((set) => ({
                   ...container,
                   components: [
                     ...components,
-                    { 
-                      ...component, 
-                      id: crypto.randomUUID(), 
-                      systemId, 
-                      containerId, 
-                      connections: [] 
+                    {
+                      ...component,
+                      id: crypto.randomUUID(),
+                      systemId,
+                      containerId,
+                      connections: []
                     }
                   ]
                 };
@@ -189,10 +183,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-  
+
   updateComponent: (systemId, containerId, componentId, data) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -214,10 +208,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   removeComponent: (systemId, containerId, componentId) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -237,10 +231,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   connectComponents: (systemId, containerId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -252,12 +246,12 @@ export const useC4Store = create<C4State>((set) => ({
                 return {
                   ...container,
                   components: container.components.map(component => {
-                    // Vérifier si la connexion existe déjà
+
                     const connectionExists = component.connections.some(c => c.targetId === connection.targetId);
                     if (component.id === fromId && !connectionExists) {
-                      return { 
-                        ...component, 
-                        connections: [...component.connections, connection] 
+                      return {
+                        ...component,
+                        connections: [...component.connections, connection]
                       };
                     }
                     return component;
@@ -270,11 +264,11 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
 
-  // Code operations
+
   addCodeElement: (systemId, containerId, componentId, codeElement) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -292,13 +286,13 @@ export const useC4Store = create<C4State>((set) => ({
                         ...component,
                         codeElements: [
                           ...codeElements,
-                          { 
-                            ...codeElement, 
-                            id: crypto.randomUUID(), 
-                            systemId, 
+                          {
+                            ...codeElement,
+                            id: crypto.randomUUID(),
+                            systemId,
                             containerId,
-                            componentId, 
-                            connections: [] 
+                            componentId,
+                            connections: []
                           }
                         ]
                       };
@@ -313,10 +307,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-  
+
   updateCodeElement: (systemId, containerId, componentId, codeElementId, data) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -346,10 +340,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   removeCodeElement: (systemId, containerId, componentId, codeElementId) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -377,10 +371,10 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
-    
+
   connectCodeElements: (systemId, containerId, componentId, fromId, connection) =>
     set((state) => {
       const updatedSystems = state.model.systems.map(system => {
@@ -396,12 +390,12 @@ export const useC4Store = create<C4State>((set) => ({
                       return {
                         ...component,
                         codeElements: (component.codeElements || []).map(codeElement => {
-                          // Vérifier si la connexion existe déjà
+
                           const connectionExists = codeElement.connections.some(c => c.targetId === connection.targetId);
                           if (codeElement.id === fromId && !connectionExists) {
-                            return { 
-                              ...codeElement, 
-                              connections: [...codeElement.connections, connection] 
+                            return {
+                              ...codeElement,
+                              connections: [...codeElement.connections, connection]
                             };
                           }
                           return codeElement;
@@ -418,29 +412,29 @@ export const useC4Store = create<C4State>((set) => ({
         }
         return system;
       });
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
 
-  // Navigation operations
+
   setActiveSystem: (systemId) =>
     set((state) => ({
       model: {
         ...state.model,
         activeSystemId: systemId,
-        // Switch to container view if selecting a system and clear active container
+
         viewLevel: systemId ? 'container' : 'system',
         activeContainerId: undefined,
         activeComponentId: undefined
       }
     })),
-    
+
   setActiveContainer: (containerId) =>
     set((state) => ({
       model: {
         ...state.model,
         activeContainerId: containerId,
-        // Switch to component view if selecting a container
+
         viewLevel: containerId ? 'component' : 'container',
         activeComponentId: undefined
       }
@@ -451,19 +445,19 @@ export const useC4Store = create<C4State>((set) => ({
       model: {
         ...state.model,
         activeComponentId: componentId,
-        // Switch to code view if selecting a component
+
         viewLevel: componentId ? 'code' : 'component'
       }
     })),
-      
+
   setViewLevel: (level) =>
     set((state) => {
       const newState = {
         ...state.model,
         viewLevel: level
       };
-      
-      // Clear navigation state based on level
+
+
       if (level === 'system') {
         newState.activeSystemId = undefined;
         newState.activeContainerId = undefined;
@@ -474,18 +468,18 @@ export const useC4Store = create<C4State>((set) => ({
       } else if (level === 'component') {
         newState.activeComponentId = undefined;
       }
-      
+
       return { model: newState };
     }),
-  
-  // Connection operations
+
+
   updateConnection: (level, systemId, sourceId, targetId, data) =>
     set((state) => {
       let updatedSystems = [...state.model.systems];
 
-      // Handle different levels
+
       if (level === 'system') {
-        // Update system-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === sourceId) {
             return {
@@ -498,7 +492,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'container') {
-        // Update container-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -519,7 +513,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'component') {
-        // Update component-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -545,7 +539,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'code') {
-        // Update code-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -576,18 +570,18 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       }
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
 
-  // Remove connection at any level
+
   removeConnection: (level, systemId, sourceId, targetId) =>
     set((state) => {
       let updatedSystems = [...state.model.systems];
 
-      // Handle different levels
+
       if (level === 'system') {
-        // Remove system-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === sourceId) {
             return {
@@ -598,7 +592,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'container') {
-        // Remove container-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -617,7 +611,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'component') {
-        // Remove component-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -641,7 +635,7 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       } else if (level === 'code') {
-        // Remove code-level connection
+
         updatedSystems = updatedSystems.map(system => {
           if (system.id === systemId) {
             return {
@@ -670,10 +664,10 @@ export const useC4Store = create<C4State>((set) => ({
           return system;
         });
       }
-      
+
       return { model: { ...state.model, systems: updatedSystems } };
     }),
 
-  // Model operations
+
   setModel: (model) => set(() => ({ model })),
 }));

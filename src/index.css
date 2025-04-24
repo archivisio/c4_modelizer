@@ -67,7 +67,6 @@ button:focus-visible {
   }
 }
 
-/* Styles pour la minimap et sa zone de focus */
 .react-flow__minimap {
   background-color: rgba(19, 47, 76, 0.9) !important;
   border: 1px solid rgba(81, 162, 255, 0.3) !important;
@@ -88,7 +87,6 @@ button:focus-visible {
   stroke-width: 1px !important;
 }
 
-/* Styles pour les boutons de contrôle */
 .react-flow__controls button {
   background-color: rgba(81, 162, 255, 0.2) !important;
   color: white !important;
