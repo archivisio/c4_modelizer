@@ -24,7 +24,6 @@ const ComponentBlock: React.FC<ComponentBlockProps> = memo(
         description={typedData.description}
         technology={typedData.technology}
         onEdit={typedData.onEdit}
-        type="component"
         variant="tertiary"
         selected={selected}
         handlePositions={{

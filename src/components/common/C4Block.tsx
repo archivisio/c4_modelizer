@@ -3,7 +3,6 @@ import {
   Box,
   Card,
   CardContent,
-  Chip,
   IconButton,
   SxProps,
   Theme,
@@ -23,13 +22,10 @@ export interface C4BlockProps {
   description?: string;
   technology?: string;
   selected?: boolean;
-  type: "system" | "container" | "component" | "code";
-  codeType?: "class" | "function" | "interface" | "variable" | "other";
-  code?: string;
   onEdit: () => void;
   variant?: "primary" | "secondary" | "tertiary" | "quaternary";
   handlePositions?: HandlePositions;
-  additionalContent?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface ColorStyle {
@@ -84,20 +80,7 @@ const COLORS: Record<string, ColorStyle> = {
   },
 };
 
-const TYPE_TO_VARIANT: Record<
-  string,
-  "primary" | "secondary" | "tertiary" | "quaternary"
-> = {
-  system: "primary",
-  container: "secondary",
-  component: "tertiary",
-  code: "quaternary",
-  class: "quaternary",
-  function: "secondary",
-  interface: "tertiary",
-  variable: "primary",
-  other: "quaternary",
-};
+// Les mappings de type à variante ont été déplacés dans les composants spécifiques
 
 const hexToRgb = (hex: string): string => {
   const cleanHex = hex.startsWith("#") ? hex.slice(1) : hex;
@@ -115,18 +98,15 @@ const C4Block: React.FC<C4BlockProps> = ({
   description,
   technology,
   selected = false,
-  type,
-  codeType,
-  code,
   onEdit,
   variant,
   handlePositions = { source: Position.Bottom, target: Position.Top },
-  additionalContent,
+  children,
 }) => {
   const techData = technology ? getTechnologyById(technology) : undefined;
 
-  const colorVariant =
-    variant || TYPE_TO_VARIANT[codeType || type] || "primary";
+  // Utiliser directement la variante fournie ou primary par défaut
+  const colorVariant = variant || "primary";
   const defaultColors = COLORS[colorVariant];
 
   const colors: ColorStyle = techData
@@ -228,24 +208,6 @@ const C4Block: React.FC<C4BlockProps> = ({
                 {name}
               </Typography>
 
-              {codeType && (
-                <Chip
-                  size="small"
-                  label={codeType}
-                  sx={{
-                    borderColor: `${
-                      COLORS[TYPE_TO_VARIANT[codeType || "other"]].border
-                    }`,
-                    color: "#fff",
-                    fontWeight: "medium",
-                    backgroundColor: "rgba(0,0,0,0.2)",
-                    backdropFilter: "blur(4px)",
-                    "& .MuiChip-label": { px: 1.5 },
-                  }}
-                  variant="outlined"
-                />
-              )}
-
               {technology && (
                 <Box
                   sx={{
@@ -313,60 +275,7 @@ const C4Block: React.FC<C4BlockProps> = ({
             </Typography>
           )}
 
-          {additionalContent}
-          {code && (
-            <Box
-              sx={{
-                mt: 1.5,
-                p: 1.5,
-                backgroundColor: "rgba(0,0,0,0.3)",
-                borderRadius: 1,
-                fontSize: "0.75rem",
-                fontFamily: '"Fira Code", "Roboto Mono", monospace',
-                overflowX: "auto",
-                maxHeight: "80px",
-                overflowY: "auto",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: "#e0e0e0",
-                backdropFilter: "blur(4px)",
-                boxShadow: "inset 0 0 10px rgba(0,0,0,0.2)",
-              }}
-            >
-              {code}
-            </Box>
-          )}
-
-          <Box
-            sx={{
-              position: "absolute",
-              bottom: 4,
-              right: 8,
-              backgroundColor: "rgba(0,0,0,0.3)",
-              px: 1.5,
-              py: 0.3,
-              borderRadius: 5,
-              border: `1px solid ${colors.border}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              backdropFilter: "blur(4px)",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-            }}
-          >
-            <Typography
-              variant="caption"
-              sx={{
-                fontWeight: "bold",
-                fontSize: "0.65rem",
-                color: "#fff",
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                textShadow: `0 0 5px ${colors.border}`,
-              }}
-            >
-              {type}
-            </Typography>
-          </Box>
+          {children}
         </CardContent>
       </Card>
 

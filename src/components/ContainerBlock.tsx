@@ -23,7 +23,6 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(
         name={typedData.name}
         description={typedData.description}
         onEdit={typedData.onEdit}
-        type="container"
         variant="secondary"
         technology={typedData.technology}
         handlePositions={{
