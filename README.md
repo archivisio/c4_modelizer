@@ -25,6 +25,15 @@ C4 Modelizer is a web application for visually modeling the software architectur
 - Import/export the model (with schema versioning)
 - Responsive and multilingual interface (i18n)
 
+## Main Dependencies
+
+- [Vite](https://vitejs.dev/) — Lightning-fast frontend tooling
+- [React](https://react.dev/) — UI library
+- [Material UI](https://mui.com/) — UI components
+- [@xyflow/react](https://reactflow.dev/) — Diagramming/flow rendering
+- [i18next](https://www.i18next.com/) — Internationalization
+- [TypeScript](https://www.typescriptlang.org/) — Static typing for JavaScript
+
 ## Requirements
 
 - Node.js >= 22
