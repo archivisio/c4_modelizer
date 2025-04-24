@@ -46,14 +46,12 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
       />
       {technologyId && (
         <foreignObject
-          x={labelX - 40}
+          x={isLeftToRight ? labelX - 40 : labelX - 40}
           y={labelY - ICON_SIZE / 2 - 8}
           width={80}
           height={40}
           style={{
             overflow: "visible",
-            transform: isLeftToRight ? "none" : "rotate(180deg)",
-            transformOrigin: "center center",
           }}
         >
           <div
@@ -63,7 +61,6 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
               alignItems: "center",
               justifyContent: "center",
               pointerEvents: "auto",
-              transform: isLeftToRight ? "none" : "rotate(180deg)",
             }}
           >
             <TechnologyIcon
