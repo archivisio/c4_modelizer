@@ -23,7 +23,6 @@ import {
   ComponentBlock,
   ContainerBlock,
   SystemBlock,
-  SystemType,
 } from "./types/c4";
 import { ConnectionInfo } from "./types/connection";
 
@@ -101,7 +100,7 @@ function App() {
         data: {
           name: sys.name,
           description: sys.description,
-          systemType: sys.systemType,
+          technology: sys.technology,
           onEdit: () => {
             setEditId(sys.id);
             setIsEditingContainer(false);
@@ -330,7 +329,7 @@ function App() {
           y: Math.random() * 300 + 100,
         },
         connections: [],
-        systemType: "web_application",
+        technology: "",
       });
     } else if (model.viewLevel === "container" && model.activeSystemId) {
       addContainer(model.activeSystemId, {
@@ -482,8 +481,7 @@ function App() {
     technology?: string,
     codeType?: "class" | "function" | "interface" | "variable" | "other",
     language?: string,
-    code?: string,
-    systemType?: SystemType
+    code?: string
   ) => {
     if (editId) {
       if (
@@ -522,7 +520,7 @@ function App() {
           technology,
         });
       } else {
-        updateSystem(editId, { name, description, systemType });
+        updateSystem(editId, { name, description, technology });
       }
     }
     setDialogOpen(false);
@@ -651,9 +649,9 @@ function App() {
             open={dialogOpen}
             initialName={editingElement.name}
             initialDescription={editingElement.description || ""}
-            initialSystemType={(editingElement as SystemBlock).systemType || "web_application"}
-            onSave={(name, description, systemType: SystemType) => {
-              handleDialogSave(name, description, undefined, undefined, undefined, undefined, systemType);
+            initialTechnology={(editingElement as SystemBlock).technology || ""}
+            onSave={(name, description, technology) => {
+              handleDialogSave(name, description, technology);
             }}
             onClose={() => {
               setDialogOpen(false);

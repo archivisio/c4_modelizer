@@ -77,10 +77,6 @@ const TechnologySelect = ({
     }
   }, [level, value]);
 
-  if (level === "system") {
-    return null;
-  }
-
   return (
     <Autocomplete
       options={options}

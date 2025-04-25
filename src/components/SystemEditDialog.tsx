@@ -8,15 +8,14 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import { SystemType } from "../types/c4";
+import TechnologySelect from "./TechnologySelect";
 
 interface SystemEditDialogProps {
   open: boolean;
   initialName?: string;
   initialDescription?: string;
-  initialSystemType?: SystemType;
-  onSave: (name: string, description: string, systemType: SystemType) => void;
+  initialTechnology?: string;
+  onSave: (name: string, description: string, technology: string) => void;
   onClose: () => void;
 }
 
@@ -24,20 +23,20 @@ export default function SystemEditDialog({
   open,
   initialName = "",
   initialDescription = "",
-  initialSystemType = "web_application",
+  initialTechnology = "",
   onSave,
   onClose,
 }: SystemEditDialogProps) {
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
-  const [systemType, setSystemType] = useState<SystemType>(initialSystemType);
+  const [technology, setTechnology] = useState(initialTechnology);
   const { t } = useTranslation();
 
   useEffect(() => {
     setName(initialName);
     setDescription(initialDescription);
-    setSystemType(initialSystemType);
-  }, [initialName, initialDescription, initialSystemType, open]);
+    setTechnology(initialTechnology || "");
+  }, [initialName, initialDescription, initialTechnology, open]);
 
   return (
     <Dialog
@@ -107,44 +106,13 @@ export default function SystemEditDialog({
             "& .MuiInputBase-input": { color: "#fff" },
           }}
         />
-        <TextField
-          select
-          margin="dense"
-          label="System Type"
-          fullWidth
-          value={systemType}
-          onChange={e => setSystemType(e.target.value as SystemType)}
-          sx={{
-            mb: 2,
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "rgba(81, 162, 255, 0.3)" },
-              "&:hover fieldset": { borderColor: "rgba(81, 162, 255, 0.5)" },
-              "&.Mui-focused fieldset": { borderColor: "#51a2ff" },
-            },
-            "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-            "& .MuiInputLabel-root.Mui-focused": { color: "#51a2ff" },
-            "& .MuiInputBase-input": { color: "#fff" },
-          }}
-          SelectProps={{
-            native: true
-          }}
-        >
-          <option value="web_application">web_application</option>
-          <option value="mobile_application">mobile_application</option>
-          <option value="public_api">public_api</option>
-          <option value="microservices">microservices</option>
-          <option value="enterprise_information_system">enterprise_information_system</option>
-          <option value="data_management_system">data_management_system</option>
-          <option value="notification_or_messaging_system">notification_or_messaging_system</option>
-          <option value="payment_system">payment_system</option>
-          <option value="authentication_and_authorization_system">authentication_and_authorization_system</option>
-          <option value="external_system">external_system</option>
-          <option value="desktop_application">desktop_application</option>
-          <option value="iot_or_embedded_system">iot_or_embedded_system</option>
-          <option value="batch_or_async_processing_system">batch_or_async_processing_system</option>
-          <option value="monitoring_and_observability_system">monitoring_and_observability_system</option>
-          <option value="security_system">security_system</option>
-        </TextField>
+        <TechnologySelect
+          level="system"
+          value={technology}
+          onChange={setTechnology}
+          label={t("technology")}
+          placeholder={t("select_technology")}
+        />
 
       </DialogContent>
       <DialogActions
@@ -163,7 +131,7 @@ export default function SystemEditDialog({
           {t("cancel")}
         </Button>
         <Button
-          onClick={() => onSave(name, description, systemType)}
+          onClick={() => onSave(name, description, technology)}
           variant="contained"
           disabled={!name.trim()}
           sx={{
