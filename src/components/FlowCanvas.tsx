@@ -221,7 +221,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
           size={1}
           color="rgba(81, 162, 255, 0.2)"
         />
-        <MiniMap nodeStrokeWidth={10} />
+        <MiniMap zoomable pannable />
         <Controls />
 
         {contextMenu && (
