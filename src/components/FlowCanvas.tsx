@@ -15,6 +15,7 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
 
+import { useTranslation } from "react-i18next";
 import CodeBlock from "./CodeBlock";
 import ComponentBlock from "./ComponentBlock";
 import ContainerBlock from "./ContainerBlock";
@@ -55,6 +56,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onNodeDelete,
   onEdgeDelete,
 }) => {
+  const { t } = useTranslation();
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
       changes.forEach((change) => {
@@ -219,7 +221,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
           size={1}
           color="rgba(81, 162, 255, 0.2)"
         />
-        <MiniMap nodeStrokeWidth={3} />
+        <MiniMap nodeStrokeWidth={10} />
         <Controls />
 
         {contextMenu && (
@@ -263,8 +265,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
               >
                 <DeleteIcon style={{ marginRight: 8, color: "#ff5252" }} />
                 {contextMenu.type === "node"
-                  ? "Supprimer le bloc"
-                  : "Supprimer la connexion"}
+                  ? t("deleteNode")
+                  : t("deleteEdge")}
               </div>
             </Paper>
           </div>
