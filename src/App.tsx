@@ -601,21 +601,7 @@ function App() {
     ]
   );
 
-  const handleEdgeDelete = useCallback(
-    (edge: Edge) => {
-      const sourceId = edge.source;
-      const targetId = edge.target;
-      const level = model.viewLevel as
-        | "system"
-        | "container"
-        | "component"
-        | "code";
-      const systemId = model.activeSystemId || "";
 
-      removeConnection(level, systemId, sourceId, targetId);
-    },
-    [model.viewLevel, model.activeSystemId, removeConnection]
-  );
 
   return (
     <ReactFlowProvider>
@@ -640,8 +626,6 @@ function App() {
           viewLevel={model.viewLevel}
           onNodeDoubleClick={handleNodeDoubleClick}
           onEdgeClick={handleEdgeClick}
-          onNodeDelete={handleNodeDelete}
-          onEdgeDelete={handleEdgeDelete}
         />
 
         {model.viewLevel === "system" && editingElement && (
@@ -652,6 +636,9 @@ function App() {
             initialTechnology={(editingElement as SystemBlock).technology || ""}
             onSave={(name, description, technology) => {
               handleDialogSave(name, description, technology);
+            }}
+            onDelete={() => {
+              handleNodeDelete(editingElement.id);
             }}
             onClose={() => {
               setDialogOpen(false);
@@ -671,6 +658,9 @@ function App() {
             onSave={(name, description, technology) => {
               handleDialogSave(name, description, technology);
             }}
+            onDelete={() => {
+              handleNodeDelete(editingElement.id);
+            }}
             onClose={() => {
               setDialogOpen(false);
               setEditId(null);
@@ -688,6 +678,9 @@ function App() {
             }
             onSave={(name, description, technology) => {
               handleDialogSave(name, description, technology);
+            }}
+            onDelete={() => {
+              handleNodeDelete(editingElement.id);
             }}
             onClose={() => {
               setDialogOpen(false);
@@ -714,6 +707,9 @@ function App() {
                 code
               );
             }}
+            onDelete={() => {
+              handleNodeDelete(editingElement.id);
+            }}
             onClose={() => {
               setDialogOpen(false);
               setEditId(null);
@@ -733,6 +729,18 @@ function App() {
               setEditingConnection(null);
             }}
             onSave={handleConnectionSave}
+            onDelete={(connectionInfo) => {
+              if (connectionInfo) {
+                const level = model.viewLevel;
+                const systemId = model.activeSystemId || "";
+                removeConnection(
+                  level,
+                  systemId,
+                  connectionInfo.sourceId,
+                  connectionInfo.targetId
+                );
+              }
+            }}
           />
         )}
       </Box>

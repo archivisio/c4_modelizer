@@ -1,7 +1,6 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import SelectionIcon from "@mui/icons-material/HighlightAlt";
 import PanToolIcon from "@mui/icons-material/PanTool";
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   Background,
   BackgroundVariant,
@@ -17,8 +16,8 @@ import {
   SelectionMode,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
-
 import { useTranslation } from "react-i18next";
+
 import CodeBlock from "./CodeBlock";
 import ComponentBlock from "./ComponentBlock";
 import ContainerBlock from "./ContainerBlock";
@@ -36,8 +35,6 @@ interface FlowCanvasProps {
   viewLevel: "system" | "container" | "component" | "code";
   onNodeDoubleClick?: (nodeId: string) => void;
   onEdgeClick?: (event: React.MouseEvent, edge: Edge) => void;
-  onNodeDelete?: (nodeId: string) => void;
-  onEdgeDelete?: (edge: Edge) => void;
 }
 
 const nodeTypes = {
@@ -80,10 +77,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   viewLevel,
   onNodeDoubleClick,
   onEdgeClick,
-  onNodeDelete,
-  onEdgeDelete,
 }) => {
-  const { t } = useTranslation();
   const [isSelectionMode, setIsSelectionMode] = useState(true);
 
   const toggleInteractionMode = useCallback(() => {
@@ -153,66 +147,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     };
   });
 
-  const [contextMenu, setContextMenu] = useState<{
-    id: string;
-    type: "node" | "edge";
-    top: number;
-    left: number;
-    edge?: Edge;
-  } | null>(null);
-
-  const handleNodeContextMenu = useCallback(
-    (event: React.MouseEvent, node: Node) => {
-      event.preventDefault();
-
-      setContextMenu({
-        id: node.id,
-        type: "node",
-        top: event.clientY,
-        left: event.clientX,
-      });
-    },
-    []
-  );
-
-  const handleEdgeContextMenu = useCallback(
-    (event: React.MouseEvent, edge: Edge) => {
-      event.preventDefault();
-
-      setContextMenu({
-        id: edge.id,
-        type: "edge",
-        top: event.clientY,
-        left: event.clientX,
-        edge,
-      });
-    },
-    []
-  );
-
-  const handleNodeDelete = useCallback(() => {
-    if (contextMenu && contextMenu.type === "node" && onNodeDelete) {
-      onNodeDelete(contextMenu.id);
-      setContextMenu(null);
-    }
-  }, [contextMenu, onNodeDelete]);
-
-  const handleEdgeDelete = useCallback(() => {
-    if (
-      contextMenu &&
-      contextMenu.type === "edge" &&
-      contextMenu.edge &&
-      onEdgeDelete
-    ) {
-      onEdgeDelete(contextMenu.edge);
-      setContextMenu(null);
-    }
-  }, [contextMenu, onEdgeDelete]);
-
-  const handlePaneClick = useCallback(() => {
-    setContextMenu(null);
-  }, []);
-
   const handleEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
       event.stopPropagation();
@@ -236,9 +170,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         nodeTypes={nodeTypes}
         onNodeDoubleClick={handleNodeDoubleClick}
         onEdgeClick={onEdgeClick ? handleEdgeClick : undefined}
-        onNodeContextMenu={handleNodeContextMenu}
-        onEdgeContextMenu={handleEdgeContextMenu}
-        onPaneClick={handlePaneClick}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: "100%", height: "100%" }}
@@ -261,54 +192,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
             onToggle={toggleInteractionMode}
           />
         </Controls>
-
-        {contextMenu && (
-          <div
-            style={{
-              position: "fixed",
-              zIndex: 10,
-              top: contextMenu.top,
-              left: contextMenu.left,
-            }}
-          >
-            <Paper
-              elevation={3}
-              sx={{
-                borderRadius: 1,
-                bgcolor: "#132f4c",
-                color: "#fff",
-                border: "1px solid rgba(81, 162, 255, 0.3)",
-              }}
-            >
-              <div
-                style={{
-                  cursor: "pointer",
-                  padding: "10px 16px",
-                  display: "flex",
-                  alignItems: "center",
-                  transition: "all 0.2s ease",
-                }}
-                onClick={
-                  contextMenu.type === "node"
-                    ? handleNodeDelete
-                    : handleEdgeDelete
-                }
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "rgba(81, 162, 255, 0.2)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.backgroundColor = "transparent")
-                }
-              >
-                <DeleteIcon style={{ marginRight: 8, color: "#ff5252" }} />
-                {contextMenu.type === "node"
-                  ? t("deleteNode")
-                  : t("deleteEdge")}
-              </div>
-            </Paper>
-          </div>
-        )}
       </ReactFlow>
     </Box>
   );
