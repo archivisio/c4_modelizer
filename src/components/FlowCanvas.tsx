@@ -14,7 +14,7 @@ import {
   SelectionMode,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
-import { getTechnologyById } from "../data/technologies";
+
 import CodeBlock from "./CodeBlock";
 import ComponentBlock from "./ComponentBlock";
 import ContainerBlock from "./ContainerBlock";
@@ -43,11 +43,6 @@ const nodeTypes = {
   code: CodeBlock,
 };
 
-function getEdgeColorForTechnology(technologyId?: string): string | undefined {
-  if (!technologyId) return undefined;
-  const tech = getTechnologyById(technologyId);
-  return tech?.color;
-}
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({
   nodes,
@@ -98,25 +93,27 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     },
   };
 
-  const coloredEdges = edges.map((edge) => {
+  const preparedEdges = edges.map((edge) => {
     const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) as string | undefined;
-    const color = getEdgeColorForTechnology(technologyId);
+
+    if (technologyId) {
+      return {
+        ...edge,
+        type: "technology",
+        data: {
+          ...edge.data,
+          technologyId
+        }
+      };
+    }
+
     return {
       ...edge,
-      type: technologyId ? "technology" : edge.type,
       style: {
         ...(edge.style || {}),
-        stroke: color || (edge.style && edge.style.stroke) || "#51a2ff",
-        strokeWidth: 2.5,
-        opacity: 0.8,
-        filter: `drop-shadow(0 0 5px ${
-          color ? color + "80" : "rgba(81, 162, 255, 0.5)"
-        })`,
+        ...defaultEdgeOptions.style,
       },
-      markerEnd: {
-        ...defaultEdgeOptions.markerEnd,
-        color: color || "#51a2ff",
-      },
+      markerEnd: defaultEdgeOptions.markerEnd,
       animated: edge.animated !== undefined ? edge.animated : true,
     };
   });
@@ -197,7 +194,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     >
       <ReactFlow
         nodes={nodes}
-        edges={coloredEdges}
+        edges={preparedEdges}
         edgeTypes={{ technology: TechnologyEdge }}
         onConnect={onConnect}
         onNodesChange={handleNodesChange}
@@ -222,7 +219,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
           size={1}
           color="rgba(81, 162, 255, 0.2)"
         />
-        <MiniMap />
+        <MiniMap nodeStrokeWidth={3} />
         <Controls />
 
         {contextMenu && (
@@ -257,8 +254,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
                     : handleEdgeDelete
                 }
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.backgroundColor =
-                    "rgba(81, 162, 255, 0.2)")
+                (e.currentTarget.style.backgroundColor =
+                  "rgba(81, 162, 255, 0.2)")
                 }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = "transparent")

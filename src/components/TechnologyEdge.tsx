@@ -1,5 +1,6 @@
 import { EdgeProps, getBezierPath, Position } from "@xyflow/react";
 import React from "react";
+import { getTechnologyById } from "../data/technologies";
 import TechnologyIcon from "./TechnologyIcon";
 
 const ICON_SIZE = 18;
@@ -12,7 +13,6 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
     targetX,
     targetY,
     style = {},
-    markerEnd,
     data,
   } = props;
 
@@ -42,18 +42,42 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
   });
 
   const isLeftToRight = sourceX < targetX;
-  const adjustedMarkerEnd = markerEnd;
+  const technology = technologyId ? getTechnologyById(technologyId) : null;
+  const color = technology?.color || "#51a2ff";
+  const enhancedStyle = {
+    ...style,
+    stroke: color,
+    strokeWidth: 2.5,
+    opacity: 0.8,
+    filter: `drop-shadow(0 0 5px ${color}80)`,
+  };
+  const markerEndId = `marker-${id}`;
+  const customMarkerEnd = `url(#${markerEndId})`;
 
   return (
     <g>
+      <defs>
+        <marker
+          id={markerEndId}
+          markerWidth="18"
+          markerHeight="18"
+          refX="10"
+          refY="5"
+          orient="auto"
+        >
+          <path
+            d="M 0 0 L 10 5 L 0 10 z"
+            fill={color}
+            style={{ filter: `drop-shadow(0 0 2px ${color}80)` }}
+          />
+        </marker>
+      </defs>
       <path
         id={id}
-        style={style}
+        style={enhancedStyle}
         className="react-flow__edge-path"
         d={edgePath}
-        markerEnd={
-          typeof adjustedMarkerEnd === "string" ? adjustedMarkerEnd : undefined
-        }
+        markerEnd={customMarkerEnd}
       />
       {technologyId && (
         <foreignObject
