@@ -610,6 +610,7 @@ function App() {
           onAddSystem={handleAddElement}
           onExport={handleExport}
           onImport={handleImport}
+          model={model}
         />
 
         <NavBar

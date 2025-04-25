@@ -10,7 +10,15 @@ i18n
     },
     lng: 'en',
     fallbackLng: 'en',
-    interpolation: { escapeValue: false },
+    interpolation: { 
+      escapeValue: false,
+      format: (value, format) => {
+        if (format === 'capitalize') {
+          return value.charAt(0).toUpperCase() + value.slice(1);
+        }
+        return value;
+      }
+    },
   });
 
 export default i18n;

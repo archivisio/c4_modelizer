@@ -10,17 +10,20 @@ import {
 } from "@mui/material";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { C4Model } from "../types/c4";
 
 interface ToolbarProps {
   onAddSystem: () => void;
   onExport: () => void;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  model: C4Model;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
   onAddSystem,
   onExport,
   onImport,
+  model,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { t } = useTranslation();
@@ -46,7 +49,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             letterSpacing: "0.5px",
           }}
         >
-          {t("app_title")}
+          {t("app_title", { Level: model.viewLevel })}
         </Typography>
         <Tooltip title={t("add_block")}>
           <IconButton

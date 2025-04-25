@@ -1,5 +1,5 @@
 {
-  "app_title": "C4 Modeling – System Level",
+  "app_title": "C4 Modeling – {{Level, capitalize}} Level",
   "add_block": "Add block",
   "export_json": "Export JSON",
   "import_json": "Import JSON",

@@ -68,9 +68,8 @@ const C4Block: React.FC<C4BlockProps> = ({
     : defaultColorStyle;
 
   const cardSx: SxProps<Theme> = {
-    minWidth: 200,
-    width: "100%",
-    height: "100%",
+    width: 200,
+    maxHeight: 150,
     borderRadius: 2,
     position: "relative",
     overflow: "visible",
@@ -132,7 +131,6 @@ const C4Block: React.FC<C4BlockProps> = ({
                 variant="subtitle1"
                 sx={{
                   fontWeight: "bold",
-                  mb: 0.5,
                   color: "#fff",
                   textShadow: "0 0 10px rgba(255,255,255,0.3)",
                 }}
@@ -165,11 +163,12 @@ const C4Block: React.FC<C4BlockProps> = ({
           {description && (
             <Typography
               variant="body2"
+              noWrap
               sx={{
                 mt: 1.5,
                 color: "rgba(255,255,255,0.8)",
                 backgroundColor: "rgba(0,0,0,0.2)",
-                p: 1.5,
+                p: 1,
                 borderRadius: 1,
                 backdropFilter: "blur(4px)",
                 border: "1px solid rgba(255,255,255,0.1)",
