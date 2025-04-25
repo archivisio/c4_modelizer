@@ -1,9 +1,12 @@
 import DeleteIcon from "@mui/icons-material/Delete";
+import SelectionIcon from "@mui/icons-material/HighlightAlt";
+import PanToolIcon from "@mui/icons-material/PanTool";
 import { Box, Paper } from "@mui/material";
 import {
   Background,
   BackgroundVariant,
   Connection,
+  ControlButton,
   Controls,
   Edge,
   MarkerType,
@@ -44,6 +47,30 @@ const nodeTypes = {
   code: CodeBlock,
 };
 
+const SelectionPanToggle = ({
+  isSelectionMode,
+  onToggle,
+}: {
+  isSelectionMode: boolean;
+  onToggle: () => void;
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <ControlButton
+      onClick={onToggle}
+      title={
+        isSelectionMode ? t("switchToPanMode") : t("switchToSelectionMode")
+      }
+    >
+      {isSelectionMode ? (
+        <PanToolIcon fontSize="small" />
+      ) : (
+        <SelectionIcon fontSize="small" />
+      )}
+    </ControlButton>
+  );
+};
 
 const FlowCanvas: React.FC<FlowCanvasProps> = ({
   nodes,
@@ -57,6 +84,11 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onEdgeDelete,
 }) => {
   const { t } = useTranslation();
+  const [isSelectionMode, setIsSelectionMode] = useState(true);
+
+  const toggleInteractionMode = useCallback(() => {
+    setIsSelectionMode((prev) => !prev);
+  }, []);
   const handleNodesChange = useCallback(
     (changes: NodeChange[]) => {
       changes.forEach((change) => {
@@ -96,7 +128,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   };
 
   const preparedEdges = edges.map((edge) => {
-    const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) as string | undefined;
+    const technologyId = (edge.data &&
+      (edge.data.technology || edge.data.technologyId)) as string | undefined;
 
     if (technologyId) {
       return {
@@ -104,8 +137,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         type: "technology",
         data: {
           ...edge.data,
-          technologyId
-        }
+          technologyId,
+        },
       };
     }
 
@@ -209,11 +242,11 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: "100%", height: "100%" }}
-        selectionOnDrag
+        selectionOnDrag={isSelectionMode}
         multiSelectionKeyCode="Control"
         selectionMode={SelectionMode.Partial}
         selectionKeyCode={null}
-        panOnDrag={[1, 2]}
+        panOnDrag={isSelectionMode ? [1, 2] : [0, 1, 2]}
       >
         <Background
           variant={BackgroundVariant.Dots}
@@ -222,7 +255,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
           color="rgba(81, 162, 255, 0.2)"
         />
         <MiniMap zoomable pannable />
-        <Controls />
+        <Controls>
+          <SelectionPanToggle
+            isSelectionMode={isSelectionMode}
+            onToggle={toggleInteractionMode}
+          />
+        </Controls>
 
         {contextMenu && (
           <div
@@ -256,8 +294,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
                     : handleEdgeDelete
                 }
                 onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor =
-                  "rgba(81, 162, 255, 0.2)")
+                  (e.currentTarget.style.backgroundColor =
+                    "rgba(81, 162, 255, 0.2)")
                 }
                 onMouseLeave={(e) =>
                   (e.currentTarget.style.backgroundColor = "transparent")
