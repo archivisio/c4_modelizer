@@ -1,4 +1,4 @@
-import { EdgeProps, getBezierPath } from "@xyflow/react";
+import { EdgeProps, getBezierPath, Position } from "@xyflow/react";
 import React from "react";
 import TechnologyIcon from "./TechnologyIcon";
 
@@ -20,14 +20,25 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
     typeof data?.technology === "string"
       ? data.technology
       : typeof data?.technologyId === "string"
-      ? data.technologyId
-      : undefined;
+        ? data.technologyId
+        : undefined;
+
+  const isHorizontal = Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY);
+  const sourcePosition = isHorizontal
+    ? (sourceX < targetX ? Position.Right : Position.Left)
+    : (sourceY < targetY ? Position.Bottom : Position.Top);
+
+  const targetPosition = isHorizontal
+    ? (sourceX < targetX ? Position.Left : Position.Right)
+    : (sourceY < targetY ? Position.Top : Position.Bottom);
 
   const [edgePath, labelX, labelY] = getBezierPath({
     sourceX,
     sourceY,
     targetX,
     targetY,
+    sourcePosition,
+    targetPosition,
   });
 
   const isLeftToRight = sourceX < targetX;
