@@ -11,6 +11,7 @@ import {
   Node,
   NodeChange,
   ReactFlow,
+  SelectionMode,
 } from "@xyflow/react";
 import React, { useCallback, useState } from "react";
 import { getTechnologyById } from "../data/technologies";
@@ -209,6 +210,11 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
         style={{ width: "100%", height: "100%" }}
+        selectionOnDrag
+        multiSelectionKeyCode="Control"
+        selectionMode={SelectionMode.Partial}
+        selectionKeyCode={null}
+        panOnDrag={[1, 2]}
       >
         <Background
           variant={BackgroundVariant.Dots}
