@@ -101,6 +101,7 @@ function App() {
           name: sys.name,
           description: sys.description,
           technology: sys.technology,
+          url: sys.url,
           onEdit: () => {
             setEditId(sys.id);
             setIsEditingContainer(false);
@@ -122,6 +123,7 @@ function App() {
         name: container.name,
         description: container.description,
         technology: container.technology,
+        url: container.url,
         onEdit: () => {
           setEditId(container.id);
           setIsEditingContainer(true);
@@ -142,6 +144,7 @@ function App() {
         name: component.name,
         description: component.description,
         technology: component.technology,
+        url: component.url,
         onEdit: () => {
           setEditId(component.id);
           setIsEditingContainer(false);
@@ -164,6 +167,7 @@ function App() {
         codeType: codeElement.codeType,
         language: codeElement.language,
         code: codeElement.code,
+        url: codeElement.url,
         onEdit: () => {
           setEditId(codeElement.id);
           setIsEditingContainer(false);
