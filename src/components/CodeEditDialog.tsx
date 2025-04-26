@@ -14,12 +14,14 @@ interface CodeEditDialogProps {
   initialCodeType?: "class" | "function" | "interface" | "variable" | "other";
   initialLanguage?: string;
   initialCode?: string;
+  initialUrl?: string;
   onSave: (
     name: string,
     description: string,
     codeType: "class" | "function" | "interface" | "variable" | "other",
     language: string,
-    code: string
+    code: string,
+    url: string
   ) => void;
   onClose: () => void;
   onDelete?: () => void;
@@ -32,6 +34,7 @@ export default function CodeEditDialog({
   initialCodeType = "class",
   initialLanguage = "",
   initialCode = "",
+  initialUrl = "",
   onSave,
   onClose,
   onDelete,
@@ -43,6 +46,7 @@ export default function CodeEditDialog({
   >(initialCodeType);
   const [language, setLanguage] = useState(initialLanguage);
   const [code, setCode] = useState(initialCode);
+  const [url, setUrl] = useState(initialUrl);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -51,12 +55,14 @@ export default function CodeEditDialog({
     setCodeType(initialCodeType);
     setLanguage(initialLanguage || "");
     setCode(initialCode || "");
+    setUrl(initialUrl || "");
   }, [
     initialName,
     initialDescription,
     initialCodeType,
     initialLanguage,
     initialCode,
+    initialUrl,
     open,
   ]);
 
@@ -67,7 +73,7 @@ export default function CodeEditDialog({
       open={open}
       title={t("edit_code_element")}
       theme={dialogThemes.code}
-      onSave={() => onSave(name, description, codeType, language, code)}
+      onSave={() => onSave(name, description, codeType, language, code, url)}
       onClose={onClose}
       onDelete={onDelete}
       saveDisabled={!name.trim()}
@@ -135,6 +141,14 @@ export default function CodeEditDialog({
         onChange={setCode}
         language={language}
         placeholder={t("code_placeholder")}
+      />
+      <ThemedTextField
+        theme={dialogThemes.code}
+        margin="dense"
+        label={t("url")}
+        fullWidth
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
       />
     </BaseEditDialog>
   );

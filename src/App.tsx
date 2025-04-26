@@ -330,6 +330,7 @@ function App() {
         },
         connections: [],
         technology: "",
+        url: "",
       });
     } else if (model.viewLevel === "container" && model.activeSystemId) {
       addContainer(model.activeSystemId, {
@@ -340,6 +341,8 @@ function App() {
           y: Math.random() * 300 + 100,
         },
         connections: [],
+        technology: "",
+        url: "",
       });
     } else if (
       model.viewLevel === "component" &&
@@ -349,12 +352,13 @@ function App() {
       addComponent(model.activeSystemId, model.activeContainerId, {
         name: t("new_component"),
         description: "",
-        technology: "",
         position: {
           x: Math.random() * 400 + 100,
           y: Math.random() * 300 + 100,
         },
         connections: [],
+        technology: "",
+        url: "",
       });
     } else if (
       model.viewLevel === "code" &&
@@ -367,14 +371,16 @@ function App() {
         model.activeContainerId,
         model.activeComponentId,
         {
-          name: t("new_code_element"),
+          name: t("new_code"),
           description: "",
-          codeType: "class",
-          language: "",
           position: {
             x: Math.random() * 400 + 100,
             y: Math.random() * 300 + 100,
           },
+          codeType: "class",
+          language: "",
+          code: "",
+          url: "",
           connections: [],
         }
       );
@@ -478,10 +484,11 @@ function App() {
   const handleDialogSave = (
     name: string,
     description: string,
-    technology?: string,
+    technology: string,
     codeType?: "class" | "function" | "interface" | "variable" | "other",
     language?: string,
-    code?: string
+    code?: string,
+    url?: string
   ) => {
     if (editId) {
       if (
@@ -501,6 +508,7 @@ function App() {
             codeType: codeType || "other",
             language,
             code,
+            url,
           }
         );
       } else if (
@@ -512,15 +520,17 @@ function App() {
           name,
           description,
           technology,
+          url,
         });
       } else if (isEditingContainer && model.activeSystemId) {
         updateContainer(model.activeSystemId, editId, {
           name,
           description,
           technology,
+          url,
         });
       } else {
-        updateSystem(editId, { name, description, technology });
+        updateSystem(editId, { name, description, technology, url });
       }
     }
     setDialogOpen(false);
@@ -635,8 +645,9 @@ function App() {
             initialName={editingElement.name}
             initialDescription={editingElement.description || ""}
             initialTechnology={(editingElement as SystemBlock).technology || ""}
-            onSave={(name, description, technology) => {
-              handleDialogSave(name, description, technology);
+            initialUrl={(editingElement as SystemBlock).url || ""}
+            onSave={(name, description, technology, url) => {
+              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
@@ -656,8 +667,9 @@ function App() {
             initialTechnology={
               (editingElement as ContainerBlock).technology || ""
             }
-            onSave={(name, description, technology) => {
-              handleDialogSave(name, description, technology);
+            initialUrl={(editingElement as ContainerBlock).url || ""}
+            onSave={(name, description, technology, url) => {
+              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
@@ -677,8 +689,9 @@ function App() {
             initialTechnology={
               (editingElement as ComponentBlock).technology || ""
             }
-            onSave={(name, description, technology) => {
-              handleDialogSave(name, description, technology);
+            initialUrl={(editingElement as ComponentBlock).url || ""}
+            onSave={(name, description, technology, url) => {
+              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
@@ -698,14 +711,16 @@ function App() {
             initialCodeType={(editingElement as CodeBlock).codeType || "class"}
             initialLanguage={(editingElement as CodeBlock).language || ""}
             initialCode={(editingElement as CodeBlock).code || ""}
-            onSave={(name, description, codeType, language, code) => {
+            initialUrl={(editingElement as CodeBlock).url || ""}
+            onSave={(name, description, codeType, language, code, url) => {
               handleDialogSave(
                 name,
                 description,
-                undefined,
+                "",
                 codeType,
                 language,
-                code
+                code,
+                url
               );
             }}
             onDelete={() => {

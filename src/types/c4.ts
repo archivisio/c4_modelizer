@@ -4,6 +4,7 @@ export interface BaseBlock {
   id: string;
   name: string;
   description?: string;
+  url?: string;
   position: Position;
 }
 

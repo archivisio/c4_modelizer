@@ -7,6 +7,7 @@ export type ContainerBlockData = {
   name: string;
   description?: string;
   technology?: string;
+  url?: string;
   onEdit: () => void;
 };
 
@@ -26,6 +27,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = memo(
         onEdit={typedData.onEdit}
         colors={COLORS.secondary}
         technology={typedData.technology}
+        url={typedData.url}
         handlePositions={{
           source: [Position.Right, Position.Bottom, Position.Top],
           target: [Position.Left, Position.Top, Position.Bottom],

@@ -10,7 +10,8 @@ interface SystemEditDialogProps {
   initialName?: string;
   initialDescription?: string;
   initialTechnology?: string;
-  onSave: (name: string, description: string, technology: string) => void;
+  initialUrl?: string;
+  onSave: (name: string, description: string, technology: string, url: string) => void;
   onClose: () => void;
   onDelete?: () => void;
 }
@@ -20,6 +21,7 @@ export default function SystemEditDialog({
   initialName = "",
   initialDescription = "",
   initialTechnology = "",
+  initialUrl = "",
   onSave,
   onClose,
   onDelete,
@@ -27,20 +29,22 @@ export default function SystemEditDialog({
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
   const [technology, setTechnology] = useState(initialTechnology);
+  const [url, setUrl] = useState(initialUrl);
   const { t } = useTranslation();
 
   useEffect(() => {
     setName(initialName);
     setDescription(initialDescription);
     setTechnology(initialTechnology || "");
-  }, [initialName, initialDescription, initialTechnology, open]);
+    setUrl(initialUrl || "");
+  }, [initialName, initialDescription, initialTechnology, initialUrl, open]);
 
   return (
     <BaseEditDialog
       open={open}
       title={t("edit_system")}
       theme={dialogThemes.system}
-      onSave={() => onSave(name, description, technology)}
+      onSave={() => onSave(name, description, technology, url)}
       onClose={onClose}
       onDelete={onDelete}
       saveDisabled={!name.trim()}
@@ -73,6 +77,14 @@ export default function SystemEditDialog({
         onChange={setTechnology}
         label={t("technology")}
         placeholder={t("select_technology")}
+      />
+      <ThemedTextField
+        theme={dialogThemes.system}
+        margin="dense"
+        label={t("url")}
+        fullWidth
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
       />
     </BaseEditDialog>
   );

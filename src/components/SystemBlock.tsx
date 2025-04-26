@@ -7,6 +7,7 @@ export type SystemBlockData = {
   description?: string;
   onEdit: () => void;
   technology?: string; // id of the technology
+  url?: string;
 };
 
 type NodeProps = {
@@ -23,6 +24,7 @@ export default function SystemBlock({ data }: NodeProps) {
       onEdit={typedData.onEdit}
       colors={COLORS.primary}
       technology={typedData.technology}
+      url={typedData.url}
       handlePositions={{
         source: [Position.Right, Position.Bottom, Position.Top],
         target: [Position.Left, Position.Top, Position.Bottom],

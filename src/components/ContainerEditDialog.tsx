@@ -10,7 +10,8 @@ interface ContainerEditDialogProps {
   initialName?: string;
   initialDescription?: string;
   initialTechnology?: string;
-  onSave: (name: string, description: string, technology: string) => void;
+  initialUrl?: string;
+  onSave: (name: string, description: string, technology: string, url: string) => void;
   onClose: () => void;
   onDelete?: () => void;
 }
@@ -20,6 +21,7 @@ export default function ContainerEditDialog({
   initialName = "",
   initialDescription = "",
   initialTechnology = "",
+  initialUrl = "",
   onSave,
   onClose,
   onDelete,
@@ -27,13 +29,15 @@ export default function ContainerEditDialog({
   const [name, setName] = useState(initialName);
   const [description, setDescription] = useState(initialDescription);
   const [technology, setTechnology] = useState(initialTechnology);
+  const [url, setUrl] = useState(initialUrl);
   const { t } = useTranslation();
 
   useEffect(() => {
     setName(initialName);
     setDescription(initialDescription);
     setTechnology(initialTechnology || "");
-  }, [initialName, initialDescription, initialTechnology, open]);
+    setUrl(initialUrl || "");
+  }, [initialName, initialDescription, initialTechnology, initialUrl, open]);
 
   // Les champs du formulaire seront désormais passés comme enfants
 
@@ -42,7 +46,7 @@ export default function ContainerEditDialog({
       open={open}
       title={t("edit_container")}
       theme={dialogThemes.container}
-      onSave={() => onSave(name, description, technology)}
+      onSave={() => onSave(name, description, technology, url)}
       onClose={onClose}
       onDelete={onDelete}
       saveDisabled={!name.trim()}
@@ -75,6 +79,14 @@ export default function ContainerEditDialog({
         onChange={setTechnology}
         label={t("container_technology")}
         placeholder={t("select_technology")}
+      />
+      <ThemedTextField
+        theme={dialogThemes.container}
+        margin="dense"
+        label={t("url")}
+        fullWidth
+        value={url}
+        onChange={(e) => setUrl(e.target.value)}
       />
     </BaseEditDialog>
   );

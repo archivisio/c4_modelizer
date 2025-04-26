@@ -22,6 +22,7 @@ export interface C4BlockProps {
   name: string;
   description?: string;
   technology?: string;
+  url?: string;
   selected?: boolean;
   onEdit: () => void;
   colors: ColorStyle;
@@ -44,6 +45,7 @@ const C4Block: React.FC<C4BlockProps> = ({
   name,
   description,
   technology,
+  url,
   selected = false,
   onEdit,
   colors,
@@ -87,7 +89,7 @@ const C4Block: React.FC<C4BlockProps> = ({
     flexDirection: "column",
   };
 
-  if(description) {
+  if(description || url) {
     cardSx.height = (cardSx.height as number) + ((cardSx.height as number) * 0.5);
   }
 
@@ -204,6 +206,32 @@ const C4Block: React.FC<C4BlockProps> = ({
               }}
             >
               {description}
+            </Typography>
+          )}
+          
+          {url && (
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 1.5,
+                color: "rgba(255,255,255,0.8)",
+                backgroundColor: "rgba(0,0,0,0.2)",
+                p: 1,
+                borderRadius: 1,
+                backdropFilter: "blur(4px)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: "vertical",
+                lineHeight: "1.2em",
+                maxHeight: "1.2em",
+                fontFamily: '"Fira Code", "Roboto Mono", monospace',
+                fontSize: "0.75rem",
+              }}
+            >
+              <Box component="span" sx={{ opacity: 0.7 }}>URL: </Box>{url}
             </Typography>
           )}
 
