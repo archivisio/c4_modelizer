@@ -188,7 +188,7 @@ function App() {
           targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
-          type: conn.technology || conn.label ? "connection" : "default",
+          type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
     } else if (
@@ -205,7 +205,7 @@ function App() {
           targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
-          type: conn.technology || conn.label ? "connection" : "default",
+          type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
     } else if (
@@ -222,7 +222,7 @@ function App() {
           targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
-          type: conn.technology || conn.label ? "connection" : "default",
+          type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
     } else if (
@@ -239,7 +239,7 @@ function App() {
           targetHandle: conn.targetHandle,
           label: conn.label,
           data: { technology: conn.technology, description: conn.description },
-          type: conn.technology || conn.label ? "connection" : "default",
+          type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
     }
