@@ -166,7 +166,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
-                  maxWidth: "130px", // Limite la largeur pour éviter le débordement
+                  maxWidth: "130px",
                 }}
               >
                 {name}

@@ -21,8 +21,6 @@ export interface DialogTheme {
   hoverGradientEnd: string;
 }
 
-// Suppression de l'interface DialogField qui n'est plus nécessaire
-
 export interface BaseEditDialogProps {
   open: boolean;
   title: string;
@@ -51,7 +49,6 @@ export default function BaseEditDialog({
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { t } = useTranslation();
 
-  // Generate styles based on theme
   const dialogStyles = {
     paper: {
       bgcolor: "#0a1929",

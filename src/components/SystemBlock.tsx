@@ -6,7 +6,7 @@ export type SystemBlockData = {
   name: string;
   description?: string;
   onEdit: () => void;
-  technology?: string; // id of the technology
+  technology?: string;
   url?: string;
 };
 
