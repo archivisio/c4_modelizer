@@ -1,0 +1,72 @@
+[
+  {
+    "id": "server",
+    "name": "Server",
+    "icon": "Storage",
+    "color": "#6d4c41",
+    "levels": ["system"]
+  },
+  {
+    "id": "database-server",
+    "name": "Database Server",
+    "icon": "Dns",
+    "color": "#5e35b1",
+    "levels": ["system"]
+  },
+  {
+    "id": "client-device",
+    "name": "Client Device",
+    "icon": "Computer",
+    "color": "#1976d2",
+    "levels": ["system"]
+  },
+  {
+    "id": "mobile-device",
+    "name": "Mobile Device",
+    "icon": "PhoneIphone",
+    "color": "#43a047",
+    "levels": ["system"]
+  },
+  {
+    "id": "router",
+    "name": "Router",
+    "icon": "Router",
+    "color": "#00897b",
+    "levels": ["system"]
+  },
+  {
+    "id": "firewall",
+    "name": "Firewall",
+    "icon": "Security",
+    "color": "#d32f2f",
+    "levels": ["system"]
+  },
+  {
+    "id": "cloud",
+    "name": "Cloud",
+    "icon": "Cloud",
+    "color": "#42a5f5",
+    "levels": ["system"]
+  },
+  {
+    "id": "vpn",
+    "name": "VPN",
+    "icon": "VpnLock",
+    "color": "#5c6bc0",
+    "levels": ["system"]
+  },
+  {
+    "id": "storage",
+    "name": "Storage",
+    "icon": "Folder",
+    "color": "#ffa726",
+    "levels": ["system"]
+  },
+  {
+    "id": "load-balancer",
+    "name": "Load Balancer",
+    "icon": "SwapHoriz",
+    "color": "#26a69a",
+    "levels": ["system"]
+  }
+]

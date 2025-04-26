@@ -155,7 +155,7 @@ const C4Block: React.FC<C4BlockProps> = ({
               }}
             >
               {technology && (
-                <TechnologyIcon technologyId={technology} size={16} />
+                <TechnologyIcon technologyId={technology} size={24} />
               )}
               <Typography
                 variant="subtitle1"

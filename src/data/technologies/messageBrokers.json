@@ -1,0 +1,44 @@
+[
+  {
+    "id": "kafka",
+    "name": "Apache Kafka",
+    "icon": "ApachekafkaOriginalWordmark",
+    "color": "#231f20",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "rabbitmq",
+    "name": "RabbitMQ",
+    "icon": "RabbitmqOriginalWordmark",
+    "color": "#ff6600",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "amazonsqs",
+    "name": "Amazon SQS",
+    "icon": "AmazonwebservicesOriginal",
+    "color": "#ff9900",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "redisstreams",
+    "name": "Redis Streams",
+    "icon": "RedisOriginalWordmark",
+    "color": "#dc382d",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "nats",
+    "name": "NATS",
+    "icon": "NatsioOriginal",
+    "color": "#007acc",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "mqtt",
+    "name": "MQTT",
+    "icon": "MqttOriginal",
+    "color": "#ff6600",
+    "levels": ["container", "connection"]
+  }
+]

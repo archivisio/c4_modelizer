@@ -17,7 +17,7 @@ const TechnologyIcon = ({
 
   if (!technology) return null;
 
-  const IconComponent = getIconComponent(technology.icon);
+  const IconComponent = getIconComponent(technology.id);
 
   const content = (
     <Box

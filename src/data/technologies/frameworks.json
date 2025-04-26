@@ -1,0 +1,128 @@
+[
+  {
+    "id": "react",
+    "name": "React",
+    "icon": "ReactOriginalWordmark",
+    "color": "#61dafb",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "angular",
+    "name": "Angular",
+    "icon": "AngularOriginal",
+    "color": "#dd1b16",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "vue",
+    "name": "Vue.js",
+    "icon": "VuejsOriginalWordmark",
+    "color": "#42b883",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "nextjs",
+    "name": "Next.js",
+    "icon": "NextjsOriginalWordmark",
+    "color": "#000000",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "nuxtjs",
+    "name": "Nuxt.js",
+    "icon": "NuxtjsOriginalWordmark",
+    "color": "#00c58e",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "svelte",
+    "name": "Svelte",
+    "icon": "SvelteOriginal",
+    "color": "#ff3e00",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "nestjs",
+    "name": "NestJS",
+    "icon": "NestjsOriginal",
+    "color": "#e0234e",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "django",
+    "name": "Django",
+    "icon": "DjangoPlainWordmark",
+    "color": "#092e20",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "rails",
+    "name": "Ruby on Rails",
+    "icon": "RailsOriginalWordmark",
+    "color": "#cc0000",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "spring",
+    "name": "Spring",
+    "icon": "SpringOriginalWordmark",
+    "color": "#6db33f",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "flask",
+    "name": "Flask",
+    "icon": "FlaskOriginalWordmark",
+    "color": "#000000",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "express",
+    "name": "Express",
+    "icon": "ExpressOriginalWordmark",
+    "color": "#000000",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "laravel",
+    "name": "Laravel",
+    "icon": "LaravelOriginalWordmark",
+    "color": "#ff2d20",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "symfony",
+    "name": "Symfony",
+    "icon": "SymfonyOriginalWordmark",
+    "color": "#000000",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "bootstrap",
+    "name": "Bootstrap",
+    "icon": "BootstrapOriginalWordmark",
+    "color": "#7952b3",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind CSS",
+    "icon": "TailwindcssOriginalWordmark",
+    "color": "#06b6d4",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "gatsby",
+    "name": "Gatsby",
+    "icon": "GatsbyOriginalWordmark",
+    "color": "#663399",
+    "levels": ["container", "component", "code"]
+  },
+  {
+    "id": "ember",
+    "name": "Ember.js",
+    "icon": "EmberOriginalWordmark",
+    "color": "#e04e39",
+    "levels": ["container", "component", "code"]
+  }
+]

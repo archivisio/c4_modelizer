@@ -1,0 +1,37 @@
+[
+  {
+    "id": "vault",
+    "name": "HashiCorp Vault",
+    "icon": "VaultOriginal",
+    "color": "#000000",
+    "levels": ["system", "container"]
+  },
+  {
+    "id": "snyk",
+    "name": "Snyk",
+    "icon": "SnykOriginal",
+    "color": "#4c4a73",
+    "levels": ["system", "container"]
+  },
+  {
+    "id": "trivy",
+    "name": "Trivy",
+    "icon": "TrivyOriginal",
+    "color": "#2e3a59",
+    "levels": ["system", "container"]
+  },
+  {
+    "id": "auth0",
+    "name": "Auth0",
+    "icon": "OauthOriginal",
+    "color": "#eb5424",
+    "levels": ["system", "container"]
+  },
+  {
+    "id": "okta",
+    "name": "Okta",
+    "icon": "OktaOriginal",
+    "color": "#007dc1",
+    "levels": ["system", "container"]
+  }
+]

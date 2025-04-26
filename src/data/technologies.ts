@@ -1,5 +1,15 @@
 import { TechnologyLevel } from '../types/c4';
-import data from './technologies.json';
+import cloud from './technologies/cloud.json';
+import codes from './technologies/codes.json';
+import databases from './technologies/databases.json';
+import devops from './technologies/devops.json';
+import frameworks from './technologies/frameworks.json';
+import languages from './technologies/languages.json';
+import messageBrokers from './technologies/messageBrokers.json';
+import monitoring from './technologies/monitoring.json';
+import saas from './technologies/saas.json';
+import security from './technologies/security.json';
+import systems from './technologies/systems.json';
 
 export interface Technology {
   id: string;
@@ -9,7 +19,7 @@ export interface Technology {
   levels: TechnologyLevel[];
 }
 
-export const technologies = data as Technology[];
+export const technologies = [...cloud, ...codes, ...databases, ...devops, ...frameworks, ...languages, ...messageBrokers, ...monitoring, ...saas, ...security, ...systems] as Technology[];
 
 export const getTechnologiesByLevel = (level: TechnologyLevel): Technology[] => {
   return technologies.filter(tech => tech.levels.includes(level));

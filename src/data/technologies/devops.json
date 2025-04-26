@@ -1,0 +1,65 @@
+[
+  {
+    "id": "docker",
+    "name": "Docker",
+    "icon": "DockerOriginalWordmark",
+    "color": "#2496ed",
+    "levels": ["container", "component", "connection"]
+  },
+  {
+    "id": "kubernetes",
+    "name": "Kubernetes",
+    "icon": "KubernetesOriginalWordmark",
+    "color": "#326ce5",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "terraform",
+    "name": "Terraform",
+    "icon": "TerraformOriginalWordmark",
+    "color": "#7b42bc",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "ansible",
+    "name": "Ansible",
+    "icon": "AnsibleOriginalWordmark",
+    "color": "#000000",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "jenkins",
+    "name": "Jenkins",
+    "icon": "JenkinsOriginal",
+    "color": "#d33833",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "githubactions",
+    "name": "GitHub Actions",
+    "icon": "GithubOriginalWordmark",
+    "color": "#181717",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "gitlabci",
+    "name": "GitLab CI",
+    "icon": "GitlabOriginalWordmark",
+    "color": "#fc6d26",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "argo",
+    "name": "Argo Workflows",
+    "icon": "ArgocdOriginal",
+    "color": "#f46800",
+    "levels": ["container", "connection"]
+  },
+  {
+    "id": "helm",
+    "name": "Helm",
+    "icon": "HelmOriginal",
+    "color": "#2772e6",
+    "levels": ["container", "connection"]
+  }
+]
