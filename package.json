@@ -17,12 +17,14 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@xyflow/react": "^12.6.0",
     "i18next": "^25.0.1",
     "react": "^19.0.0",
     "react-devicons": "^2.16.2",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.5.1",
+    "react-syntax-highlighter": "^15.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

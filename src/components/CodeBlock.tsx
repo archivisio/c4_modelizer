@@ -64,7 +64,7 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
         target: [Position.Left, Position.Top, Position.Bottom],
       }}
     >
-      <Box sx={{ mb: 1.5 }}>
+      <Box>
         <Chip
           size="small"
           label={typedData.codeType}
@@ -82,28 +82,6 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
           variant="outlined"
         />
       </Box>
-
-      {typedData.code && (
-        <Box
-          sx={{
-            mt: 1.5,
-            p: 1.5,
-            backgroundColor: "rgba(0,0,0,0.3)",
-            borderRadius: 1,
-            fontSize: "0.75rem",
-            fontFamily: '"Fira Code", "Roboto Mono", monospace',
-            overflowX: "auto",
-            maxHeight: "80px",
-            overflowY: "auto",
-            border: "1px solid rgba(255,255,255,0.1)",
-            color: "#e0e0e0",
-            backdropFilter: "blur(4px)",
-            boxShadow: "inset 0 0 10px rgba(0,0,0,0.2)",
-          }}
-        >
-          {typedData.code}
-        </Box>
-      )}
     </C4Block>
   );
 });

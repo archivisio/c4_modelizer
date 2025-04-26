@@ -69,10 +69,10 @@ const C4Block: React.FC<C4BlockProps> = ({
 
   const cardSx: SxProps<Theme> = {
     width: 200,
-    maxHeight: 150,
+    height: 80,
     borderRadius: 2,
     position: "relative",
-    overflow: "visible",
+    overflow: "hidden",
     transition: "all 0.2s ease",
     boxShadow: selected
       ? `0 0 0 2px ${colorStyles.border}, ${colorStyles.glow}`
@@ -83,7 +83,13 @@ const C4Block: React.FC<C4BlockProps> = ({
       boxShadow: `0 0 0 2px ${colorStyles.hover}, ${colorStyles.glow}`,
       background: colorStyles.gradientHover,
     },
+    display: "flex",
+    flexDirection: "column",
   };
+
+  if(description) {
+    cardSx.height = (cardSx.height as number) + ((cardSx.height as number) * 0.5);
+  }
 
   return (
     <>
@@ -116,7 +122,7 @@ const C4Block: React.FC<C4BlockProps> = ({
       )}
 
       <Card sx={cardSx} className="tech-card">
-        <CardContent sx={{ p: 1.5, color: "#fff" }}>
+        <CardContent sx={{ p: 1.5, color: "#fff", overflow: "hidden", flex: 1, display: "flex", flexDirection: "column" }}>
           <Box
             sx={{
               display: "flex",
@@ -125,7 +131,7 @@ const C4Block: React.FC<C4BlockProps> = ({
               mb: 1,
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, minWidth: 0 }}>
               {technology && <TechnologyIcon technologyId={technology} size={16} />}
               <Typography
                 variant="subtitle1"
@@ -133,6 +139,10 @@ const C4Block: React.FC<C4BlockProps> = ({
                   fontWeight: "bold",
                   color: "#fff",
                   textShadow: "0 0 10px rgba(255,255,255,0.3)",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "130px", // Limite la largeur pour éviter le débordement
                 }}
               >
                 {name}
@@ -145,7 +155,20 @@ const C4Block: React.FC<C4BlockProps> = ({
               sx={{
                 backgroundColor: "rgba(0,0,0,0.3)",
                 color: "#fff",
-                "&:hover": { backgroundColor: "rgba(255,255,255,0.2)" },
+                "&:hover": { 
+                  backgroundColor: `rgba(${hexToRgb(colorStyles.hover)}, 0.2)`,
+                  borderColor: colorStyles.hover,
+                  boxShadow: `0 0 5px rgba(${hexToRgb(colorStyles.hover)}, 0.3)`
+                },
+                "&:focus": { 
+                  backgroundColor: `rgba(${hexToRgb(colorStyles.hover)}, 0.2)`,
+                  borderColor: colorStyles.hover,
+                  boxShadow: `0 0 5px rgba(${hexToRgb(colorStyles.hover)}, 0.3)`,
+                  outline: "none"
+                },
+                "&:focus-visible": {
+                  outline: "none"
+                },
                 width: 22,
                 height: 22,
                 minWidth: 22,
@@ -163,7 +186,6 @@ const C4Block: React.FC<C4BlockProps> = ({
           {description && (
             <Typography
               variant="body2"
-              noWrap
               sx={{
                 mt: 1.5,
                 color: "rgba(255,255,255,0.8)",
@@ -172,6 +194,13 @@ const C4Block: React.FC<C4BlockProps> = ({
                 borderRadius: 1,
                 backdropFilter: "blur(4px)",
                 border: "1px solid rgba(255,255,255,0.1)",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 3, // Limite à 3 lignes
+                WebkitBoxOrient: "vertical",
+                lineHeight: "1.2em",
+                maxHeight: "3.6em", // 3 lignes × 1.2em
               }}
             >
               {description}

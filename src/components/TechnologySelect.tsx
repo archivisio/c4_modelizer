@@ -5,6 +5,7 @@ import { getTechnologiesByLevel, Technology } from "../data/technologies";
 import { TechnologyLevel } from "../types/c4";
 
 interface TechnologySelectProps {
+  fullWidth?: boolean;
   level: TechnologyLevel;
   value: string;
   onChange: (value: string) => void;
@@ -13,6 +14,7 @@ interface TechnologySelectProps {
 }
 
 const TechnologySelect = ({
+  fullWidth = false,
   level,
   value,
   onChange,
@@ -79,6 +81,7 @@ const TechnologySelect = ({
 
   return (
     <Autocomplete
+      fullWidth={fullWidth}
       options={options}
       value={selectedTech}
       onChange={(_, newValue) => {
