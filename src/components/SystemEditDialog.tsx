@@ -11,9 +11,21 @@ interface SystemEditDialogProps {
   initialDescription?: string;
   initialTechnology?: string;
   initialUrl?: string;
-  onSave: (name: string, description: string, technology: string, url: string) => void;
+  onSave: (
+    name: string,
+    description: string,
+    technology: string,
+    url: string
+  ) => void;
   onClose: () => void;
   onDelete?: () => void;
+}
+
+interface SystemValues {
+  name: string;
+  description: string;
+  technology: string;
+  url: string;
 }
 
 export default function SystemEditDialog({
@@ -26,28 +38,38 @@ export default function SystemEditDialog({
   onClose,
   onDelete,
 }: SystemEditDialogProps) {
-  const [name, setName] = useState(initialName);
-  const [description, setDescription] = useState(initialDescription);
-  const [technology, setTechnology] = useState(initialTechnology);
-  const [url, setUrl] = useState(initialUrl);
+  const [values, setValues] = useState<SystemValues>({
+    name: initialName,
+    description: initialDescription,
+    technology: initialTechnology,
+    url: initialUrl,
+  });
   const { t } = useTranslation();
 
   useEffect(() => {
-    setName(initialName);
-    setDescription(initialDescription);
-    setTechnology(initialTechnology || "");
-    setUrl(initialUrl || "");
+    setValues({
+      name: initialName,
+      description: initialDescription,
+      technology: initialTechnology || "",
+      url: initialUrl || "",
+    });
   }, [initialName, initialDescription, initialTechnology, initialUrl, open]);
+
+  const handleChange = (field: keyof SystemValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <BaseEditDialog
       open={open}
       title={t("edit_system")}
       theme={dialogThemes.system}
-      onSave={() => onSave(name, description, technology, url)}
+      onSave={() =>
+        onSave(values.name, values.description, values.technology, values.url)
+      }
       onClose={onClose}
       onDelete={onDelete}
-      saveDisabled={!name.trim()}
+      saveDisabled={!values.name.trim()}
       deleteConfirmationMessage={t("delete_system_confirmation", {
         name: initialName,
       })}
@@ -58,8 +80,8 @@ export default function SystemEditDialog({
         margin="dense"
         label={t("system_name")}
         fullWidth
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={values.name}
+        onChange={(e) => handleChange("name", e.target.value)}
       />
       <ThemedTextField
         theme={dialogThemes.system}
@@ -68,13 +90,13 @@ export default function SystemEditDialog({
         fullWidth
         multiline
         minRows={3}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        value={values.description}
+        onChange={(e) => handleChange("description", e.target.value)}
       />
       <TechnologySelect
         level="system"
-        value={technology}
-        onChange={setTechnology}
+        value={values.technology}
+        onChange={(value) => handleChange("technology", value)}
         label={t("technology")}
         placeholder={t("select_technology")}
       />
@@ -83,8 +105,8 @@ export default function SystemEditDialog({
         margin="dense"
         label={t("url")}
         fullWidth
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        value={values.url}
+        onChange={(e) => handleChange("url", e.target.value)}
       />
     </BaseEditDialog>
   );

@@ -14,6 +14,12 @@ interface ConnectionEditDialogProps {
   onDelete?: (connectionInfo: ConnectionInfo) => void;
 }
 
+interface ConnectionValues {
+  label: string;
+  technology: string;
+  description: string;
+}
+
 const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
   open,
   connection,
@@ -23,30 +29,40 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [label, setLabel] = useState("");
-  const [technology, setTechnology] = useState("");
-  const [description, setDescription] = useState("");
+  const [values, setValues] = useState<ConnectionValues>({
+    label: "",
+    technology: "",
+    description: "",
+  });
 
   useEffect(() => {
     if (connection) {
-      setLabel(connection.label || "");
-      setTechnology(connection.technology || "");
-      setDescription(connection.description || "");
+      setValues({
+        label: connection.label || "",
+        technology: connection.technology || "",
+        description: connection.description || "",
+      });
     } else {
-      setLabel("");
-      setTechnology("");
-      setDescription("");
+      setValues({
+        label: "",
+        technology: "",
+        description: "",
+      });
     }
   }, [connection]);
+
+  const handleChange = (field: keyof ConnectionValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSave = () => {
     if (!connection) return;
 
     onSave({
       ...connection,
-      label,
-      technology,
-      description,
+      label: values.label,
+      technology: values.technology,
+      description: values.description,
     });
   };
 
@@ -73,8 +89,8 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         margin="dense"
         label={t("connection_label")}
         fullWidth
-        value={label}
-        onChange={(e) => setLabel(e.target.value)}
+        value={values.label}
+        onChange={(e) => handleChange("label", e.target.value)}
       />
       <ThemedTextField
         theme={dialogThemes.connection}
@@ -83,13 +99,13 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         fullWidth
         multiline
         minRows={3}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        value={values.description}
+        onChange={(e) => handleChange("description", e.target.value)}
       />
       <TechnologySelect
         level="connection"
-        value={technology}
-        onChange={setTechnology}
+        value={values.technology}
+        onChange={(value) => handleChange("technology", value)}
         label={t("connection_technology")}
         placeholder={t("select_technology")}
       />

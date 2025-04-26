@@ -27,6 +27,17 @@ interface CodeEditDialogProps {
   onDelete?: () => void;
 }
 
+type CodeType = "class" | "function" | "interface" | "variable" | "other";
+
+interface CodeValues {
+  name: string;
+  description: string;
+  codeType: CodeType;
+  language: string;
+  code: string;
+  url: string;
+}
+
 export default function CodeEditDialog({
   open,
   initialName = "",
@@ -39,23 +50,25 @@ export default function CodeEditDialog({
   onClose,
   onDelete,
 }: CodeEditDialogProps) {
-  const [name, setName] = useState(initialName);
-  const [description, setDescription] = useState(initialDescription);
-  const [codeType, setCodeType] = useState<
-    "class" | "function" | "interface" | "variable" | "other"
-  >(initialCodeType);
-  const [language, setLanguage] = useState(initialLanguage);
-  const [code, setCode] = useState(initialCode);
-  const [url, setUrl] = useState(initialUrl);
+  const [values, setValues] = useState<CodeValues>({
+    name: initialName,
+    description: initialDescription,
+    codeType: initialCodeType,
+    language: initialLanguage,
+    code: initialCode,
+    url: initialUrl,
+  });
   const { t } = useTranslation();
 
   useEffect(() => {
-    setName(initialName);
-    setDescription(initialDescription);
-    setCodeType(initialCodeType);
-    setLanguage(initialLanguage || "");
-    setCode(initialCode || "");
-    setUrl(initialUrl || "");
+    setValues({
+      name: initialName,
+      description: initialDescription,
+      codeType: initialCodeType,
+      language: initialLanguage || "",
+      code: initialCode || "",
+      url: initialUrl || "",
+    });
   }, [
     initialName,
     initialDescription,
@@ -66,17 +79,28 @@ export default function CodeEditDialog({
     open,
   ]);
 
-  // Les champs du formulaire seront désormais passés comme enfants
+  const handleChange = (field: keyof CodeValues, value: string) => {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <BaseEditDialog
       open={open}
       title={t("edit_code_element")}
       theme={dialogThemes.code}
-      onSave={() => onSave(name, description, codeType, language, code, url)}
+      onSave={() =>
+        onSave(
+          values.name,
+          values.description,
+          values.codeType,
+          values.language,
+          values.code,
+          values.url
+        )
+      }
       onClose={onClose}
       onDelete={onDelete}
-      saveDisabled={!name.trim()}
+      saveDisabled={!values.name.trim()}
       deleteConfirmationMessage={t("delete_code_confirmation", {
         name: initialName,
       })}
@@ -87,8 +111,8 @@ export default function CodeEditDialog({
         margin="dense"
         label={t("code_element_name")}
         fullWidth
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={values.name}
+        onChange={(e) => handleChange("name", e.target.value)}
       />
       <ThemedTextField
         theme={dialogThemes.code}
@@ -97,8 +121,8 @@ export default function CodeEditDialog({
         fullWidth
         multiline
         minRows={3}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        value={values.description}
+        onChange={(e) => handleChange("description", e.target.value)}
       />
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <ThemedTextField
@@ -106,17 +130,8 @@ export default function CodeEditDialog({
           theme={dialogThemes.code}
           select
           label={t("code_type")}
-          value={codeType}
-          onChange={(e) =>
-            setCodeType(
-              e.target.value as
-                | "class"
-                | "function"
-                | "interface"
-                | "variable"
-                | "other"
-            )
-          }
+          value={values.codeType}
+          onChange={(e) => handleChange("codeType", e.target.value as CodeType)}
         >
           <MenuItem value="class">{t("code_type_class")}</MenuItem>
           <MenuItem value="function">{t("code_type_function")}</MenuItem>
@@ -128,8 +143,8 @@ export default function CodeEditDialog({
         <TechnologySelect
           fullWidth
           level="code"
-          value={language}
-          onChange={setLanguage}
+          value={values.language}
+          onChange={(value) => handleChange("language", value)}
           label={t("language")}
           placeholder={t("select_language")}
         />
@@ -137,9 +152,9 @@ export default function CodeEditDialog({
       <CodeEditor
         theme={dialogThemes.code}
         label={t("code")}
-        value={code}
-        onChange={setCode}
-        language={language}
+        value={values.code}
+        onChange={(value) => handleChange("code", value)}
+        language={values.language}
         placeholder={t("code_placeholder")}
       />
       <ThemedTextField
@@ -147,8 +162,8 @@ export default function CodeEditDialog({
         margin="dense"
         label={t("url")}
         fullWidth
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
+        value={values.url}
+        onChange={(e) => handleChange("url", e.target.value)}
       />
     </BaseEditDialog>
   );
