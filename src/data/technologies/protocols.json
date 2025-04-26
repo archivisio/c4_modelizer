@@ -62,7 +62,7 @@
   {
     "id": "ssh",
     "name": "SSH",
-    "color": "#263238",
+    "color": "#f3f3f3",
     "levels": ["connection"]
   },
   {

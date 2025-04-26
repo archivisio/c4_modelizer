@@ -20,7 +20,7 @@
   {
     "id": "ansible",
     "name": "Ansible",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {
@@ -32,7 +32,7 @@
   {
     "id": "githubactions",
     "name": "GitHub Actions",
-    "color": "#181717",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {

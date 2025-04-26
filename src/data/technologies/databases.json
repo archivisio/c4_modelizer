@@ -14,7 +14,7 @@
   {
     "id": "mariadb",
     "name": "MariaDB",
-    "color": "#003545",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {
@@ -50,7 +50,7 @@
   {
     "id": "sqlite",
     "name": "SQLite",
-    "color": "#003b57",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {
@@ -62,7 +62,7 @@
   {
     "id": "elasticsearch",
     "name": "Elasticsearch",
-    "color": "#005571",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {

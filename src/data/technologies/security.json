@@ -2,7 +2,7 @@
   {
     "id": "vault",
     "name": "HashiCorp Vault",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["system", "container"]
   },
   {

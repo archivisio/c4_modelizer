@@ -2,7 +2,7 @@
   {
     "id": "kafka",
     "name": "Apache Kafka",
-    "color": "#231f20",
+    "color": "#f3f3f3",
     "levels": ["container", "connection"]
   },
   {

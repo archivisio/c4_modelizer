@@ -44,7 +44,7 @@
   {
     "id": "cpp",
     "name": "C++",
-    "color": "#00599c",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code", "connection"]
   },
   {
@@ -164,7 +164,7 @@
   {
     "id": "lua",
     "name": "Lua",
-    "color": "#000080",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code", "connection"]
   },
   {

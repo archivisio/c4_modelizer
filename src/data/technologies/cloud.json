@@ -44,7 +44,7 @@
   {
     "id": "vercel",
     "name": "Vercel",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["system", "container"]
   },
   {

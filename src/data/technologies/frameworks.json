@@ -20,7 +20,7 @@
   {
     "id": "nextjs",
     "name": "Next.js",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code"]
   },
   {
@@ -44,7 +44,7 @@
   {
     "id": "django",
     "name": "Django",
-    "color": "#092e20",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code"]
   },
   {
@@ -62,13 +62,13 @@
   {
     "id": "flask",
     "name": "Flask",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code"]
   },
   {
     "id": "express",
     "name": "Express",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code"]
   },
   {
@@ -80,7 +80,7 @@
   {
     "id": "symfony",
     "name": "Symfony",
-    "color": "#000000",
+    "color": "#f3f3f3",
     "levels": ["container", "component", "code"]
   },
   {
