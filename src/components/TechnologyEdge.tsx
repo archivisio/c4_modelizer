@@ -47,9 +47,9 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
   const enhancedStyle = {
     ...style,
     stroke: color,
-    strokeWidth: 2.5,
+    strokeWidth: 2,
     opacity: 0.8,
-    filter: `drop-shadow(0 0 5px ${color}80)`,
+    filter: `drop-shadow(0 0 3px ${color}80)`,
   };
   const markerEndId = `marker-${id}`;
   const customMarkerEnd = `url(#${markerEndId})`;
@@ -59,14 +59,14 @@ const TechnologyEdge: React.FC<EdgeProps> = (props) => {
       <defs>
         <marker
           id={markerEndId}
-          markerWidth="18"
-          markerHeight="18"
-          refX="10"
-          refY="5"
+          markerWidth="12"
+          markerHeight="12"
+          refX="6.5"
+          refY="3"
           orient="auto"
         >
           <path
-            d="M 0 0 L 10 5 L 0 10 z"
+            d="M 0 0 L 6 3 L 0 6 z"
             fill={color}
             style={{ filter: `drop-shadow(0 0 2px ${color}80)` }}
           />
