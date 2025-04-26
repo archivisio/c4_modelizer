@@ -2,49 +2,42 @@
   {
     "id": "stripe",
     "name": "Stripe",
-    "icon": "StripeOriginalWordmark",
     "color": "#635bff",
     "levels": ["system", "container"]
   },
   {
     "id": "twilio",
     "name": "Twilio",
-    "icon": "TwilioOriginal",
     "color": "#f22f46",
     "levels": ["system", "container"]
   },
   {
     "id": "sendgrid",
     "name": "SendGrid",
-    "icon": "SendgridOriginal",
     "color": "#00b3e3",
     "levels": ["system", "container"]
   },
   {
     "id": "shopify",
     "name": "Shopify",
-    "icon": "ShopifyOriginalWordmark",
     "color": "#96bf48",
     "levels": ["system", "container"]
   },
   {
     "id": "algolia",
     "name": "Algolia",
-    "icon": "AlgoliaOriginal",
     "color": "#5468ff",
     "levels": ["system", "container"]
   },
   {
     "id": "cloudflare",
     "name": "Cloudflare",
-    "icon": "CloudflareOriginalWordmark",
     "color": "#f38020",
     "levels": ["system", "container"]
   },
   {
     "id": "mailchimp",
     "name": "Mailchimp",
-    "icon": "MailchimpOriginal",
     "color": "#ffe01b",
     "levels": ["system", "container"]
   }

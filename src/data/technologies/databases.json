@@ -2,98 +2,84 @@
   {
     "id": "postgresql",
     "name": "PostgreSQL",
-    "icon": "PostgresqlOriginalWordmark",
     "color": "#336791",
     "levels": ["container", "connection"]
   },
   {
     "id": "mysql",
     "name": "MySQL",
-    "icon": "MysqlOriginalWordmark",
     "color": "#4479a1",
     "levels": ["container", "connection"]
   },
   {
     "id": "mariadb",
     "name": "MariaDB",
-    "icon": "MariadbOriginalWordmark",
     "color": "#003545",
     "levels": ["container", "connection"]
   },
   {
     "id": "mongodb",
     "name": "MongoDB",
-    "icon": "MongodbOriginalWordmark",
     "color": "#47a248",
     "levels": ["container", "connection"]
   },
   {
     "id": "redis",
     "name": "Redis",
-    "icon": "RedisOriginalWordmark",
     "color": "#dc382d",
     "levels": ["container", "connection"]
   },
   {
     "id": "cassandra",
     "name": "Cassandra",
-    "icon": "CassandraOriginalWordmark",
     "color": "#1287b1",
     "levels": ["container", "connection"]
   },
   {
     "id": "oracle",
     "name": "Oracle",
-    "icon": "OracleOriginalWordmark",
     "color": "#f80000",
     "levels": ["container", "connection"]
   },
   {
     "id": "sqlserver",
     "name": "SQL Server",
-    "icon": "MicrosoftsqlserverPlainWordmark",
     "color": "#cc2927",
     "levels": ["container", "connection"]
   },
   {
     "id": "sqlite",
     "name": "SQLite",
-    "icon": "SqliteOriginalWordmark",
     "color": "#003b57",
     "levels": ["container", "connection"]
   },
   {
     "id": "dynamodb",
     "name": "DynamoDB",
-    "icon": "AmazonwebservicesOriginal",
     "color": "#4053d6",
     "levels": ["container", "connection"]
   },
   {
     "id": "elasticsearch",
     "name": "Elasticsearch",
-    "icon": "ElasticsearchOriginalWordmark",
     "color": "#005571",
     "levels": ["container", "connection"]
   },
   {
     "id": "neo4j",
     "name": "Neo4j",
-    "icon": "Neo4jOriginalWordmark",
     "color": "#008cc1",
     "levels": ["container", "connection"]
   },
   {
     "id": "couchdb",
     "name": "CouchDB",
-    "icon": "CouchdbOriginalWordmark",
     "color": "#e42528",
     "levels": ["container", "connection"]
   },
   {
     "id": "influxdb",
     "name": "InfluxDB",
-    "icon": "InfluxdbOriginalWordmark",
     "color": "#22ADF6",
     "levels": ["container", "connection"]
   }

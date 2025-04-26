@@ -1,0 +1,74 @@
+[
+  {
+    "id": "http",
+    "name": "HTTP",
+    "color": "#1a73e8",
+    "levels": ["connection"]
+  },
+  {
+    "id": "https",
+    "name": "HTTPS",
+    "color": "#34a853",
+    "levels": ["connection"]
+  },
+  {
+    "id": "tcp",
+    "name": "TCP",
+    "color": "#4285f4",
+    "levels": ["connection"]
+  },
+  {
+    "id": "udp",
+    "name": "UDP",
+    "color": "#fbbc05",
+    "levels": ["connection"]
+  },
+  {
+    "id": "websocket",
+    "name": "WebSocket",
+    "color": "#ff5722",
+    "levels": ["connection"]
+  },
+  {
+    "id": "grpc",
+    "name": "gRPC",
+    "color": "#795548",
+    "levels": ["connection"]
+  },
+  {
+    "id": "mqtt",
+    "name": "MQTT",
+    "color": "#ff6600",
+    "levels": ["connection"]
+  },
+  {
+    "id": "amqp",
+    "name": "AMQP",
+    "color": "#00acc1",
+    "levels": ["connection"]
+  },
+  {
+    "id": "ftp",
+    "name": "FTP",
+    "color": "#1565c0",
+    "levels": ["connection"]
+  },
+  {
+    "id": "sftp",
+    "name": "SFTP",
+    "color": "#2e7d32",
+    "levels": ["connection"]
+  },
+  {
+    "id": "ssh",
+    "name": "SSH",
+    "color": "#263238",
+    "levels": ["connection"]
+  },
+  {
+    "id": "dns",
+    "name": "DNS",
+    "color": "#1e88e5",
+    "levels": ["connection"]
+  }
+]

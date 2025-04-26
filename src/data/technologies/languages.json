@@ -2,210 +2,180 @@
   {
     "id": "java",
     "name": "Java",
-    "icon": "JavaOriginalWordmark",
     "color": "#f89820",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "javascript",
     "name": "JavaScript",
-    "icon": "JavascriptOriginal",
     "color": "#f7df1e",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "typescript",
     "name": "TypeScript",
-    "icon": "TypescriptOriginal",
     "color": "#3178c6",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "python",
     "name": "Python",
-    "icon": "PythonOriginalWordmark",
     "color": "#3776ab",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "ruby",
     "name": "Ruby",
-    "icon": "RubyOriginalWordmark",
     "color": "#cc342d",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "php",
     "name": "PHP",
-    "icon": "PhpOriginal",
     "color": "#777bb4",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "c",
     "name": "C",
-    "icon": "COriginal",
     "color": "#a8b9cc",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "cpp",
     "name": "C++",
-    "icon": "CplusplusOriginal",
     "color": "#00599c",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "csharp",
     "name": "C#",
-    "icon": "CsharpOriginal",
     "color": "#239120",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "go",
     "name": "Go",
-    "icon": "GoOriginalWordmark",
     "color": "#00add8",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "kotlin",
     "name": "Kotlin",
-    "icon": "KotlinOriginal",
     "color": "#0095d5",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "swift",
     "name": "Swift",
-    "icon": "SwiftOriginal",
     "color": "#fa7343",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "dart",
     "name": "Dart",
-    "icon": "DartOriginal",
     "color": "#0175c2",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "rust",
     "name": "Rust",
-    "icon": "RustOriginal",
     "color": "#dea584",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "scala",
     "name": "Scala",
-    "icon": "ScalaOriginalWordmark",
     "color": "#dc322f",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "perl",
     "name": "Perl",
-    "icon": "PerlOriginal",
     "color": "#39457e",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "haskell",
     "name": "Haskell",
-    "icon": "HaskellOriginal",
     "color": "#5e5086",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "elixir",
     "name": "Elixir",
-    "icon": "ElixirOriginal",
     "color": "#4b275f",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "clojure",
     "name": "Clojure",
-    "icon": "ClojureOriginal",
     "color": "#5881d8",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "erlang",
     "name": "Erlang",
-    "icon": "ErlangOriginal",
     "color": "#a90533",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "objectivec",
     "name": "Objective-C",
-    "icon": "ObjectivecOriginal",
     "color": "#438eff",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "shell",
     "name": "Shell",
-    "icon": "BashOriginal",
     "color": "#89e051",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "powershell",
     "name": "PowerShell",
-    "icon": "PowershellOriginal",
     "color": "#5391fe",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "r",
     "name": "R",
-    "icon": "ROriginal",
     "color": "#276dc3",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "matlab",
     "name": "MATLAB",
-    "icon": "MatlabOriginal",
     "color": "#e16737",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "fsharp",
     "name": "F#",
-    "icon": "FsharpOriginal",
     "color": "#378bba",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "visualbasic",
     "name": "Visual Basic",
-    "icon": "VisualstudioPlain",
     "color": "#5c2d91",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "lua",
     "name": "Lua",
-    "icon": "LuaOriginal",
     "color": "#000080",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "groovy",
     "name": "Groovy",
-    "icon": "GroovyOriginal",
     "color": "#4298b8",
     "levels": ["container", "component", "code", "connection"]
   },
   {
     "id": "nim",
     "name": "Nim",
-    "icon": "NimOriginal",
     "color": "#ffe953",
     "levels": ["container", "component", "code", "connection"]
   }
