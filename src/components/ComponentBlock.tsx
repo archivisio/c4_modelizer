@@ -7,6 +7,7 @@ export type ComponentBlockData = {
   name: string;
   description?: string;
   technology?: string;
+  url?: string;
   onEdit: () => void;
 };
 
@@ -24,6 +25,7 @@ const ComponentBlock: React.FC<ComponentBlockProps> = memo(
         name={typedData.name}
         description={typedData.description}
         technology={typedData.technology}
+        url={typedData.url}
         onEdit={typedData.onEdit}
         colors={COLORS.tertiary}
         selected={selected}

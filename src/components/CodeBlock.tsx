@@ -10,6 +10,7 @@ export type CodeBlockData = {
   codeType: "class" | "function" | "interface" | "variable" | "other";
   language?: string;
   code?: string;
+  url?: string;
   onEdit: () => void;
 };
 
@@ -56,6 +57,7 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
       name={typedData.name}
       description={typedData.description}
       technology={typedData.language}
+      url={typedData.url}
       onEdit={typedData.onEdit}
       colors={getCodeColors()}
       selected={selected}
