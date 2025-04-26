@@ -14,8 +14,9 @@ import {
   NodeChange,
   ReactFlow,
   SelectionMode,
+  applyNodeChanges,
 } from "@xyflow/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import CodeBlock from "./CodeBlock";
@@ -83,13 +84,19 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   const toggleInteractionMode = useCallback(() => {
     setIsSelectionMode((prev) => !prev);
   }, []);
-  const handleNodesChange = useCallback(
-    (changes: NodeChange[]) => {
-      changes.forEach((change) => {
-        if (change.type === "position" && change.id && change.position) {
-          onNodePositionChange(change.id, change.position);
-        }
-      });
+  const [internalNodes, setInternalNodes] = useState<Node[]>(nodes);
+
+  useEffect(() => {
+    setInternalNodes(nodes);
+  }, [nodes]);
+
+  const handleNodesChange = useCallback((changes: NodeChange[]) => {
+    setInternalNodes((nds) => applyNodeChanges(changes, nds));
+  }, []);
+
+  const handleNodeDragStop = useCallback(
+    (_: React.MouseEvent, node: Node) => {
+      onNodePositionChange(node.id, node.position);
     },
     [onNodePositionChange]
   );
@@ -162,11 +169,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
       sx={{ width: "100vw", height: "calc(100vh - 100px)", bgcolor: "#0a1929" }}
     >
       <ReactFlow
-        nodes={nodes}
+        nodes={internalNodes}
         edges={preparedEdges}
         edgeTypes={{ technology: TechnologyEdge }}
         onConnect={onConnect}
         onNodesChange={handleNodesChange}
+        onNodeDragStop={handleNodeDragStop}
         nodeTypes={nodeTypes}
         onNodeDoubleClick={handleNodeDoubleClick}
         onEdgeClick={onEdgeClick ? handleEdgeClick : undefined}
