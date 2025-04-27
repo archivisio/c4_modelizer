@@ -18,6 +18,7 @@ import NavBar from "./components/NavBar";
 import SystemEditDialog from "./components/SystemEditDialog";
 import Toolbar from "./components/Toolbar";
 import "./i18n";
+import { useNavigation } from "./hooks/useNavigation";
 import { useC4Store } from "./store/c4Store";
 import {
   CodeBlock,
@@ -48,9 +49,6 @@ function App() {
     connectCodeElements,
     updateConnection,
     removeConnection,
-    setActiveSystem,
-    setActiveContainer,
-    setActiveComponent,
     setModel,
   } = useC4Store();
 
@@ -75,15 +73,14 @@ function App() {
     });
   };
 
+  const { t } = useTranslation();
   const [editId, setEditId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditingContainer, setIsEditingContainer] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
-
   const [connectionDialogOpen, setConnectionDialogOpen] = useState(false);
   const [editingConnection, setEditingConnection] =
     useState<ConnectionInfo | null>(null);
-  const { t } = useTranslation();
 
   const activeSystem = useMemo(
     () =>
@@ -443,17 +440,31 @@ function App() {
     handleImportModel(file, setModel, setImportError);
   };
 
+  const { navigateToContainer, navigateToComponent, navigateToCode } =
+    useNavigation();
+
   const handleNodeDoubleClick = useCallback(
     (nodeId: string) => {
       if (model.viewLevel === "system") {
-        setActiveSystem(nodeId);
+        navigateToContainer(nodeId);
       } else if (model.viewLevel === "container") {
-        setActiveContainer(nodeId);
+        if (model.activeSystemId) {
+          navigateToComponent(model.activeSystemId, nodeId);
+        }
       } else if (model.viewLevel === "component") {
-        setActiveComponent(nodeId);
+        if (model.activeSystemId && model.activeContainerId) {
+          navigateToCode(model.activeSystemId, model.activeContainerId, nodeId);
+        }
       }
     },
-    [model.viewLevel, setActiveSystem, setActiveContainer, setActiveComponent]
+    [
+      model.viewLevel,
+      model.activeSystemId,
+      model.activeContainerId,
+      navigateToContainer,
+      navigateToComponent,
+      navigateToCode,
+    ]
   );
 
   const handleNodePositionChange = useCallback(
@@ -624,8 +635,6 @@ function App() {
     setConnectionDialogOpen(true);
   }, []);
 
-
-
   const handleNodeDelete = useCallback(
     (id: string) => {
       const level = model.viewLevel;
@@ -656,7 +665,7 @@ function App() {
       removeComponent,
       removeCodeElement,
       setDialogOpen,
-      setEditId
+      setEditId,
     ]
   );
 
@@ -817,7 +826,6 @@ function App() {
 
         <ErrorNotification message={importError} />
 
-        {/* Dialog d'édition de connexion */}
         {connectionDialogOpen && (
           <ConnectionEditDialog
             open={connectionDialogOpen}

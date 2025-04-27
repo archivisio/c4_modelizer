@@ -1,8 +1,9 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
+import { Box, Breadcrumbs, Link } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useC4Store } from "../store/c4Store";
+import { useNavigation } from "../hooks/useNavigation";
 
 interface NavBarProps {
   systemName?: string;
@@ -15,25 +16,31 @@ const NavBar: React.FC<NavBarProps> = ({
   containerName,
   componentName,
 }) => {
-  const { setViewLevel, model } = useC4Store();
+  const { model } = useC4Store();
   const { t } = useTranslation();
+  const { 
+    navigateToSystem, 
+    navigateToContainer, 
+    navigateToComponent, 
+    navigateToCode 
+  } = useNavigation();
 
   const handleSystemsClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    setViewLevel("system");
+    navigateToSystem();
   };
 
   const handleContainersClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (model.activeSystemId) {
-      setViewLevel("container");
+      navigateToContainer(model.activeSystemId);
     }
   };
 
   const handleComponentsClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (model.activeSystemId && model.activeContainerId) {
-      setViewLevel("component");
+      navigateToComponent(model.activeSystemId, model.activeContainerId);
     }
   };
 
@@ -121,9 +128,26 @@ const NavBar: React.FC<NavBarProps> = ({
           )}
 
         {model.viewLevel === "code" && componentName && (
-          <Typography color="#51a2ff" sx={{ fontWeight: 500 }}>
+          <Link
+            underline="hover"
+            color="#51a2ff"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              if (model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+                navigateToCode(model.activeSystemId, model.activeContainerId, model.activeComponentId);
+              }
+            }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              fontWeight: 500,
+              transition: "all 0.2s ease",
+              "&:hover": { color: "#51a2ff" },
+            }}
+          >
             {componentName} {t("code")}
-          </Typography>
+          </Link>
         )}
       </Breadcrumbs>
     </Box>
