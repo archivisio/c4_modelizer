@@ -13,6 +13,46 @@ interface TechnologySelectProps {
   placeholder?: string;
 }
 
+const getLevelColors = (level: TechnologyLevel) => {
+  switch (level) {
+    case "container":
+      return {
+        border: "rgba(0, 150, 136, 0.3)",
+        borderHover: "rgba(0, 150, 136, 0.5)",
+        borderFocus: "#00897b",
+        labelFocus: "#4db6ac",
+      };
+    case "component":
+      return {
+        border: "rgba(255, 152, 0, 0.3)",
+        borderHover: "rgba(255, 152, 0, 0.5)",
+        borderFocus: "#f57c00",
+        labelFocus: "#ffb74d",
+      };
+    case "code":
+      return {
+        border: "rgba(156, 39, 176, 0.3)",
+        borderHover: "rgba(156, 39, 176, 0.5)",
+        borderFocus: "#9c27b0",
+        labelFocus: "#ce93d8",
+      };
+    case "connection":
+      return {
+        border: "rgba(0, 176, 255, 0.3)",
+        borderHover: "rgba(0, 176, 255, 0.5)",
+        borderFocus: "#0288d1",
+        labelFocus: "#29b6f6",
+      };
+    default:
+      return {
+        border: "rgba(81, 162, 255, 0.3)",
+        borderHover: "rgba(81, 162, 255, 0.5)",
+        borderFocus: "#1976d2",
+        labelFocus: "#51a2ff",
+      };
+  }
+};
+
 const TechnologySelect = ({
   fullWidth = false,
   level,
@@ -23,47 +63,7 @@ const TechnologySelect = ({
 }: TechnologySelectProps) => {
   const { t } = useTranslation();
 
-  const getLevelColors = () => {
-    switch (level) {
-      case "container":
-        return {
-          border: "rgba(0, 150, 136, 0.3)",
-          borderHover: "rgba(0, 150, 136, 0.5)",
-          borderFocus: "#00897b",
-          labelFocus: "#4db6ac",
-        };
-      case "component":
-        return {
-          border: "rgba(255, 152, 0, 0.3)",
-          borderHover: "rgba(255, 152, 0, 0.5)",
-          borderFocus: "#f57c00",
-          labelFocus: "#ffb74d",
-        };
-      case "code":
-        return {
-          border: "rgba(156, 39, 176, 0.3)",
-          borderHover: "rgba(156, 39, 176, 0.5)",
-          borderFocus: "#9c27b0",
-          labelFocus: "#ce93d8",
-        };
-      case "connection":
-        return {
-          border: "rgba(0, 176, 255, 0.3)",
-          borderHover: "rgba(0, 176, 255, 0.5)",
-          borderFocus: "#0288d1",
-          labelFocus: "#29b6f6",
-        };
-      default:
-        return {
-          border: "rgba(81, 162, 255, 0.3)",
-          borderHover: "rgba(81, 162, 255, 0.5)",
-          borderFocus: "#1976d2",
-          labelFocus: "#51a2ff",
-        };
-    }
-  };
-
-  const colors = getLevelColors();
+  const colors = getLevelColors(level);
   const [options, setOptions] = useState<Technology[]>([]);
   const [selectedTech, setSelectedTech] = useState<Technology | null>(null);
 
@@ -121,6 +121,7 @@ const TechnologySelect = ({
           label={label || t("technology")}
           placeholder={placeholder || t("select_technology")}
           fullWidth
+          margin="dense"
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": { borderColor: colors.border },

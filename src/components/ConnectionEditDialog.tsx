@@ -19,7 +19,7 @@ interface ConnectionValues {
   label: string;
   technology: string;
   description: string;
-  labelPosition: number; // 0 = début, 100 = fin
+  labelPosition: number;
   bidirectional: boolean;
 }
 
@@ -46,7 +46,10 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         label: connection.label || "",
         technology: connection.technology || "",
         description: connection.description || "",
-        labelPosition: typeof connection.labelPosition === "number" ? connection.labelPosition : 50,
+        labelPosition:
+          typeof connection.labelPosition === "number"
+            ? connection.labelPosition
+            : 50,
         bidirectional: connection.bidirectional || false,
       });
     } else {
@@ -60,8 +63,14 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
     }
   }, [connection]);
 
-  const handleChange = (field: keyof ConnectionValues, value: string | number | boolean) => {
-    setValues((prev) => ({ ...prev, [field]: field === "labelPosition" ? Number(value) : value }));
+  const handleChange = (
+    field: keyof ConnectionValues,
+    value: string | number | boolean
+  ) => {
+    setValues((prev) => ({
+      ...prev,
+      [field]: field === "labelPosition" ? Number(value) : value,
+    }));
   };
 
   const handleSave = () => {
@@ -121,22 +130,35 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         placeholder={t("select_technology")}
       />
       <Box sx={{ mt: 2 }}>
-        <label style={{ color: '#fff', fontSize: 14, marginBottom: 4, display: 'block' }}>
-          {t("label_position") || "Position du label et de l'icône sur la connexion"}
+        <label
+          style={{
+            color: "#fff",
+            fontSize: 14,
+            marginBottom: 4,
+            display: "block",
+          }}
+        >
+          {t("label_position") ||
+            "Position du label et de l'icône sur la connexion"}
         </label>
         <Slider
           value={values.labelPosition}
           min={0}
           max={100}
           step={1}
-          marks={[{ value: 0, label: t('start') }, { value: 100, label: t('end') }]}
-          onChange={(_, val) => handleChange("labelPosition", typeof val === 'number' ? val : 50)}
+          marks={[
+            { value: 0, label: t("start") },
+            { value: 100, label: t("end") },
+          ]}
+          onChange={(_, val) =>
+            handleChange("labelPosition", typeof val === "number" ? val : 50)
+          }
           valueLabelDisplay="auto"
-          sx={{ 
+          sx={{
             color: dialogThemes.connection.primaryColor,
-            '& .MuiSlider-markLabel': {
-              color: '#fff'
-            }
+            "& .MuiSlider-markLabel": {
+              color: "#fff",
+            },
           }}
         />
       </Box>
@@ -147,23 +169,23 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
               checked={values.bidirectional}
               onChange={(e) => handleChange("bidirectional", e.target.checked)}
               sx={{
-                color: '#fff',
-                '&.Mui-checked': {
+                color: "#fff",
+                "&.Mui-checked": {
                   color: dialogThemes.connection.primaryColor,
                 },
-                '& .MuiSvgIcon-root': {
-                  width: '0.9em',
-                  height: '0.9em',
-                }
+                "& .MuiSvgIcon-root": {
+                  width: "0.9em",
+                  height: "0.9em",
+                },
               }}
             />
           }
           label={t("bidirectional_connection")}
           sx={{
-            '& .MuiFormControlLabel-label': {
-              color: '#fff',
-              fontSize: 14
-            }
+            "& .MuiFormControlLabel-label": {
+              color: "#fff",
+              fontSize: 14,
+            },
           }}
         />
       </Box>
