@@ -213,6 +213,7 @@ function App() {
             technology: conn.technology,
             description: conn.description,
             labelPosition: conn.labelPosition,
+            bidirectional: conn.bidirectional,
           },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
@@ -234,6 +235,7 @@ function App() {
             technology: conn.technology,
             description: conn.description,
             labelPosition: conn.labelPosition,
+            bidirectional: conn.bidirectional,
           },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
@@ -255,6 +257,7 @@ function App() {
             technology: conn.technology,
             description: conn.description,
             labelPosition: conn.labelPosition,
+            bidirectional: conn.bidirectional,
           },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
@@ -276,6 +279,7 @@ function App() {
             technology: conn.technology,
             description: conn.description,
             labelPosition: conn.labelPosition,
+            bidirectional: conn.bidirectional,
           },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
@@ -588,6 +592,7 @@ function App() {
         technology: connectionInfo.technology,
         description: connectionInfo.description,
         labelPosition: connectionInfo.labelPosition,
+        bidirectional: connectionInfo.bidirectional,
       };
 
       updateConnection(
@@ -612,6 +617,7 @@ function App() {
       technology: edge.data?.technology as string | undefined,
       description: edge.data?.description as string | undefined,
       labelPosition: edge.data?.labelPosition as number | undefined,
+      bidirectional: edge.data?.bidirectional as boolean | undefined,
     };
 
     setEditingConnection(connectionInfo);

@@ -1,13 +1,50 @@
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, type EdgeProps } from "@xyflow/react";
+import {
+  BaseEdge,
+  EdgeLabelRenderer,
+  getBezierPath,
+  type EdgeProps,
+} from "@xyflow/react";
 import React from "react";
 import TechnologyIcon from "./TechnologyIcon";
 
 const ICON_SIZE = 18;
 
-function cubicBezierPoint(t: number, p0: number, p1: number, p2: number, p3: number) {
+function cubicBezierPoint(
+  t: number,
+  p0: number,
+  p1: number,
+  p2: number,
+  p3: number
+) {
   const mt = 1 - t;
-  return mt * mt * mt * p0 + 3 * mt * mt * t * p1 + 3 * mt * t * t * p2 + t * t * t * p3;
+  return (
+    mt * mt * mt * p0 +
+    3 * mt * mt * t * p1 +
+    3 * mt * t * t * p2 +
+    t * t * t * p3
+  );
 }
+
+type GetCurvedPathParams = {
+  sourceX: number;
+  sourceY: number;
+  targetX: number;
+  targetY: number;
+  sourcePosition?: string;
+  targetPosition?: string;
+};
+
+const getCurvedPath = (
+  { sourceX, sourceY, targetX, targetY }: GetCurvedPathParams,
+  offset: number
+) => {
+  const centerX = (sourceX + targetX) / 2;
+  const centerY = (sourceY + targetY) / 2;
+
+  return `M ${sourceX} ${sourceY} Q ${centerX} ${
+    centerY + offset
+  } ${targetX} ${targetY}`;
+};
 
 const TechnologyEdge: React.FC<EdgeProps> = ({
   id,
@@ -21,32 +58,115 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
   markerEnd,
   ...props
 }) => {
-  const [edgePath] = getBezierPath({
+  const isBidirectional = props.data?.bidirectional === true;
+
+  const edgePathParams = {
     sourceX,
     sourceY,
+    sourcePosition,
     targetX,
     targetY,
-    sourcePosition,
     targetPosition,
-  });
+  };
 
-  const labelPosition = typeof props.data?.labelPosition === 'number' ? props.data.labelPosition : 50;
+  let edgePath = "";
+  if (isBidirectional) {
+    const isHorizontal =
+      Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY);
+    const offset = isHorizontal
+      ? sourceY < targetY
+        ? -25
+        : 25
+      : sourceX < targetX
+      ? 25
+      : -25;
+
+    edgePath = getCurvedPath(edgePathParams, offset);
+  } else {
+    [edgePath] = getBezierPath(edgePathParams);
+  }
+
+  const labelPosition =
+    typeof props.data?.labelPosition === "number"
+      ? props.data.labelPosition
+      : 50;
   const t = Math.max(0, Math.min(1, labelPosition / 100));
-  let bezierX = 0, bezierY = 0;
-  const bezierMatch = edgePath.match(
-    /M\s*([\d.eE+-]+),([\d.eE+-]+)\s*C\s*([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)/
-  );
-  if (bezierMatch) {
-    const [x1, y1, x2, y2, x3, y3, x4, y4] = bezierMatch.slice(1, 9).map(Number);
-    bezierX = cubicBezierPoint(t, x1, x2, x3, x4);
-    bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
+  let bezierX = 0,
+    bezierY = 0;
+
+  if (isBidirectional) {
+    const centerX = (sourceX + targetX) / 2;
+    const centerY = (sourceY + targetY) / 2;
+    const isHorizontal =
+      Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY);
+    const offset = isHorizontal
+      ? sourceY < targetY
+        ? -25
+        : 25
+      : sourceX < targetX
+      ? 25
+      : -25;
+
+    const p0x = sourceX;
+    const p0y = sourceY;
+    const p1x = centerX;
+    const p1y = centerY + offset;
+    const p2x = targetX;
+    const p2y = targetY;
+
+    const mt = 1 - t;
+    bezierX = mt * mt * p0x + 2 * mt * t * p1x + t * t * p2x;
+    bezierY = mt * mt * p0y + 2 * mt * t * p1y + t * t * p2y;
+  } else {
+    const bezierMatch = edgePath.match(
+      /M\s*([\d.eE+-]+),([\d.eE+-]+)\s*C\s*([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)/
+    );
+    if (bezierMatch) {
+      const [x1, y1, x2, y2, x3, y3, x4, y4] = bezierMatch
+        .slice(1, 9)
+        .map(Number);
+      bezierX = cubicBezierPoint(t, x1, x2, x3, x4);
+      bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
+    }
   }
 
   const technologyId = props.data?.technologyId;
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} />
+      {isBidirectional && (
+        <svg>
+          <defs>
+            <marker
+              id={`bidirectional-marker-${id}`}
+              markerWidth="8"
+              markerHeight="8"
+              refX="0"
+              refY="4"
+              orient="auto"
+            >
+              <polyline
+                points="0,0 0,8 8,4 0,0"
+                fill="#51a2ff"
+                transform="translate(8, 0) scale(-1, 1)"
+              />
+            </marker>
+          </defs>
+        </svg>
+      )}
+
+      <BaseEdge
+        id={id}
+        path={edgePath}
+        markerEnd={markerEnd}
+        style={{
+          ...style,
+          markerStart: isBidirectional
+            ? `url(#bidirectional-marker-${id})`
+            : undefined,
+          animation: isBidirectional ? "none" : style?.animation,
+        }}
+      />
       <EdgeLabelRenderer>
         <div
           style={{

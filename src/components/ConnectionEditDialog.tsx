@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Slider } from "@mui/material";
+import { Box, Slider, Checkbox, FormControlLabel } from "@mui/material";
 import { ConnectionInfo } from "../types/connection";
 import BaseEditDialog from "./common/BaseEditDialog";
 import { dialogThemes } from "./common/dialogThemes";
@@ -20,6 +20,7 @@ interface ConnectionValues {
   technology: string;
   description: string;
   labelPosition: number; // 0 = début, 100 = fin
+  bidirectional: boolean;
 }
 
 const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
@@ -36,6 +37,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
     technology: "",
     description: "",
     labelPosition: 50,
+    bidirectional: false,
   });
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         technology: connection.technology || "",
         description: connection.description || "",
         labelPosition: typeof connection.labelPosition === "number" ? connection.labelPosition : 50,
+        bidirectional: connection.bidirectional || false,
       });
     } else {
       setValues({
@@ -52,11 +55,12 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         technology: "",
         description: "",
         labelPosition: 50,
+        bidirectional: false,
       });
     }
   }, [connection]);
 
-  const handleChange = (field: keyof ConnectionValues, value: string | number) => {
+  const handleChange = (field: keyof ConnectionValues, value: string | number | boolean) => {
     setValues((prev) => ({ ...prev, [field]: field === "labelPosition" ? Number(value) : value }));
   };
 
@@ -69,6 +73,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
       technology: values.technology,
       description: values.description,
       labelPosition: values.labelPosition,
+      bidirectional: values.bidirectional,
     });
   };
 
@@ -124,10 +129,42 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
           min={0}
           max={100}
           step={1}
-          marks={[{ value: 0, label: t('start') || 'Début' }, { value: 100, label: t('end') || 'Fin' }]}
+          marks={[{ value: 0, label: t('start') }, { value: 100, label: t('end') }]}
           onChange={(_, val) => handleChange("labelPosition", typeof val === 'number' ? val : 50)}
           valueLabelDisplay="auto"
-          sx={{ color: dialogThemes.connection.primaryColor }}
+          sx={{ 
+            color: dialogThemes.connection.primaryColor,
+            '& .MuiSlider-markLabel': {
+              color: '#fff'
+            }
+          }}
+        />
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={values.bidirectional}
+              onChange={(e) => handleChange("bidirectional", e.target.checked)}
+              sx={{
+                color: '#fff',
+                '&.Mui-checked': {
+                  color: dialogThemes.connection.primaryColor,
+                },
+                '& .MuiSvgIcon-root': {
+                  width: '0.9em',
+                  height: '0.9em',
+                }
+              }}
+            />
+          }
+          label={t("bidirectional_connection")}
+          sx={{
+            '& .MuiFormControlLabel-label': {
+              color: '#fff',
+              fontSize: 14
+            }
+          }}
         />
       </Box>
     </BaseEditDialog>

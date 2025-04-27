@@ -11,6 +11,7 @@ export interface ConnectionInfo {
   sourceHandle?: string | null;
   targetHandle?: string | null;
   labelPosition?: number;
+  bidirectional?: boolean;
 }
 
 export interface ConnectionData {
@@ -21,6 +22,7 @@ export interface ConnectionData {
   sourceHandle?: string | null;
   targetHandle?: string | null;
   labelPosition?: number;
+  bidirectional?: boolean;
 }
 
 export interface ConnectionEditDialogProps {
