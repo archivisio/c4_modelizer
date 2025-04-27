@@ -10,6 +10,7 @@ import monitoring from './technologies/monitoring.json';
 import saas from './technologies/saas.json';
 import security from './technologies/security.json';
 import systems from './technologies/systems.json';
+import protocols from './technologies/protocols.json';
 
 export interface Technology {
   id: string;
@@ -19,7 +20,7 @@ export interface Technology {
   levels: TechnologyLevel[];
 }
 
-export const technologies = [...cloud, ...codes, ...databases, ...devops, ...frameworks, ...languages, ...messageBrokers, ...monitoring, ...saas, ...security, ...systems] as Technology[];
+export const technologies = [...cloud, ...codes, ...databases, ...devops, ...frameworks, ...languages, ...messageBrokers, ...monitoring, ...saas, ...security, ...systems, ...protocols] as Technology[];
 
 export const getTechnologiesByLevel = (level: TechnologyLevel): Technology[] => {
   return technologies.filter(tech => tech.levels.includes(level)).sort((a, b) => a.name.localeCompare(b.name));
