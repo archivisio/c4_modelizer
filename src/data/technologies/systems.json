@@ -1,5 +1,11 @@
 [
   {
+    "id": "users",
+    "name": "Users",
+    "color": "#f3f3f3",
+    "levels": ["system"]
+  },
+  {
     "id": "server",
     "name": "Server",
     "color": "#6d4c41",

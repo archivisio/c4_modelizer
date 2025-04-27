@@ -22,7 +22,7 @@ export interface Technology {
 export const technologies = [...cloud, ...codes, ...databases, ...devops, ...frameworks, ...languages, ...messageBrokers, ...monitoring, ...saas, ...security, ...systems] as Technology[];
 
 export const getTechnologiesByLevel = (level: TechnologyLevel): Technology[] => {
-  return technologies.filter(tech => tech.levels.includes(level));
+  return technologies.filter(tech => tech.levels.includes(level)).sort((a, b) => a.name.localeCompare(b.name));
 };
 
 export const getTechnologyById = (id: string): Technology | undefined => {

@@ -105,6 +105,7 @@ import {
   Storage,
   SwapHoriz,
   VpnLock,
+  Person,
 } from "@mui/icons-material";
 
 interface IconProps {
@@ -221,8 +222,8 @@ export const iconMap: Record<string, React.ComponentType<IconProps>> = {
   ftp: CloudUpload,
   sftp: CloudUpload,
   ssh: Security,
+  users: Person,
   dns: Dns,
-
   default: Storage,
 };
 
