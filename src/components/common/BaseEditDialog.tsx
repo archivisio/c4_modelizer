@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ConfirmDialog from "../ConfirmDialog";
+import ConfirmDialog from "./ConfirmDialog";
 
 export interface DialogTheme {
   primaryColor: string;

@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CodeEditDialog from "./components/CodeEditDialog";
 import ComponentEditDialog from "./components/ComponentEditDialog";
-import ConfirmDialog from "./components/ConfirmDialog";
+import ConfirmDialog from "./components/common/ConfirmDialog";
 import ConnectionEditDialog from "./components/ConnectionEditDialog";
 import ContainerEditDialog from "./components/ContainerEditDialog";
 import ErrorNotification from "./components/ErrorNotification";
