@@ -12,6 +12,7 @@ import {
   MiniMap,
   Node,
   NodeChange,
+  PanOnScrollMode,
   ReactFlow,
   SelectionMode,
   applyNodeChanges,
@@ -172,6 +173,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         selectionMode={SelectionMode.Partial}
         selectionKeyCode={null}
         panOnDrag={isSelectionMode ? [1, 2] : [0, 1, 2]}
+        zoomOnScroll={false}
+        zoomOnPinch={true}
+        panOnScroll={true}
+        panOnScrollMode={PanOnScrollMode.Free}
       >
         <Background
           variant={BackgroundVariant.Dots}
