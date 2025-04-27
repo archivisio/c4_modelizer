@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
 import { Connection, Edge, Node, ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import CodeEditDialog from "./components/CodeEditDialog";
 import ComponentEditDialog from "./components/ComponentEditDialog";
+import ConfirmDialog from "./components/ConfirmDialog";
 import ConnectionEditDialog from "./components/ConnectionEditDialog";
 import ContainerEditDialog from "./components/ContainerEditDialog";
 import ErrorNotification from "./components/ErrorNotification";
@@ -52,6 +53,27 @@ function App() {
     setActiveComponent,
     setModel,
   } = useC4Store();
+
+  const [openConfirmReset, setOpenConfirmReset] = useState(false);
+  const resetButtonRef = useRef<HTMLButtonElement>(null);
+
+  const handleOpenResetDialog = () => setOpenConfirmReset(true);
+  const handleCloseResetDialog = () => {
+    setOpenConfirmReset(false);
+    resetButtonRef.current?.focus();
+  };
+
+  const handleResetStore = () => {
+    setOpenConfirmReset(false);
+    useC4Store.persist.clearStorage();
+    setModel({
+      viewLevel: "system",
+      systems: [],
+      activeSystemId: undefined,
+      activeContainerId: undefined,
+      activeComponentId: undefined,
+    });
+  };
 
   const [editId, setEditId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -187,7 +209,11 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
+          data: {
+            technology: conn.technology,
+            description: conn.description,
+            labelPosition: conn.labelPosition,
+          },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -204,7 +230,11 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
+          data: {
+            technology: conn.technology,
+            description: conn.description,
+            labelPosition: conn.labelPosition,
+          },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -221,7 +251,11 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
+          data: {
+            technology: conn.technology,
+            description: conn.description,
+            labelPosition: conn.labelPosition,
+          },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -238,7 +272,11 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
+          data: {
+            technology: conn.technology,
+            description: conn.description,
+            labelPosition: conn.labelPosition,
+          },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -618,8 +656,6 @@ function App() {
     ]
   );
 
-
-
   return (
     <ReactFlowProvider>
       <Box sx={{ height: "100vh", bgcolor: "#0a1929", color: "#fff" }}>
@@ -627,7 +663,18 @@ function App() {
           onAddSystem={handleAddElement}
           onExport={handleExport}
           onImport={handleImport}
+          onReset={handleOpenResetDialog}
           model={model}
+          ref={resetButtonRef}
+        />
+        <ConfirmDialog
+          open={openConfirmReset}
+          title="Reset model ?"
+          content="This action will delete your entire diagram and reset the application. Are you sure you want to continue?"
+          onCancel={handleCloseResetDialog}
+          onConfirm={handleResetStore}
+          confirmText="Yes, reset"
+          cancelText="Cancel"
         />
 
         <NavBar
@@ -654,7 +701,15 @@ function App() {
             initialTechnology={(editingElement as SystemBlock).technology || ""}
             initialUrl={(editingElement as SystemBlock).url || ""}
             onSave={(name, description, technology, url) => {
-              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
+              handleDialogSave(
+                name,
+                description,
+                technology,
+                undefined,
+                undefined,
+                undefined,
+                url
+              );
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
@@ -664,7 +719,7 @@ function App() {
               setEditId(null);
             }}
           />
-        )} 
+        )}
 
         {isEditingContainer && editingElement && (
           <ContainerEditDialog
@@ -676,7 +731,15 @@ function App() {
             }
             initialUrl={(editingElement as ContainerBlock).url || ""}
             onSave={(name, description, technology, url) => {
-              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
+              handleDialogSave(
+                name,
+                description,
+                technology,
+                undefined,
+                undefined,
+                undefined,
+                url
+              );
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
@@ -698,7 +761,15 @@ function App() {
             }
             initialUrl={(editingElement as ComponentBlock).url || ""}
             onSave={(name, description, technology, url) => {
-              handleDialogSave(name, description, technology, undefined, undefined, undefined, url);
+              handleDialogSave(
+                name,
+                description,
+                technology,
+                undefined,
+                undefined,
+                undefined,
+                url
+              );
             }}
             onDelete={() => {
               handleNodeDelete(editingElement.id);
