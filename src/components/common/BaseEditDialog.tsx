@@ -4,13 +4,13 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
   Tooltip,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ConfirmDialog from "../ConfirmDialog";
 
 export interface DialogTheme {
   primaryColor: string;
@@ -221,40 +221,15 @@ export default function BaseEditDialog({
         </Button>
       </DialogActions>
 
-      {/* Dialogue de confirmation de suppression */}
-      <Dialog
+      <ConfirmDialog
         open={showDeleteConfirmation}
-        onClose={() => setShowDeleteConfirmation(false)}
-        aria-labelledby="delete-confirmation-dialog-title"
-        aria-describedby="delete-confirmation-dialog-description"
-        PaperProps={{ sx: dialogStyles.confirmDialog }}
-      >
-        <DialogTitle id="delete-confirmation-dialog-title" sx={dialogStyles.confirmTitle}>
-          {deleteTitle || t("confirm_delete")}
-        </DialogTitle>
-        <DialogContent sx={dialogStyles.confirmContent}>
-          <DialogContentText id="delete-confirmation-dialog-description" sx={dialogStyles.confirmText}>
-            {deleteConfirmationMessage || t("delete_confirmation")}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions sx={dialogStyles.confirmActions}>
-          <Button
-            onClick={() => setShowDeleteConfirmation(false)}
-            variant="outlined"
-            sx={dialogStyles.confirmCancelButton}
-          >
-            {t("cancel")}
-          </Button>
-          <Button
-            onClick={handleDelete}
-            variant="contained"
-            color="error"
-            sx={dialogStyles.confirmDeleteButton}
-          >
-            {t("delete")}
-          </Button>
-        </DialogActions>
-      </Dialog>
+        title={deleteTitle || t("confirm_delete")}
+        content={deleteConfirmationMessage || t("delete_confirmation")}
+        onCancel={() => setShowDeleteConfirmation(false)}
+        onConfirm={handleDelete}
+        confirmText={t("delete")}
+        cancelText={t("cancel")}
+      />
     </Dialog>
   );
 }

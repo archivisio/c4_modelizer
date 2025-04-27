@@ -618,31 +618,27 @@ function App() {
     setConnectionDialogOpen(true);
   }, []);
 
+
+
   const handleNodeDelete = useCallback(
-    (nodeId: string) => {
-      if (model.viewLevel === "system") {
-        removeSystem(nodeId);
-      } else if (model.viewLevel === "container" && model.activeSystemId) {
-        removeContainer(model.activeSystemId, nodeId);
-      } else if (
-        model.viewLevel === "component" &&
-        model.activeSystemId &&
-        model.activeContainerId
-      ) {
-        removeComponent(model.activeSystemId, model.activeContainerId, nodeId);
-      } else if (
-        model.viewLevel === "code" &&
-        model.activeSystemId &&
-        model.activeContainerId &&
-        model.activeComponentId
-      ) {
-        removeCodeElement(
-          model.activeSystemId,
-          model.activeContainerId,
-          model.activeComponentId,
-          nodeId
-        );
+    (id: string) => {
+      const level = model.viewLevel;
+      const systemId = model.activeSystemId || "";
+      const containerId = model.activeContainerId || "";
+
+      if (level === "system") {
+        removeSystem(id);
+      } else if (level === "container" && systemId) {
+        removeContainer(systemId, id);
+      } else if (level === "component" && systemId && containerId) {
+        removeComponent(systemId, containerId, id);
+      } else if (level === "code" && systemId && containerId) {
+        const componentId = model.activeComponentId || "";
+        removeCodeElement(systemId, containerId, componentId, id);
       }
+
+      setDialogOpen(false);
+      setEditId(null);
     },
     [
       model.viewLevel,
@@ -653,6 +649,8 @@ function App() {
       removeContainer,
       removeComponent,
       removeCodeElement,
+      setDialogOpen,
+      setEditId
     ]
   );
 
