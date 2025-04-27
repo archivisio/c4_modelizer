@@ -187,7 +187,7 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description },
+          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -204,7 +204,7 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description },
+          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -221,7 +221,7 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description },
+          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -238,7 +238,7 @@ function App() {
           sourceHandle: conn.sourceHandle,
           targetHandle: conn.targetHandle,
           label: conn.label,
-          data: { technology: conn.technology, description: conn.description },
+          data: { technology: conn.technology, description: conn.description, labelPosition: conn.labelPosition },
           type: conn.technology || conn.label ? "technology" : "default",
         }))
       );
@@ -549,6 +549,7 @@ function App() {
         label: connectionInfo.label,
         technology: connectionInfo.technology,
         description: connectionInfo.description,
+        labelPosition: connectionInfo.labelPosition,
       };
 
       updateConnection(
@@ -572,7 +573,9 @@ function App() {
       label: edge.label as string | undefined,
       technology: edge.data?.technology as string | undefined,
       description: edge.data?.description as string | undefined,
+      labelPosition: edge.data?.labelPosition as number | undefined,
     };
+
     setEditingConnection(connectionInfo);
     setConnectionDialogOpen(true);
   }, []);

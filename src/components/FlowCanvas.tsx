@@ -129,30 +129,16 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   };
 
   const preparedEdges = edges.map((edge) => {
-    const technologyId = (edge.data &&
-      (edge.data.technology || edge.data.technologyId)) as string | undefined;
-
-    if (technologyId) {
-      return {
-        ...edge,
-        type: "technology",
-        data: {
-          ...edge.data,
-          technologyId,
-        },
-      };
-    }
-
-    return {
-      ...edge,
-      style: {
-        ...(edge.style || {}),
-        ...defaultEdgeOptions.style,
-      },
-      markerEnd: defaultEdgeOptions.markerEnd,
-      animated: edge.animated !== undefined ? edge.animated : true,
-    };
-  });
+  const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) as string | undefined;
+  return {
+    ...edge,
+    type: "technology",
+    data: {
+      ...edge.data,
+      technologyId,
+    },
+  };
+});
 
   const handleEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {

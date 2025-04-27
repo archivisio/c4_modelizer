@@ -10,6 +10,7 @@ export interface ConnectionInfo {
   description?: string;
   sourceHandle?: string | null;
   targetHandle?: string | null;
+  labelPosition?: number;
 }
 
 export interface ConnectionData {
@@ -19,6 +20,7 @@ export interface ConnectionData {
   description?: string;
   sourceHandle?: string | null;
   targetHandle?: string | null;
+  labelPosition?: number;
 }
 
 export interface ConnectionEditDialogProps {

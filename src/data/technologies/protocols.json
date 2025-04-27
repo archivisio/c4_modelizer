@@ -36,12 +36,6 @@
     "levels": ["connection"]
   },
   {
-    "id": "mqtt",
-    "name": "MQTT",
-    "color": "#ff6600",
-    "levels": ["connection"]
-  },
-  {
     "id": "amqp",
     "name": "AMQP",
     "color": "#00acc1",
