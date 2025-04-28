@@ -111,6 +111,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         fullWidth
         value={values.label}
         onChange={(e) => handleChange("label", e.target.value)}
+        data-testid="input_label"
       />
       <ThemedTextField
         theme={dialogThemes.connection}
@@ -121,6 +122,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         minRows={3}
         value={values.description}
         onChange={(e) => handleChange("description", e.target.value)}
+        data-testid="input_description"
       />
       <TechnologySelect
         level="connection"
@@ -154,6 +156,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
             handleChange("labelPosition", typeof val === "number" ? val : 50)
           }
           valueLabelDisplay="auto"
+          data-testid="input_label_position"
           sx={{
             color: dialogThemes.connection.primaryColor,
             "& .MuiSlider-markLabel": {
@@ -181,6 +184,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
             />
           }
           label={t("bidirectional_connection")}
+          data-testid="input_bidirectional"
           sx={{
             "& .MuiFormControlLabel-label": {
               color: "#fff",

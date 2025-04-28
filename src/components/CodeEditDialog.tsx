@@ -113,6 +113,7 @@ export default function CodeEditDialog({
         fullWidth
         value={values.name}
         onChange={(e) => handleChange("name", e.target.value)}
+        data-testid="input_name"
       />
       <ThemedTextField
         theme={dialogThemes.code}
@@ -123,6 +124,7 @@ export default function CodeEditDialog({
         minRows={3}
         value={values.description}
         onChange={(e) => handleChange("description", e.target.value)}
+        data-testid="input_description"
       />
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <ThemedTextField
@@ -132,6 +134,7 @@ export default function CodeEditDialog({
           label={t("code_type")}
           value={values.codeType}
           onChange={(e) => handleChange("codeType", e.target.value as CodeType)}
+          data-testid="input_type"
         >
           <MenuItem value="class">{t("code_type_class")}</MenuItem>
           <MenuItem value="function">{t("code_type_function")}</MenuItem>
@@ -164,6 +167,7 @@ export default function CodeEditDialog({
         fullWidth
         value={values.url}
         onChange={(e) => handleChange("url", e.target.value)}
+        data-testid="input_url"
       />
     </BaseEditDialog>
   );

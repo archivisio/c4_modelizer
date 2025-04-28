@@ -53,6 +53,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           </Typography>
           <Tooltip title={t("add_block")}>
             <IconButton
+              data-testid="toolbar-add-system"
               onClick={onAddSystem}
               sx={{
                 color: "#fff",
@@ -68,6 +69,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           </Tooltip>
           <Tooltip title={t("export_json")}>
             <IconButton
+              data-testid="toolbar-export-model"
               onClick={onExport}
               sx={{
                 color: "#fff",
@@ -83,6 +85,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           </Tooltip>
           <Tooltip title={t("import_json")}>
             <IconButton
+              data-testid="toolbar-import-model"
               component="span"
               onClick={() => fileInputRef.current?.click()}
               sx={{
@@ -99,6 +102,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
                 type="file"
                 accept="application/json"
                 ref={fileInputRef}
+                data-testid="toolbar-file-input"
                 style={{ display: "none" }}
                 onChange={onImport}
               />
@@ -106,6 +110,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           </Tooltip>
           <Tooltip title={t("reset_store") || "Reset"}>
             <IconButton
+              data-testid="toolbar-reset-model"
               component="span"
               onClick={onReset}
               ref={resetButtonRef as React.Ref<HTMLButtonElement>}

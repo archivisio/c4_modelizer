@@ -1,0 +1,18 @@
+{
+  "viewLevel": "system",
+  "systems": [
+    {
+      "name": "Test system",
+      "description": "Test description",
+      "position": {
+        "x": 390.6506732859385,
+        "y": 212.75231365828446
+      },
+      "connections": [],
+      "technology": "",
+      "url": "",
+      "id": "826a538b-df03-467f-bfd9-80ca92661648"
+    }
+  ],
+  "schemaVersion": 1
+}

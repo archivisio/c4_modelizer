@@ -82,6 +82,7 @@ export default function ContainerEditDialog({
         fullWidth
         value={values.name}
         onChange={(e) => handleChange("name", e.target.value)}
+        data-testid="input_name"
       />
       <ThemedTextField
         theme={dialogThemes.container}
@@ -92,6 +93,7 @@ export default function ContainerEditDialog({
         minRows={3}
         value={values.description}
         onChange={(e) => handleChange("description", e.target.value)}
+        data-testid="input_description"
       />
       <TechnologySelect
         level="container"
@@ -107,6 +109,7 @@ export default function ContainerEditDialog({
         fullWidth
         value={values.url}
         onChange={(e) => handleChange("url", e.target.value)}
+        data-testid="input_url"
       />
     </BaseEditDialog>
   );

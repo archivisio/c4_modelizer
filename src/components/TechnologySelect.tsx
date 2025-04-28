@@ -96,6 +96,7 @@ const TechnologySelect = ({
             key={key}
             component="li"
             sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            data-testid={`technology_option_${option.id}`}
             {...otherProps}
           >
             <Box
@@ -135,6 +136,7 @@ const TechnologySelect = ({
           }}
         />
       )}
+      data-testid="input_technology"
     />
   );
 };

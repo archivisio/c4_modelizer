@@ -105,6 +105,7 @@ const C4Block: React.FC<C4BlockProps> = ({
             key={`target-${index}`}
             type="target"
             position={position}
+            data-testid={`target-${position}-${index}`}
             id={`target-${position}-${index}`}
             style={{
               background: colorStyles.border,
@@ -118,6 +119,8 @@ const C4Block: React.FC<C4BlockProps> = ({
         <Handle
           type="target"
           position={handlePositions.target}
+          data-testid={`target-${handlePositions.target}`}
+          id={`target-${handlePositions.target}`}
           style={{
             background: colorStyles.border,
             border: `2px solid ${colorStyles.border}`,
@@ -305,6 +308,7 @@ const C4Block: React.FC<C4BlockProps> = ({
             type="source"
             position={position}
             id={`source-${position}-${index}`}
+            data-testid={`source-${position}-${index}`}
             style={{
               background: colorStyles.border,
               border: `2px solid ${colorStyles.border}`,
@@ -318,6 +322,8 @@ const C4Block: React.FC<C4BlockProps> = ({
         <Handle
           type="source"
           position={handlePositions.source}
+          id={`source-${handlePositions.source}`}
+          data-testid={`source-${handlePositions.source}`}
           style={{
             background: colorStyles.border,
             border: `2px solid ${colorStyles.border}`,

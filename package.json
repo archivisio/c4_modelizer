@@ -10,7 +10,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "type-check": "tsc -b",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cypress": "start-server-and-test dev http://localhost:5173 'cypress open'",
+    "test": "start-server-and-test dev http://localhost:5173 'cypress run'",
+    "test:ci": "cypress run"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -28,14 +31,19 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.3.0",
     "@eslint/js": "^9.22.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "cypress": "^14.3.2",
+    "cypress-file-upload": "^5.0.8",
+    "cypress-vite": "^1.6.0",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "start-server-and-test": "^2.0.11",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1"

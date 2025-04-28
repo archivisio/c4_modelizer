@@ -29,6 +29,7 @@ const TechnologyIcon = ({
         height: size,
         color: technology.color,
       }}
+      data-testid={`technology_icon_${technology.id}`}
     >
       <IconComponent size={size} />
     </Box>

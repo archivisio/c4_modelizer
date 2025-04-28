@@ -110,7 +110,10 @@ function App() {
           title="Reset model ?"
           content="This action will delete your entire diagram and reset the application. Are you sure you want to continue?"
           onCancel={handleCloseReset}
-          onConfirm={resetStore}
+          onConfirm={() => {
+            resetStore();
+            handleCloseReset();
+          }}
           confirmText="Yes, reset"
           cancelText="Cancel"
         />

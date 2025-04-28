@@ -114,6 +114,7 @@ const CodeEditor = ({
           onChange={handleChange}
           placeholder={placeholder}
           onBlur={() => setIsEditing(false)}
+          data-testid="input_code"
           autoFocus
           sx={{
             fontFamily: '"Fira Code", "Roboto Mono", monospace',
@@ -138,6 +139,7 @@ const CodeEditor = ({
         <Box onClick={() => setIsEditing(true)} sx={{ cursor: "pointer" }}>
           {editorValue ? (
             <SyntaxHighlighter
+              data-testid="input_code"
               language={getLanguage(language)}
               style={customStyle}
               wrapLines
@@ -147,6 +149,7 @@ const CodeEditor = ({
             </SyntaxHighlighter>
           ) : (
             <Box
+              data-testid="input_code"
               sx={{
                 backgroundColor: "rgba(0, 0, 0, 0.2)",
                 border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
@@ -160,7 +163,7 @@ const CodeEditor = ({
                 justifyContent: "center",
               }}
             >
-              {placeholder || "Cliquez pour ajouter du code"}
+              {placeholder}
             </Box>
           )}
         </Box>

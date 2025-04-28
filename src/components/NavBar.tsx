@@ -58,6 +58,7 @@ const NavBar: React.FC<NavBarProps> = ({
           <NavigateNextIcon fontSize="small" sx={{ color: "#51a2ff" }} />
         }
         aria-label="breadcrumb"
+        data-testid="breadcrumb"
       >
         <Link
           underline="hover"

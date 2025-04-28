@@ -197,6 +197,7 @@ export default function BaseEditDialog({
         {onDelete && (
           <Tooltip title={t("deleteNode")}>
             <IconButton
+              data-testid="dialog-delete-button"
               onClick={() => setShowDeleteConfirmation(true)}
               size="small"
               sx={dialogStyles.deleteButton}
@@ -208,10 +209,15 @@ export default function BaseEditDialog({
       </DialogTitle>
       <DialogContent sx={{ py: 3 }}>{children}</DialogContent>
       <DialogActions sx={dialogStyles.actions}>
-        <Button onClick={onClose} sx={dialogStyles.cancelButton}>
+        <Button 
+          data-testid="dialog-cancel-button"
+          onClick={onClose} 
+          sx={dialogStyles.cancelButton}
+        >
           {t("cancel")}
         </Button>
         <Button
+          data-testid="dialog-save-button"
           onClick={onSave}
           variant="contained"
           disabled={saveDisabled}

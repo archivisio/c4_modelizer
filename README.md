@@ -2,6 +2,7 @@
 
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/license-CC--BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![linter](https://github.com/Eth3rnit3/c4_modelizer/actions/workflows/lint.yaml/badge.svg)](https://github.com/Eth3rnit3/c4_modelizer/actions/workflows/lint.yaml)
+[![Cypress Tests](https://github.com/Eth3rnit3/c4_modelizer/actions/workflows/cypress.yml/badge.svg)](https://github.com/Eth3rnit3/c4_modelizer/actions/workflows/cypress.yml)
 [![Node.js >=22](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](https://nodejs.org/)
 [![Open Issues](https://img.shields.io/github/issues/eth3rnit3/c4_modelizer)](https://github.com/eth3rnit3/c4_modelizer/issues)
 

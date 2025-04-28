@@ -1,0 +1,41 @@
+{
+  "viewLevel": "system",
+  "systems": [
+    {
+      "name": "Web applications",
+      "description": "This is web applications",
+      "position": {
+        "x": 547.9671119398533,
+        "y": 366.0553034567022
+      },
+      "connections": [],
+      "technology": "aws",
+      "url": "",
+      "id": "d9e4531e-9a15-470e-9c43-4646064802c0"
+    },
+    {
+      "name": "Mobile applications",
+      "description": "This is mobile applications",
+      "position": {
+        "x": 373.23184192523127,
+        "y": 81.67708672691737
+      },
+      "connections": [
+        {
+          "targetId": "d9e4531e-9a15-470e-9c43-4646064802c0",
+          "sourceHandle": "source-bottom-1",
+          "targetHandle": "target-top-1",
+          "label": "Call endpoints",
+          "technology": "",
+          "description": "",
+          "labelPosition": 50,
+          "bidirectional": false
+        }
+      ],
+      "technology": "mobile-device",
+      "url": "",
+      "id": "4b8ed889-5ec1-4f50-befa-d35c3ef06131"
+    }
+  ],
+  "schemaVersion": 1
+}
