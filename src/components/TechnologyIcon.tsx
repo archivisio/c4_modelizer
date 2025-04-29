@@ -30,13 +30,14 @@ const TechnologyIcon = ({
         color: technology.color,
       }}
       data-testid={`technology_icon_${technology.id}`}
+      aria-label={technology.name}
     >
       <IconComponent size={size} />
     </Box>
   );
 
   if (showTooltip) {
-    return <Tooltip title={technology.name}>{content}</Tooltip>;
+    return <Tooltip title={technology.name} arrow>{content}</Tooltip>;
   }
 
   return content;

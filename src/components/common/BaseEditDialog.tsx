@@ -195,12 +195,13 @@ export default function BaseEditDialog({
       <DialogTitle sx={dialogStyles.title}>
         <div>{title}</div>
         {onDelete && (
-          <Tooltip title={t("deleteNode")}>
+          <Tooltip title={t("deleteNode")} arrow>
             <IconButton
               data-testid="dialog-delete-button"
               onClick={() => setShowDeleteConfirmation(true)}
               size="small"
               sx={dialogStyles.deleteButton}
+              aria-label={t("deleteNode")}
             >
               <DeleteIcon />
             </IconButton>

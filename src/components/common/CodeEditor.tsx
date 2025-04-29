@@ -1,5 +1,6 @@
 import { Box, FormLabel, SxProps, TextField, Theme } from "@mui/material";
 import { CSSProperties, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { dialogThemes } from "./dialogThemes";
@@ -60,6 +61,7 @@ const CodeEditor = ({
   theme,
   sx = {},
 }: CodeEditorProps) => {
+  const { t } = useTranslation();
   const [editorValue, setEditorValue] = useState(value || "");
   const [isEditing, setIsEditing] = useState(false);
 
@@ -136,7 +138,7 @@ const CodeEditor = ({
           }}
         />
       ) : (
-        <Box onClick={() => setIsEditing(true)} sx={{ cursor: "pointer" }}>
+        <Box onClick={() => setIsEditing(true)} sx={{ cursor: "pointer" }} title={t("click_to_edit")}>
           {editorValue ? (
             <SyntaxHighlighter
               data-testid="input_code"
@@ -163,7 +165,7 @@ const CodeEditor = ({
                 justifyContent: "center",
               }}
             >
-              {placeholder}
+              {placeholder || t("enter_code_here")}
             </Box>
           )}
         </Box>

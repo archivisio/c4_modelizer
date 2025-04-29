@@ -6,10 +6,10 @@ describe('C4 Modelizer - Code Level', () => {
   })
 
   it('should include code level', () => {
-    cy.get('body').should('contain', 'systems')
-    cy.get('body').should('contain', 'containers')
-    cy.get('body').should('contain', 'components')
-    cy.get('body').should('contain', 'code')
+    cy.get('body').should('contain', 'Systems')
+    cy.get('body').should('contain', 'Containers')
+    cy.get('body').should('contain', 'Components')
+    cy.get('body').should('contain', 'Code')
   })
 
   it('should add a code block and modify its name', () => {
@@ -31,7 +31,7 @@ describe('C4 Modelizer - Code Level', () => {
     cy.addNode()
     cy.get('.react-flow__node').first().click()
     // Ouvre la boîte de dialogue d'édition via aria-label
-    cy.get('.react-flow__node').first().find('button[aria-label="edit"]').click()
+    cy.get('.react-flow__node').first().find('button[aria-label="Edit"]').click()
     // Sélection du type via le combobox
     cy.get('[data-testid="input_type"] [role="combobox"]').click()
     cy.get('li[data-value="function"]').click()
@@ -44,7 +44,7 @@ describe('C4 Modelizer - Code Level', () => {
   it('should add a code block and modify its language', () => {
     cy.addNode()
     cy.get('.react-flow__node').first().click()
-    cy.get('.react-flow__node').first().find('button[aria-label="edit"]').click()
+    cy.get('.react-flow__node').first().find('button[aria-label="Edit"]').click()
     cy.get('[data-testid="input_technology"] input').focus().type('typescript')
     cy.get('li[data-option-index="0"]').click()
     cy.get('[data-testid="dialog-save-button"]').click()
@@ -54,7 +54,7 @@ describe('C4 Modelizer - Code Level', () => {
   it('should add a code block and modify its code content', () => {
     cy.addNode()
     cy.get('.react-flow__node').first().click()
-    cy.get('.react-flow__node').first().find('button[aria-label="edit"]').click()
+    cy.get('.react-flow__node').first().find('button[aria-label="Edit"]').click()
     cy.wait(100)
     cy.get('[data-testid="input_code"]')
       .click()

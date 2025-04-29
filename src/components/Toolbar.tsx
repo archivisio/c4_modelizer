@@ -51,10 +51,11 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           >
             {t("app_title", { Level: model.viewLevel })}
           </Typography>
-          <Tooltip title={t("add_block")}>
+          <Tooltip title={t("add_block")} arrow>
             <IconButton
               data-testid="toolbar-add-system"
               onClick={onAddSystem}
+              aria-label={t("add_block")}
               sx={{
                 color: "#fff",
                 background: "rgba(81, 162, 255, 0.1)",
@@ -67,10 +68,11 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
               <AddIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t("export_json")}>
+          <Tooltip title={t("export_json")} arrow>
             <IconButton
               data-testid="toolbar-export-model"
               onClick={onExport}
+              aria-label={t("export_json")}
               sx={{
                 color: "#fff",
                 background: "rgba(81, 162, 255, 0.1)",
@@ -83,11 +85,12 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
               <DownloadIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t("import_json")}>
+          <Tooltip title={t("import_json")} arrow>
             <IconButton
               data-testid="toolbar-import-model"
               component="span"
               onClick={() => fileInputRef.current?.click()}
+              aria-label={t("import_json")}
               sx={{
                 color: "#fff",
                 background: "rgba(81, 162, 255, 0.1)",
@@ -108,11 +111,12 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
               />
             </IconButton>
           </Tooltip>
-          <Tooltip title={t("reset_store") || "Reset"}>
+          <Tooltip title={t("reset_store")} arrow>
             <IconButton
               data-testid="toolbar-reset-model"
               component="span"
               onClick={onReset}
+              aria-label={t("reset_store")}
               ref={resetButtonRef as React.Ref<HTMLButtonElement>}
               sx={{
                 color: "#fff",

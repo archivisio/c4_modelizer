@@ -128,7 +128,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         level="connection"
         value={values.technology}
         onChange={(value) => handleChange("technology", value)}
-        label={t("connection_technology")}
+        label={t("technology")}
         placeholder={t("select_technology")}
       />
       <Box sx={{ mt: 2 }}>
@@ -140,8 +140,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
             display: "block",
           }}
         >
-          {t("label_position") ||
-            "Position du label et de l'icône sur la connexion"}
+          {t("label_position")}
         </label>
         <Slider
           value={values.labelPosition}

@@ -189,6 +189,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                   <IconButton
                     size="small"
                     onClick={() => window.open(url, "_blank")}
+                    aria-label={t("open_url")}
                     sx={{
                       backgroundColor: "rgba(0,0,0,0.3)",
                       color: "#fff",
@@ -233,6 +234,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                 <IconButton
                   size="small"
                   onClick={onEdit}
+                  aria-label={t("edit")}
                   sx={{
                     backgroundColor: "rgba(0,0,0,0.3)",
                     color: "#fff",

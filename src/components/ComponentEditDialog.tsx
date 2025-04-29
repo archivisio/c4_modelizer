@@ -99,7 +99,7 @@ export default function ComponentEditDialog({
         level="component"
         value={values.technology}
         onChange={(value) => handleChange("technology", value)}
-        label={t("component_technology")}
+        label={t("technology")}
         placeholder={t("select_technology")}
       />
       <ThemedTextField

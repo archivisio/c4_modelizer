@@ -6,10 +6,10 @@ describe('C4 Modelizer - Container Level', () => {
   })
 
   it('should include container level', () => {
-    cy.get('body').should('contain', 'systems')
-    cy.get('body').should('contain', 'containers')
-    cy.get('body').should('not.contain', 'components')
-    cy.get('body').should('not.contain', 'code')
+    cy.get('body').should('contain', 'Systems')
+    cy.get('body').should('contain', 'Containers')
+    cy.get('body').should('not.contain', 'Components')
+    cy.get('body').should('not.contain', 'Code')
   })
 
   it('should add a node and modify its name', () => {

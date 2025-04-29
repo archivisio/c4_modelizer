@@ -99,7 +99,7 @@ export default function ContainerEditDialog({
         level="container"
         value={values.technology}
         onChange={(value) => handleChange("technology", value)}
-        label={t("container_technology")}
+        label={t("technology")}
         placeholder={t("select_technology")}
       />
       <ThemedTextField

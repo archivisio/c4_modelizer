@@ -38,7 +38,7 @@ describe('C4 Modelizer - Navigation', () => {
     cy.editNodeProperty('name', 'Test Code')
     cy.get('.react-flow__node').contains('Test Code')
 
-    cy.get('[data-testid="breadcrumb"]').contains('systems').click()
+    cy.get('[data-testid="breadcrumb"]').contains('Systems').click()
     cy.url().should('not.include', '/container')
     cy.url().should('not.include', '/component')
     cy.url().should('not.include', '/code')
@@ -84,19 +84,19 @@ describe('C4 Modelizer - Navigation', () => {
 
     cy.url().should('include', '/code')
 
-    cy.get('[data-testid="breadcrumb"]').contains('components').click()
+    cy.get('[data-testid="breadcrumb"]').contains('Components').click()
     cy.url().should('include', '/container')
     cy.url().should('include', '/component')
     cy.url().should('not.include', '/code')
     cy.get('.react-flow__node').contains('Navigation Component')
 
-    cy.get('[data-testid="breadcrumb"]').contains('containers').click()
+    cy.get('[data-testid="breadcrumb"]').contains('Containers').click()
     cy.url().should('include', '/container')
     cy.url().should('not.include', '/component')
     cy.url().should('not.include', '/code')
     cy.get('.react-flow__node').contains('Navigation Container')
 
-    cy.get('[data-testid="breadcrumb"]').contains('systems').click()
+    cy.get('[data-testid="breadcrumb"]').contains('Systems').click()
     cy.url().should('not.include', '/container')
     cy.url().should('not.include', '/component')
     cy.url().should('not.include', '/code')

@@ -5,7 +5,7 @@ describe('C4 Modelizer - Toolbar', () => {
 
   it('should add a new node when clicking the add button', () => {
     cy.get('.react-flow__node').should('not.exist')
-    cy.addNode().contains('system')
+    cy.addNode().contains('New system')
   })
 
   it('should export the model as JSON', () => {

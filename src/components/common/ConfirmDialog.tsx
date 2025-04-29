@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -22,9 +23,12 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   content,
   onCancel,
   onConfirm,
-  confirmText = "Confirmer",
-  cancelText = "Annuler",
-}) => (
+  confirmText,
+  cancelText,
+}) => {
+  const { t } = useTranslation();
+  
+  return (
   <Dialog open={open} onClose={onCancel} data-testid="confirm-dialog">
     {title && <DialogTitle>{title}</DialogTitle>}
     <DialogContent>
@@ -32,13 +36,14 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     </DialogContent>
     <DialogActions>
       <Button onClick={onCancel} color="primary" data-testid="cancel-button">
-        {cancelText}
+        {cancelText || t("cancel")}
       </Button>
       <Button onClick={onConfirm} color="error" variant="contained" data-testid="confirm-button">
-        {confirmText}
+        {confirmText || t("confirm")}
       </Button>
     </DialogActions>
   </Dialog>
-);
+  );
+};
 
 export default ConfirmDialog;
