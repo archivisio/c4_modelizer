@@ -126,7 +126,7 @@ export default function CodeEditDialog({
         onChange={(e) => handleChange("description", e.target.value)}
         data-testid="input_description"
       />
-      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+      <Box sx={{ display: "flex", gap: 2 }}>
         <ThemedTextField
           fullWidth
           theme={dialogThemes.code}
@@ -135,6 +135,7 @@ export default function CodeEditDialog({
           value={values.codeType}
           onChange={(e) => handleChange("codeType", e.target.value as CodeType)}
           data-testid="input_type"
+          margin="dense"
         >
           <MenuItem value="class">{t("code_type_class")}</MenuItem>
           <MenuItem value="function">{t("code_type_function")}</MenuItem>

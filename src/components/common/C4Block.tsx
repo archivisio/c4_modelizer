@@ -289,11 +289,11 @@ const C4Block: React.FC<C4BlockProps> = ({
                 border: "1px solid rgba(255,255,255,0.1)",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                display: "-webkit-box",
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: "vertical",
                 lineHeight: "1.2em",
                 maxHeight: "3.6em",
+                whiteSpace: "nowrap",
               }}
             >
               {description}
