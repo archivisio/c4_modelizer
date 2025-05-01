@@ -1,9 +1,10 @@
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
+import { useReactFlow } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useC4Store } from "../store/c4Store";
 import { useNavigation } from "../hooks/useNavigation";
+import { useC4Store } from "../store/c4Store";
 
 interface NavBarProps {
   systemName?: string;
@@ -18,22 +19,25 @@ const NavBar: React.FC<NavBarProps> = ({
 }) => {
   const { model } = useC4Store();
   const { t } = useTranslation();
-  const { 
-    navigateToSystem, 
-    navigateToContainer, 
-    navigateToComponent, 
-    navigateToCode 
+  const {
+    navigateToSystem,
+    navigateToContainer,
+    navigateToComponent,
+    navigateToCode,
   } = useNavigation();
+  const reactFlowInstance = useReactFlow();
 
   const handleSystemsClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigateToSystem();
+    reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
   };
 
   const handleContainersClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (model.activeSystemId) {
       navigateToContainer(model.activeSystemId);
+      reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
     }
   };
 
@@ -41,6 +45,7 @@ const NavBar: React.FC<NavBarProps> = ({
     e.preventDefault();
     if (model.activeSystemId && model.activeContainerId) {
       navigateToComponent(model.activeSystemId, model.activeContainerId);
+      reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
     }
   };
 
@@ -135,8 +140,16 @@ const NavBar: React.FC<NavBarProps> = ({
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              if (model.activeSystemId && model.activeContainerId && model.activeComponentId) {
-                navigateToCode(model.activeSystemId, model.activeContainerId, model.activeComponentId);
+              if (
+                model.activeSystemId &&
+                model.activeContainerId &&
+                model.activeComponentId
+              ) {
+                navigateToCode(
+                  model.activeSystemId,
+                  model.activeContainerId,
+                  model.activeComponentId
+                );
               }
             }}
             sx={{

@@ -26,6 +26,16 @@ C4 Modelizer is a web application for visually modeling the software architectur
 - Import/export the model (with schema versioning)
 - Responsive and multilingual interface (i18n)
 
+## Demonstration
+
+### Application Overview
+
+![C4 Modelizer Application Demo](/doc/app.gif)
+
+### Import/Export Functionality
+
+![C4 Modelizer Import/Export Demo](/doc/import.gif)
+
 ## Main Dependencies
 
 - [Vite](https://vitejs.dev/) — Lightning-fast frontend tooling

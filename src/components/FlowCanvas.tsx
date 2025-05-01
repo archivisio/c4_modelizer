@@ -16,6 +16,7 @@ import {
   ReactFlow,
   SelectionMode,
   applyNodeChanges,
+  useReactFlow,
 } from "@xyflow/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,6 +82,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onEdgeClick,
 }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(true);
+  const reactFlowInstance = useReactFlow();
 
   const toggleInteractionMode = useCallback(() => {
     setIsSelectionMode((prev) => !prev);
@@ -108,9 +110,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 
       if (onNodeDoubleClick && viewLevel !== "code") {
         onNodeDoubleClick(node.id);
+        reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
       }
     },
-    [onNodeDoubleClick, viewLevel]
+    [onNodeDoubleClick, viewLevel, reactFlowInstance]
   );
 
   const defaultEdgeOptions = {
@@ -130,16 +133,17 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   };
 
   const preparedEdges = edges.map((edge) => {
-  const technologyId = (edge.data && (edge.data.technology || edge.data.technologyId)) as string | undefined;
-  return {
-    ...edge,
-    type: "technology",
-    data: {
-      ...edge.data,
-      technologyId,
-    },
-  };
-});
+    const technologyId = (edge.data &&
+      (edge.data.technology || edge.data.technologyId)) as string | undefined;
+    return {
+      ...edge,
+      type: "technology",
+      data: {
+        ...edge.data,
+        technologyId,
+      },
+    };
+  });
 
   const handleEdgeClick = useCallback(
     (event: React.MouseEvent, edge: Edge) => {
