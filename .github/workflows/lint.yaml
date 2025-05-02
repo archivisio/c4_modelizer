@@ -1,4 +1,5 @@
 name: linter
+
 on:
   push:
     branches:
@@ -6,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   lint:
