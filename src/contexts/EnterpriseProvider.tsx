@@ -7,12 +7,14 @@ export default function Provider({
   children: React.ReactNode;
 }) {
   const c4Store = useC4Store();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [EnterpriseProvider, setEnterpriseProvider] = useState<React.ComponentType<any> | null>(null);
 
   useEffect(() => {
-      import("@c4-enterprise/enterprise-context")
-      .then((mod) => setEnterpriseProvider(() => mod.EnterpriseProvider))
-      .catch(() => setEnterpriseProvider(null));
+    //@ts-expect-error This is a dynamic import
+    import("@c4-enterprise/enterprise-context")
+    .then((mod) => setEnterpriseProvider(() => mod.EnterpriseProvider))
+    .catch(() => setEnterpriseProvider(null));
   }, []);
 
   if (!EnterpriseProvider) {
