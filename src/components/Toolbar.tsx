@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import DownloadIcon from "@mui/icons-material/Download";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
@@ -28,13 +27,6 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
   ) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const { t } = useTranslation();
-    const [AccountMenu, setAccountMenu] = useState<null | React.ComponentType>(null);
-
-    useEffect(() => {
-      import("@c4-enterprise/account-menu")
-        .then((mod) => setAccountMenu(() => mod.AccountMenu))
-        .catch(() => setAccountMenu(null));
-    }, []);
 
     return (
       <AppBar
@@ -59,8 +51,6 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           >
             {t("app_title", { Level: model.viewLevel })}
           </Typography>
-          {AccountMenu && <AccountMenu />}
-
           <Tooltip title={t("add_block")} arrow>
             <IconButton
               data-testid="toolbar-add-system"

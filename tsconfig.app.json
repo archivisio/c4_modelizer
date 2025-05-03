@@ -7,12 +7,6 @@
     "module": "ESNext",
     "skipLibCheck": true,
 
-    "paths": {
-      "@c4-enterprise/account-menu": [
-        "/Users/eth3rnit3/code/c4_enterprise/dist/libs/account-menu"
-      ]
-    },
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
