@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useC4Store } from "../store/c4Store";
 
 export default function Provider({
@@ -7,18 +7,29 @@ export default function Provider({
   children: React.ReactNode;
 }) {
   const c4Store = useC4Store();
+  const initialized = useRef(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [EnterpriseProvider, setEnterpriseProvider] = useState<React.ComponentType<any> | null>(null);
+  const [EnterpriseComponents, setEnterpriseComponents] = useState<{EnterpriseProvider: React.ComponentType<any>, Registry: any} | null>(null);
 
   useEffect(() => {
     //@ts-expect-error This is a dynamic import
     import("@c4-enterprise/enterprise-context")
-    .then((mod) => setEnterpriseProvider(() => mod.EnterpriseProvider))
-    .catch(() => setEnterpriseProvider(null));
+    .then((mod) => setEnterpriseComponents({
+      EnterpriseProvider: mod.EnterpriseProvider,
+      Registry: mod.Registry
+    }))
+    .catch(() => setEnterpriseComponents(null));
   }, []);
 
-  if (!EnterpriseProvider) {
-    return <>{children}</>;
+  useEffect(() => {
+    if (EnterpriseComponents && !initialized.current) {
+      EnterpriseComponents.Registry.registerStore(c4Store);
+      initialized.current = true;
+    }
+  }, [EnterpriseComponents, c4Store, initialized]);
+
+  if (!EnterpriseComponents) {
+    return children;
   }
-  return <EnterpriseProvider c4Store={c4Store}>{children}</EnterpriseProvider>;
+  return <EnterpriseComponents.EnterpriseProvider>{children}</EnterpriseComponents.EnterpriseProvider>;
 }
