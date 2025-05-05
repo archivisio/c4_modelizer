@@ -129,67 +129,117 @@ const C4Block: React.FC<C4BlockProps> = ({
           }}
         />
       )}
-
-      <Card sx={cardSx} className="tech-card">
-        <CardContent
-          sx={{
-            p: 1.5,
-            color: "#fff",
-            overflow: "hidden",
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
+      <Box
+        sx={{
+          backgroundColor: "#0a1929",
+          borderRadius: 3,
+        }}
+      >
+        <Card sx={cardSx} className="tech-card">
+          <CardContent
             sx={{
+              p: 1.5,
+              color: "#fff",
+              overflow: "hidden",
+              flex: 1,
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              mb: 1,
+              flexDirection: "column",
             }}
           >
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                gap: 1,
-                minWidth: 0,
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                mb: 1,
               }}
             >
-              {technology && (
-                <TechnologyIcon technologyId={technology} size={24} />
-              )}
-              <Typography
-                variant="subtitle1"
+              <Box
                 sx={{
-                  fontWeight: "bold",
-                  color: "#fff",
-                  textShadow: "0 0 10px rgba(255,255,255,0.3)",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: "130px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  minWidth: 0,
                 }}
               >
-                {name}
-              </Typography>
-            </Box>
+                {technology && (
+                  <TechnologyIcon technologyId={technology} size={24} />
+                )}
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#fff",
+                    textShadow: "0 0 10px rgba(255,255,255,0.3)",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    maxWidth: "130px",
+                  }}
+                >
+                  {name}
+                </Typography>
+              </Box>
 
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                minWidth: 0,
-              }}
-            >
-              {url && (
-                <Tooltip title={t("open_url")} arrow>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  minWidth: 0,
+                }}
+              >
+                {url && (
+                  <Tooltip title={t("open_url")} arrow>
+                    <IconButton
+                      size="small"
+                      onClick={() => window.open(url, "_blank")}
+                      aria-label={t("open_url")}
+                      sx={{
+                        backgroundColor: "rgba(0,0,0,0.3)",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: `rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.2)`,
+                          borderColor: colorStyles.hover,
+                          boxShadow: `0 0 5px rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.3)`,
+                        },
+                        "&:focus": {
+                          backgroundColor: `rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.2)`,
+                          borderColor: colorStyles.hover,
+                          boxShadow: `0 0 5px rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.3)`,
+                          outline: "none",
+                        },
+                        "&:focus-visible": {
+                          outline: "none",
+                        },
+                        width: 22,
+                        height: 22,
+                        minWidth: 22,
+                        minHeight: 22,
+                        border: `1px solid ${colorStyles.border}`,
+                        backdropFilter: "blur(4px)",
+                        transition: "all 0.2s ease",
+                        p: 0.5,
+                      }}
+                    >
+                      <OpenInNewIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                )}
+
+                <Tooltip title={t("edit")} arrow>
                   <IconButton
                     size="small"
-                    onClick={() => window.open(url, "_blank")}
-                    aria-label={t("open_url")}
+                    onClick={onEdit}
+                    aria-label={t("edit")}
                     sx={{
                       backgroundColor: "rgba(0,0,0,0.3)",
                       color: "#fff",
@@ -225,84 +275,39 @@ const C4Block: React.FC<C4BlockProps> = ({
                       p: 0.5,
                     }}
                   >
-                    <OpenInNewIcon fontSize="inherit" />
+                    <EditIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
-              )}
-
-              <Tooltip title={t("edit")} arrow>
-                <IconButton
-                  size="small"
-                  onClick={onEdit}
-                  aria-label={t("edit")}
-                  sx={{
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor: `rgba(${hexToRgb(
-                        colorStyles.hover
-                      )}, 0.2)`,
-                      borderColor: colorStyles.hover,
-                      boxShadow: `0 0 5px rgba(${hexToRgb(
-                        colorStyles.hover
-                      )}, 0.3)`,
-                    },
-                    "&:focus": {
-                      backgroundColor: `rgba(${hexToRgb(
-                        colorStyles.hover
-                      )}, 0.2)`,
-                      borderColor: colorStyles.hover,
-                      boxShadow: `0 0 5px rgba(${hexToRgb(
-                        colorStyles.hover
-                      )}, 0.3)`,
-                      outline: "none",
-                    },
-                    "&:focus-visible": {
-                      outline: "none",
-                    },
-                    width: 22,
-                    height: 22,
-                    minWidth: 22,
-                    minHeight: 22,
-                    border: `1px solid ${colorStyles.border}`,
-                    backdropFilter: "blur(4px)",
-                    transition: "all 0.2s ease",
-                    p: 0.5,
-                  }}
-                >
-                  <EditIcon fontSize="inherit" />
-                </IconButton>
-              </Tooltip>
+              </Box>
             </Box>
-          </Box>
 
-          {description && (
-            <Typography
-              variant="body2"
-              sx={{
-                mt: 1.5,
-                color: "rgba(255,255,255,0.8)",
-                backgroundColor: "rgba(0,0,0,0.2)",
-                p: 1,
-                borderRadius: 1,
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                lineHeight: "1.2em",
-                maxHeight: "3.6em",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {description}
-            </Typography>
-          )}
-          {children}
-        </CardContent>
-      </Card>
-
+            {description && (
+              <Typography
+                variant="body2"
+                sx={{
+                  mt: 1.5,
+                  color: "rgba(255,255,255,0.8)",
+                  backgroundColor: "rgba(0,0,0,0.2)",
+                  p: 1,
+                  borderRadius: 1,
+                  backdropFilter: "blur(4px)",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  lineHeight: "1.2em",
+                  maxHeight: "3.6em",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {description}
+              </Typography>
+            )}
+            {children}
+          </CardContent>
+        </Card>
+      </Box>
       {Array.isArray(handlePositions.source) ? (
         handlePositions.source.map((position, index) => (
           <Handle
