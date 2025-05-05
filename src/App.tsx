@@ -6,7 +6,7 @@ import CodeEditDialog from "./components/code/CodeEditDialog";
 import ConfirmDialog from "./components/common/ConfirmDialog";
 import ComponentEditDialog from "./components/ComponentEditDialog";
 import ConnectionEditDialog from "./components/ConnectionEditDialog";
-import ContainerEditDialog from "./components/ContainerEditDialog";
+import ContainerEditDialog from "./components/container/ContainerEditDialog";
 import ErrorNotification from "./components/ErrorNotification";
 import FlowCanvas from "./components/FlowCanvas";
 import NavBar from "./components/NavBar";

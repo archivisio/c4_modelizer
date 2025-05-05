@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./ComponentBlock";
-import ContainerBlock from "./ContainerBlock";
+import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
 

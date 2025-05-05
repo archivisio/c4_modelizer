@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import BaseEditDialog from "./common/BaseEditDialog";
-import { dialogThemes } from "./common/dialogThemes";
-import ThemedTextField from "./common/ThemedTextField";
-import TechnologySelect from "./TechnologySelect";
+import BaseEditDialog from "../common/BaseEditDialog";
+import { dialogThemes } from "../common/dialogThemes";
+import ThemedTextField from "../common/ThemedTextField";
+import TechnologySelect from "../TechnologySelect";
 
 interface ContainerEditDialogProps {
   open: boolean;
