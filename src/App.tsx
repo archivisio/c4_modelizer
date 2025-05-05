@@ -4,7 +4,7 @@ import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
 import CodeEditDialog from "./components/code/CodeEditDialog";
 import ConfirmDialog from "./components/common/ConfirmDialog";
-import ComponentEditDialog from "./components/ComponentEditDialog";
+import ComponentEditDialog from "./components/component/ComponentEditDialog";
 import ConnectionEditDialog from "./components/ConnectionEditDialog";
 import ContainerEditDialog from "./components/container/ContainerEditDialog";
 import ErrorNotification from "./components/ErrorNotification";
