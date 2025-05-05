@@ -1,11 +1,11 @@
-import { createContext, useContext } from "react";
 import {
   CodeBlock,
   ComponentBlock,
   ContainerBlock,
   SystemBlock,
-} from "../types/c4";
-import { ConnectionInfo } from "../types/connection";
+} from "@interfaces/c4";
+import { ConnectionInfo } from "@interfaces/connection";
+import { createContext, useContext } from "react";
 
 export type EditingElement =
   | SystemBlock

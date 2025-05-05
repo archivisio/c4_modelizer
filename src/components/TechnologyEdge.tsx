@@ -1,3 +1,4 @@
+import TechnologyIcon from "@components/TechnologyIcon";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -5,7 +6,6 @@ import {
   type EdgeProps,
 } from "@xyflow/react";
 import React from "react";
-import TechnologyIcon from "./TechnologyIcon";
 
 const ICON_SIZE = 18;
 

@@ -1,11 +1,11 @@
+import BaseEditDialog from "@components/common/BaseEditDialog";
+import { dialogThemes } from "@components/common/dialogThemes";
+import ThemedTextField from "@components/common/ThemedTextField";
+import TechnologySelect from "@components/TechnologySelect";
+import { ConnectionInfo } from "@interfaces/connection";
+import { Box, Checkbox, FormControlLabel, Slider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Box, Slider, Checkbox, FormControlLabel } from "@mui/material";
-import { ConnectionInfo } from "../types/connection";
-import BaseEditDialog from "./common/BaseEditDialog";
-import { dialogThemes } from "./common/dialogThemes";
-import ThemedTextField from "./common/ThemedTextField";
-import TechnologySelect from "./TechnologySelect";
 
 interface ConnectionEditDialogProps {
   open: boolean;

@@ -1,7 +1,7 @@
+import { useDialogs } from '@contexts/DialogContext';
+import { useC4Store } from '@store/c4Store';
 import { Node } from '@xyflow/react';
 import { useCallback, useMemo } from 'react';
-import { useDialogs } from '../contexts/DialogContext';
-import { useC4Store } from '../store/c4Store';
 
 export function useNodes() {
   const { model, updateSystem, updateContainer, updateComponent, updateCodeElement } = useC4Store();

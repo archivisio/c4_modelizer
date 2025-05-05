@@ -1,4 +1,4 @@
-import { TechnologyLevel } from '../types/c4';
+import { TechnologyLevel } from '@types/c4';
 import cloud from './technologies/cloud.json';
 import codes from './technologies/codes.json';
 import databases from './technologies/databases.json';

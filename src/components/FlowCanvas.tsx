@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
 import ContainerBlock from "./container/ContainerBlock";
-import SystemBlock from "./SystemBlock";
+import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
 
 interface FlowCanvasProps {

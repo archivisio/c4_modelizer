@@ -1,6 +1,6 @@
+import C4Block from "@components/common/C4Block";
+import { COLORS } from "@data/colors";
 import { Position } from "@xyflow/react";
-import { COLORS } from "../data/colors";
-import C4Block from "./common/C4Block";
 
 export type SystemBlockData = {
   name: string;

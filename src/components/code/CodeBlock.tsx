@@ -1,8 +1,8 @@
+import C4Block from "@components/common/C4Block";
+import { COLORS, ColorStyle } from "@data/colors";
 import { Box, Chip } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
-import { COLORS, ColorStyle } from "../../data/colors";
-import C4Block from "../common/C4Block";
 
 export type CodeBlockData = {
   name: string;

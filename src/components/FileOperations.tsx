@@ -1,5 +1,5 @@
-import { C4Model } from "../types/c4";
-import { exportModel, importModel } from "../utils/jsonIO";
+import { C4Model } from "@interfaces/c4";
+import { exportModel, importModel } from "@utils/jsonIO";
 
 export const handleExportModel = (model: C4Model): void => {
   const json = exportModel(model);

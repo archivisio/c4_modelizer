@@ -1,11 +1,11 @@
+import BaseEditDialog from "@components/common/BaseEditDialog";
+import CodeEditor from "@components/common/CodeEditor";
+import { dialogThemes } from "@components/common/dialogThemes";
+import ThemedTextField from "@components/common/ThemedTextField";
+import TechnologySelect from "@components/TechnologySelect";
 import { Box, MenuItem } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import BaseEditDialog from "../common/BaseEditDialog";
-import CodeEditor from "../common/CodeEditor";
-import { dialogThemes } from "../common/dialogThemes";
-import ThemedTextField from "../common/ThemedTextField";
-import TechnologySelect from "../TechnologySelect";
 
 interface CodeEditDialogProps {
   open: boolean;

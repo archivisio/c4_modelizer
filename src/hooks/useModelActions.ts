@@ -1,7 +1,7 @@
+import { CodeBlock } from '@interfaces/c4';
+import { useC4Store } from '@store/c4Store';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useC4Store } from '../store/c4Store';
-import { CodeBlock } from '../types/c4';
 
 export function useModelActions() {
   const {

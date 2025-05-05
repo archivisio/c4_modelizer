@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
@@ -11,7 +12,6 @@ import {
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { C4Model } from "../types/c4";
-import DeleteIcon from "@mui/icons-material/Delete";
 interface ToolbarProps {
   onAddSystem: () => void;
   onExport: () => void;

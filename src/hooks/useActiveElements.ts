@@ -1,5 +1,5 @@
+import { useC4Store } from '@store/c4Store';
 import { useMemo } from 'react';
-import { useC4Store } from '../store/c4Store';
 
 export function useActiveElements() {
   const { model } = useC4Store();

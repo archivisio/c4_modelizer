@@ -1,5 +1,5 @@
+import { useC4Store } from '@store/c4Store';
 import { useCallback, useEffect } from 'react';
-import { useC4Store } from '../store/c4Store';
 
 type ViewLevel = 'system' | 'container' | 'component' | 'code';
 

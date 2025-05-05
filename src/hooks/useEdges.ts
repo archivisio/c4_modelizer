@@ -1,8 +1,8 @@
+import { useDialogs } from '@contexts/DialogContext';
+import { ConnectionInfo } from '@interfaces/connection';
+import { useC4Store } from '@store/c4Store';
 import { Connection, Edge } from '@xyflow/react';
 import { useCallback, useMemo } from 'react';
-import { useC4Store } from '../store/c4Store';
-import { ConnectionInfo } from '../types/connection';
-import { useDialogs } from '../contexts/DialogContext';
 
 export function useEdges() {
   const {

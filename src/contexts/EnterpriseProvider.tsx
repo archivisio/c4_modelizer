@@ -1,5 +1,5 @@
+import { useC4Store } from "@store/c4Store";
 import { useEffect, useRef, useState } from "react";
-import { useC4Store } from "../store/c4Store";
 
 export default function Provider({
   children,
