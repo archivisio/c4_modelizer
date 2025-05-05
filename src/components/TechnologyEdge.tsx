@@ -25,27 +25,6 @@ function cubicBezierPoint(
   );
 }
 
-type GetCurvedPathParams = {
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition?: string;
-  targetPosition?: string;
-};
-
-const getCurvedPath = (
-  { sourceX, sourceY, targetX, targetY }: GetCurvedPathParams,
-  offset: number
-) => {
-  const centerX = (sourceX + targetX) / 2;
-  const centerY = (sourceY + targetY) / 2;
-
-  return `M ${sourceX} ${sourceY} Q ${centerX} ${
-    centerY + offset
-  } ${targetX} ${targetY}`;
-};
-
 const TechnologyEdge: React.FC<EdgeProps> = ({
   id,
   sourceX,
@@ -69,22 +48,7 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
     targetPosition,
   };
 
-  let edgePath = "";
-  if (isBidirectional) {
-    const isHorizontal =
-      Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY);
-    const offset = isHorizontal
-      ? sourceY < targetY
-        ? -25
-        : 25
-      : sourceX < targetX
-      ? 25
-      : -25;
-
-    edgePath = getCurvedPath(edgePathParams, offset);
-  } else {
-    [edgePath] = getBezierPath(edgePathParams);
-  }
+  const [edgePath] = getBezierPath(edgePathParams);
 
   const labelPosition =
     typeof props.data?.labelPosition === "number"
@@ -94,40 +58,15 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
   let bezierX = 0,
     bezierY = 0;
 
-  if (isBidirectional) {
-    const centerX = (sourceX + targetX) / 2;
-    const centerY = (sourceY + targetY) / 2;
-    const isHorizontal =
-      Math.abs(targetX - sourceX) > Math.abs(targetY - sourceY);
-    const offset = isHorizontal
-      ? sourceY < targetY
-        ? -25
-        : 25
-      : sourceX < targetX
-      ? 25
-      : -25;
-
-    const p0x = sourceX;
-    const p0y = sourceY;
-    const p1x = centerX;
-    const p1y = centerY + offset;
-    const p2x = targetX;
-    const p2y = targetY;
-
-    const mt = 1 - t;
-    bezierX = mt * mt * p0x + 2 * mt * t * p1x + t * t * p2x;
-    bezierY = mt * mt * p0y + 2 * mt * t * p1y + t * t * p2y;
-  } else {
-    const bezierMatch = edgePath.match(
-      /M\s*([\d.eE+-]+),([\d.eE+-]+)\s*C\s*([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)/
-    );
-    if (bezierMatch) {
-      const [x1, y1, x2, y2, x3, y3, x4, y4] = bezierMatch
-        .slice(1, 9)
-        .map(Number);
-      bezierX = cubicBezierPoint(t, x1, x2, x3, x4);
-      bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
-    }
+  const bezierMatch = edgePath.match(
+    /M\s*([\d.eE+-]+),([\d.eE+-]+)\s*C\s*([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)\s+([\d.eE+-]+),([\d.eE+-]+)/
+  );
+  if (bezierMatch) {
+    const [x1, y1, x2, y2, x3, y3, x4, y4] = bezierMatch
+      .slice(1, 9)
+      .map(Number);
+    bezierX = cubicBezierPoint(t, x1, x2, x3, x4);
+    bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
   }
 
   const technologyId = props.data?.technologyId;
