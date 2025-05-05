@@ -1,7 +1,7 @@
+import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '@interfaces/c4';
+import { ConnectionData } from '@interfaces/connection';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '@types/c4';
-import { ConnectionData } from '@types/connection';
 
 interface C4State {
   model: C4Model;
