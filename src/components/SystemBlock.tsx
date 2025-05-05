@@ -26,8 +26,8 @@ export default function SystemBlock({ data }: NodeProps) {
       technology={typedData.technology}
       url={typedData.url}
       handlePositions={{
-        source: [Position.Right, Position.Bottom, Position.Top],
-        target: [Position.Left, Position.Top, Position.Bottom],
+        source: [Position.Right, Position.Bottom, Position.Left, Position.Top],
+        target: [Position.Left, Position.Top, Position.Bottom, Position.Right],
       }}
     />
   );
