@@ -1,6 +1,6 @@
+import { ConnectionInfo } from "@interfaces/connection";
+import { useC4Store } from "@store/c4Store";
 import React, { useState } from "react";
-import { useC4Store } from "../store/c4Store";
-import { ConnectionInfo } from "../types/connection";
 import { DialogContext, DialogContextType } from "./DialogContext";
 
 export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({

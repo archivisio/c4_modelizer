@@ -1,7 +1,7 @@
+import C4Block from "@components/common/C4Block";
+import { COLORS } from "@data/colors";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
-import { COLORS } from "../data/colors";
-import C4Block from "./common/C4Block";
 
 export type ComponentBlockData = {
   name: string;
@@ -30,8 +30,8 @@ const ComponentBlock: React.FC<ComponentBlockProps> = memo(
         colors={COLORS.tertiary}
         selected={selected}
         handlePositions={{
-          source: [Position.Right, Position.Bottom, Position.Top],
-          target: [Position.Left, Position.Top, Position.Bottom],
+          source: [Position.Right, Position.Bottom, Position.Left, Position.Top],
+          target: [Position.Left, Position.Top, Position.Bottom, Position.Right],
         }}
       />
     );

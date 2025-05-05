@@ -1,6 +1,6 @@
+import { handleExportModel, handleImportModel } from '@components/FileOperations';
+import { useC4Store } from '@store/c4Store';
 import { useCallback } from 'react';
-import { handleExportModel, handleImportModel } from '../components/FileOperations';
-import { useC4Store } from '../store/c4Store';
 
 export function useFileOperations() {
   const { model, setModel } = useC4Store();

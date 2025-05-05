@@ -1,8 +1,8 @@
+import { getTechnologiesByLevel, Technology } from "@data/technologies";
+import { TechnologyLevel } from "@interfaces/c4";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getTechnologiesByLevel, Technology } from "../data/technologies";
-import { TechnologyLevel } from "../types/c4";
 
 interface TechnologySelectProps {
   fullWidth?: boolean;

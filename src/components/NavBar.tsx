@@ -1,10 +1,10 @@
+import { useNavigation } from "@hooks/useNavigation";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
+import { useC4Store } from "@store/c4Store";
 import { useReactFlow } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigation } from "../hooks/useNavigation";
-import { useC4Store } from "../store/c4Store";
 
 interface NavBarProps {
   systemName?: string;

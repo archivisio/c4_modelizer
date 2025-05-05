@@ -1,11 +1,11 @@
+import BaseEditDialog from "@components/common/BaseEditDialog";
+import { dialogThemes } from "@components/common/dialogThemes";
+import ThemedTextField from "@components/common/ThemedTextField";
+import TechnologySelect from "@components/TechnologySelect";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import BaseEditDialog from "./common/BaseEditDialog";
-import { dialogThemes } from "./common/dialogThemes";
-import ThemedTextField from "./common/ThemedTextField";
-import TechnologySelect from "./TechnologySelect";
 
-interface ContainerEditDialogProps {
+interface ComponentEditDialogProps {
   open: boolean;
   initialName?: string;
   initialDescription?: string;
@@ -21,14 +21,14 @@ interface ContainerEditDialogProps {
   onDelete?: () => void;
 }
 
-interface ContainerValues {
+interface ComponentValues {
   name: string;
   description: string;
   technology: string;
   url: string;
 }
 
-export default function ContainerEditDialog({
+export default function ComponentEditDialog({
   open,
   initialName = "",
   initialDescription = "",
@@ -37,8 +37,8 @@ export default function ContainerEditDialog({
   onSave,
   onClose,
   onDelete,
-}: ContainerEditDialogProps) {
-  const [values, setValues] = useState<ContainerValues>({
+}: ComponentEditDialogProps) {
+  const [values, setValues] = useState<ComponentValues>({
     name: initialName,
     description: initialDescription,
     technology: initialTechnology,
@@ -55,39 +55,39 @@ export default function ContainerEditDialog({
     });
   }, [initialName, initialDescription, initialTechnology, initialUrl, open]);
 
-  const handleChange = (field: keyof ContainerValues, value: string) => {
+  const handleChange = (field: keyof ComponentValues, value: string) => {
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
     <BaseEditDialog
       open={open}
-      title={t("edit_container")}
-      theme={dialogThemes.container}
+      title={t("edit_component")}
+      theme={dialogThemes.component}
       onSave={() =>
         onSave(values.name, values.description, values.technology, values.url)
       }
       onClose={onClose}
       onDelete={onDelete}
       saveDisabled={!values.name.trim()}
-      deleteConfirmationMessage={t("delete_container_confirmation", {
+      deleteConfirmationMessage={t("delete_component_confirmation", {
         name: initialName,
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.container}
+        theme={dialogThemes.component}
         autoFocus
         margin="dense"
-        label={t("container_name")}
+        label={t("component_name")}
         fullWidth
         value={values.name}
         onChange={(e) => handleChange("name", e.target.value)}
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.container}
+        theme={dialogThemes.component}
         margin="dense"
-        label={t("container_description")}
+        label={t("component_description")}
         fullWidth
         multiline
         minRows={3}
@@ -96,14 +96,14 @@ export default function ContainerEditDialog({
         data-testid="input_description"
       />
       <TechnologySelect
-        level="container"
+        level="component"
         value={values.technology}
         onChange={(value) => handleChange("technology", value)}
         label={t("technology")}
         placeholder={t("select_technology")}
       />
       <ThemedTextField
-        theme={dialogThemes.container}
+        theme={dialogThemes.component}
         margin="dense"
         label={t("url")}
         fullWidth

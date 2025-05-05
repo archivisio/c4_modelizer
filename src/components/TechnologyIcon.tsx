@@ -1,6 +1,6 @@
+import { getTechnologyById } from "@data/technologies";
+import { getIconComponent } from "@icons/TechnologyIcons";
 import { Box, Tooltip } from "@mui/material";
-import { getTechnologyById } from "../data/technologies";
-import { getIconComponent } from "../icons/TechnologyIcons";
 
 interface TechnologyIconProps {
   technologyId: string;
