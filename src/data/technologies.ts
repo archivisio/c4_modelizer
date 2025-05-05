@@ -1,4 +1,4 @@
-import { TechnologyLevel } from '@types/c4';
+import { TechnologyLevel } from '@interfaces/c4';
 import cloud from './technologies/cloud.json';
 import codes from './technologies/codes.json';
 import databases from './technologies/databases.json';
@@ -7,10 +7,10 @@ import frameworks from './technologies/frameworks.json';
 import languages from './technologies/languages.json';
 import messageBrokers from './technologies/messageBrokers.json';
 import monitoring from './technologies/monitoring.json';
+import protocols from './technologies/protocols.json';
 import saas from './technologies/saas.json';
 import security from './technologies/security.json';
 import systems from './technologies/systems.json';
-import protocols from './technologies/protocols.json';
 
 export interface Technology {
   id: string;
