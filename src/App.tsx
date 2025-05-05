@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
-import CodeEditDialog from "./components/CodeEditDialog";
+import CodeEditDialog from "./components/code/CodeEditDialog";
 import ConfirmDialog from "./components/common/ConfirmDialog";
 import ComponentEditDialog from "./components/ComponentEditDialog";
 import ConnectionEditDialog from "./components/ConnectionEditDialog";

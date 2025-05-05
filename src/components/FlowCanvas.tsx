@@ -21,7 +21,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import CodeBlock from "./CodeBlock";
+import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./ComponentBlock";
 import ContainerBlock from "./ContainerBlock";
 import SystemBlock from "./SystemBlock";
