@@ -12,7 +12,7 @@ import {
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { C4Model } from "../types/c4";
-interface ToolbarProps {
+export interface ToolbarProps {
   onAddSystem: () => void;
   onExport: () => void;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;

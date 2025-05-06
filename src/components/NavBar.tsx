@@ -6,7 +6,7 @@ import { useReactFlow } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-interface NavBarProps {
+export interface NavBarProps {
   systemName?: string;
   containerName?: string;
   componentName?: string;

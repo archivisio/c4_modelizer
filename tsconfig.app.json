@@ -19,7 +19,8 @@
       "@store/*": ["src/store/*"],
       "@interfaces/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
-      "@plugins/*": ["src/plugins/*"]
+      "@plugins/*": ["src/plugins/*"],
+      "@slots/*": ["src/slots/*"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

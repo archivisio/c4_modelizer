@@ -5,9 +5,7 @@ import ConnectionEditDialog from "@components/ConnectionEditDialog";
 import ContainerEditDialog from "@components/container/ContainerEditDialog";
 import ErrorNotification from "@components/ErrorNotification";
 import FlowCanvas from "@components/FlowCanvas";
-import NavBar from "@components/NavBar";
 import SystemEditDialog from "@components/system/SystemEditDialog";
-import Toolbar from "@components/Toolbar";
 import { useDialogs } from "@contexts/DialogContext";
 import { useActiveElements } from "@hooks/useActiveElements";
 import { useEdges } from "@hooks/useEdges";
@@ -16,6 +14,8 @@ import { useModelActions } from "@hooks/useModelActions";
 import { useNavigation } from "@hooks/useNavigation";
 import { useNodes } from "@hooks/useNodes";
 import { Box } from "@mui/material";
+import NavBarSlot from "@slots/NavBarSlot";
+import ToolbarSlot from "@slots/ToolbarSlot";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
@@ -97,7 +97,7 @@ function App() {
   return (
     <ReactFlowProvider>
       <Box sx={{ height: "100vh", bgcolor: "#0a1929", color: "#fff" }}>
-        <Toolbar
+        <ToolbarSlot
           onAddSystem={handleAddElement}
           onExport={handleExport}
           onImport={handleImport}
@@ -118,7 +118,7 @@ function App() {
           cancelText="Cancel"
         />
 
-        <NavBar
+        <NavBarSlot
           systemName={activeSystem?.name}
           containerName={activeContainer?.name}
           componentName={activeComponent?.name}
