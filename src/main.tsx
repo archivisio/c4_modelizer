@@ -1,4 +1,5 @@
 import { loadPlugins } from '@/plugins/manager'
+import PortalTarget from '@/slots/PortalTarget.tsx'
 import { DialogProvider } from '@contexts/DialogProvider'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
@@ -14,6 +15,7 @@ loadPlugins().then(() => {
           <App />
         </DialogProvider>
       </RootProviderSlot>
+      <PortalTarget id="global-overlay" />
     </StrictMode>,
   )
 });

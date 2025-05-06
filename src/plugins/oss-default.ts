@@ -6,6 +6,7 @@ const plugin: C4Plugin = {
   setup(registry) {
     registry.registerComponent('toolbar:main', async () => import('@/components/Toolbar').then(m => m.default))
     registry.registerComponent('navbar:main', async () => import('@/components/NavBar').then(m => m.default))
+    registry.registerPortal('global-overlay', null)
   },
 }
 

@@ -8,86 +8,221 @@
 
 ![C4 Modelizer Logo](/public/logo.svg)
 
-C4 Modelizer is a web application for visually modeling the software architecture of a system using the C4 method. It enables the creation, editing, and documentation of C4 diagrams (System, Container, Component, Code) in an interactive and collaborative way.
+**C4 Modelizer** is a web application that lets you design, explore and document a system architecture using the [C4 model](https://c4model.com/). It supports collaborative diagram editing, import/export with schema versioning and a fully‑typed plugin API.
 
-## Project Purpose
+---
 
-- Help teams design and document software architecture graphically.
-- Facilitate communication between stakeholders with clear visual representations.
-- Provide a modern and ergonomic interface based on React, TypeScript, and Material UI.
-- Support customization of blocks (technologies, system types, icons, etc.).
+## ✨ Key goals
 
-## Main Features
+* **Visual communication** — help teams discuss and refine their architecture with clear diagrams.
+* **Single source of truth** — all diagrams share the same JSON model; no drift between views.
+* **Developer‑friendly** — React + TypeScript + Vite for a fast, hackable codebase.
+* **Customisable** — blocks, icons and behaviours can be extended through the plugin system (see below).
 
-- Create and edit C4 blocks (System, Container, Component, Code)
-- Select system type with icon
-- Associate technologies with blocks
-- Manage connections and dependencies
-- Import/export the model (with schema versioning)
-- Responsive and multilingual interface (i18n)
+---
 
-## Demonstration
+## 🚀 Main features
 
-### Application Overview
+| Category        | Details                                                              |
+| --------------- | -------------------------------------------------------------------- |
+| Diagram types   | System ↔ Container ↔ Component ↔ Code (C4 levels 1‑4)                |
+| Edit            | Drag‑and‑drop nodes, inline rename, technology picker, context menus |
+| Blocks          | Custom icons / colours, technology tags, markdown description        |
+| Relations       | Create, edit, style connections and dependencies                     |
+| Import / Export | JSON with embedded schema version; copy‑paste between instances      |
+| UX              | Multilingual (i18n), responsive layout, dark theme                   |
+
+---
+
+## 📸 Screenshots
+
+### Live editing
 
 ![C4 Modelizer Application Demo](/doc/app.gif)
 
-### Import/Export Functionality
+### Import / export
 
 ![C4 Modelizer Import/Export Demo](/doc/import.gif)
 
-## Main Dependencies
+---
 
-- [Vite](https://vitejs.dev/) — Lightning-fast frontend tooling
-- [React](https://react.dev/) — UI library
-- [Material UI](https://mui.com/) — UI components
-- [@xyflow/react](https://reactflow.dev/) — Diagramming/flow rendering
-- [i18next](https://www.i18next.com/) — Internationalization
-- [TypeScript](https://www.typescriptlang.org/) — Static typing for JavaScript
+## 🔗 Tech stack
 
-## Requirements
+* **[Vite](https://vitejs.dev/)** — lightning‑fast build and HMR
+* **[React](https://react.dev/)** + **[TypeScript](https://www.typescriptlang.org/)**
+* **[Material UI](https://mui.com/)** — component library
+* **[@xyflow/react](https://reactflow.dev/)** — canvas & graph layout
+* **[i18next](https://www.i18next.com/)** — internationalisation engine
 
-- Node.js >= 22
-- npm >= 11
+---
 
-## Installation & Usage
+## ⚙️ Requirements
+
+* Node.js **≥ 22**
+* npm **≥ 11** (or pnpm ≥ 9 / yarn ≥ 4)
+
+---
+
+## 🛠️ Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/eth3rnit3/c4_modelizer.git
-cd c4_modelizer
+# 1. Clone the repo
+$ git clone https://github.com/eth3rnit3/c4_modelizer.git
+$ cd c4_modelizer
 
-# Install dependencies
-npm install
+# 2. Install dependencies
+$ npm install  # or pnpm install
 
-# Start the application in development mode
-npm run dev
+# 3. Start the dev server
+$ npm run dev
 ```
 
-The app will be available at http://localhost:5173
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-## Contributing or Bug Fixes
+---
 
-1. **Fork** this repository and create a new descriptive branch (e.g. `fix/bug-description` or `feature/new-block-type`).
-2. **Develop** your changes following the project’s structure and style (TypeScript, React, RSpec for Ruby tests if needed on backend).
-3. **Test** your modifications locally.
-4. **Open a Pull Request** to the main repository, clearly describing the problem or feature you are addressing.
-5. A maintainer will review your contribution.
+## 🔌 Plugin system
 
-## Reporting Bugs or Suggestions
+C4 Modelizer ships with a light but powerful **runtime plugin API**. You can inject new UI pieces, override existing ones, render global overlays or even access the core Zustand store—all without touching the core source.
 
-Open an issue using the "Issues" tab on GitHub, describing the problem or improvement idea in detail.
+### 1. Quick overview
 
-## License
+```text
+┌────────────┐   loadPlugins()   ┌───────────────┐
+│  Core app  │ ───────────────▶  │  Your plugin  │
+└────────────┘                   └───────────────┘
+        ▲    registry.register*()        │
+        └────────────────────────────────┘
+```
 
-This project is distributed under the Creative Commons BY-NC 4.0 International License.
+1. **The core** exposes a singleton `PluginRegistry`.
+2. At boot, `loadPlugins()` reads **`VITE_PLUGINS`** (comma‑separated package names) and imports each one.
+3. A plugin exports a `C4Plugin` object with a `setup(registry)` function where it registers **components**, **portals** and **methods**.
+4. Slots (`ToolbarSlot`, `NavBarSlot`, etc.) resolve their component through the registry at render time.
 
-You are free to:
-- Share — copy, distribute and transmit the work by any means and in any format
-- Adapt — remix, transform, and build upon the material
+---
+
+### 2. Accessing the core store (`useStore`)
+
+The core registers a helper so plugins can share the **exact same Zustand store**:
+
+```ts
+// inside the core (already done)
+registry.registerMethod('useStore', () => useC4Store)
+```
+
+In a plugin:
+
+```ts
+import type { C4Plugin } from 'c4_modelizer/plugin'
+
+const plugin: C4Plugin = {
+  name: 'stats',
+  version: '1.0.0',
+  setup(reg) {
+    const useStore = reg.getMethod('useStore')!()   // the real hook
+
+    reg.registerComponent('panel:stats', async () => {
+      return function StatsPanel() {
+        const total = useStore((s) => s.model.systems.length)
+        const reset = useStore((s) => s.actions.reset)
+        return (
+          <div>
+            <p>{total} systems</p>
+            <button onClick={reset}>Reset</button>
+          </div>
+        )
+      }
+    })
+  },
+}
+export default plugin
+```
+
+> `getMethod()` returns the factory **you** registered; calling it yields the hook. All store selectors & actions are thus fully typed.
+
+---
+
+### 3. Global overlays via the `global-overlay` portal
+
+The core provides a `<PortalTarget id="global-overlay" />` at the root of the DOM. Any plugin can push a React node into it:
+
+```ts
+import Overlay from './Overlay'
+
+registry.registerPortal('global-overlay', <Overlay />)
+```
+
+`Overlay.tsx` can be anything—modals, toasts, real‑time collaboration panels—and it’s rendered outside the normal React tree, above everything else.
+
+To **update or remove** the overlay later:
+
+```ts
+registry.registerPortal('global-overlay', null)            // remove
+registry.registerPortal('global-overlay', <NewOverlay />)  // replace
+```
+
+---
+
+### 4. Common slot identifiers
+
+| Identifier       | Purpose                   | Core default     |
+| ---------------- | ------------------------- | ---------------- |
+| `root:provider`  | Wrap the whole app        | `React.Fragment` |
+| `toolbar:main`   | Main action toolbar       | `Toolbar`        |
+| `navbar:main`    | Breadcrumb / nav bar      | `NavBar`         |
+| `global-overlay` | Full‑screen portal target | *(empty)*        |
+
+*(Need another slot? Open an issue or PR!)*
+
+---
+
+### 5. Enabling plugins
+
+```bash
+# 1. Install your package next to c4_modelizer
+npm i @my-scope/cool-toolbar --save
+
+# 2. List active plugins (comma‑separated)
+VITE_PLUGINS=@my-scope/cool-toolbar npm run dev
+```
+
+That’s it – the registry will pick them up and your components or overlays will show up instantly.
+
+## 🤝 Contributing Contributing
+
+1. **Fork** the repository and create a feature or fix branch (`feature/new‑icon‑set`, `fix/overflow‑toolbar`, …).
+2. **Code** your changes following the project conventions (ESLint, Prettier, TypeScript strict mode).
+3. **Test** locally (`npm test`, `npm run cypress:open`).
+4. **Commit** using conventional commits (`feat:`, `fix:`, etc.).
+5. **Open a Pull Request** — describe the motivation and link to any related issue.
+
+The maintainers will review and guide you through the merge.
+
+---
+
+## 🐞 Bug reports & ideas
+
+Use the **Issues** tab. Please include:
+
+* steps to reproduce (gif or screenshot appreciated),
+* expected vs. actual behaviour,
+* browser / OS / Node version.
+
+---
+
+## 📄 License
+
+C4 Modelizer is distributed under the **Creative Commons BY‑NC 4.0** license.
+
+You may:
+
+* **Share** — copy and redistribute the material in any medium or format.
+* **Adapt** — remix, transform and build upon the material.
 
 **Under the following conditions:**
-- Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
-- NonCommercial — You may not use the material for commercial purposes.
 
-See the full license text: [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
+* **Attribution** — give appropriate credit, link to the licence and indicate changes.
+* **Non‑Commercial** — you may not use the material for commercial purposes.
+
+See the full text → [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/)
