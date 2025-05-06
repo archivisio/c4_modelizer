@@ -38,10 +38,6 @@
 
 ### Live editing
 
-![C4 Modelizer Application Demo](/doc/app.gif)
-
-### Import / export
-
 ![C4 Modelizer Import/Export Demo](/doc/import.gif)
 
 ---
