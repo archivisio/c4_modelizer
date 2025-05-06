@@ -1,17 +1,21 @@
-import { C4Plugin, registry } from './registry.ts'
+import { pluginLoaders } from './bundle'
+import { C4Plugin, registry } from './registry'
 
 export async function loadPlugins() {
-  const list = import.meta.env.VITE_PLUGINS?.split(',') ?? []
-  const internal = ['./oss-default']
-  const all = [...internal, ...list]
+  const wanted = (import.meta.env.VITE_PLUGINS ?? '').split(',').filter(Boolean)
 
   await Promise.all(
-    all.map(async (id) => {
+    wanted.map(async (name: string) => {
+      const loader = (pluginLoaders as Record<string, () => Promise<{ default: C4Plugin }>>)[name]
+
+      if (!loader) return
+
       try {
-        const { default: plugin } = await import(/* @vite-ignore */ id) as { default: C4Plugin }
+        const { default: plugin } = await loader()
         plugin.setup(registry)
+        console.info(`[plugin] ${plugin.name}@${plugin.version} loaded`)
       } catch (e) {
-        console.error(`Failed to load plugin ${id}`, e)
+        console.error(`[plugin] ${name} load failed`, e)
       }
     }),
   )

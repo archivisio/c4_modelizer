@@ -20,17 +20,19 @@ export class PluginRegistry {
 
   private portals = new Map<string, React.ReactNode>()
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  emit(event: string, ...args: any[]) {
-    console.log(event, args)
-  }
-
   registerPortal(id: string, node: React.ReactNode) {
     this.portals.set(id, node)
-    this.emit('update', id)
   }
 
   getPortal(id: string) { return this.portals.get(id) }
+
+  private methods = new Map<string, () => void>()
+
+  registerMethod(id: string, method: () => void) {
+    this.methods.set(id, method)
+  }
+
+  getMethod(id: string) { return this.methods.get(id) }
 }
 
 export const registry = new PluginRegistry()
