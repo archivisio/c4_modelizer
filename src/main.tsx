@@ -1,16 +1,19 @@
+import { loadPlugins } from '@/plugins/manager'
 import { DialogProvider } from '@contexts/DialogProvider'
-import EnterpriseProvider from '@contexts/EnterpriseProvider'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import RootProviderSlot from './RootProviderSlot.tsx'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <EnterpriseProvider>
-      <DialogProvider>
-        <App />
-      </DialogProvider>
-    </EnterpriseProvider>
-  </StrictMode>,
-)
+loadPlugins().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <RootProviderSlot>
+        <DialogProvider>
+          <App />
+        </DialogProvider>
+      </RootProviderSlot>
+    </StrictMode>,
+  )
+});

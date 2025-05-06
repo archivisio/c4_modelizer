@@ -30,6 +30,7 @@ export default defineConfig({
       '@store': path.resolve(__dirname, './src/store'),
       '@interfaces': path.resolve(__dirname, './src/types'),
       '@utils': path.resolve(__dirname, './src/utils'),
+      '@plugins': path.resolve(__dirname, './src/plugins'),
     },
   },
   optimizeDeps: {

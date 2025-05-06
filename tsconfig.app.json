@@ -18,7 +18,8 @@
       "@locales/*": ["src/locales/*"],
       "@store/*": ["src/store/*"],
       "@interfaces/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@plugins/*": ["src/plugins/*"]
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
