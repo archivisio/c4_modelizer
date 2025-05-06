@@ -1,3 +1,3 @@
 export const pluginLoaders = {
-  // '@example/plugin': () => import('@example/plugin'),
+  '@archivisio/default': () => import('./oss-default'),
 }
