@@ -5,6 +5,7 @@ import {
   SystemBlock,
 } from "@interfaces/c4";
 import { ConnectionInfo } from "@interfaces/connection";
+import { FinalConnectionState } from "@xyflow/react";
 import { createContext, useContext } from "react";
 
 export type EditingElement =
@@ -23,6 +24,7 @@ export interface DialogContextType {
   openConfirmReset: boolean;
   importError: string | null;
   editingElement: EditingElement;
+  pendingConnection: { event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null;
 
   setEditId: (id: string | null) => void;
   setDialogOpen: (open: boolean) => void;
@@ -31,6 +33,7 @@ export interface DialogContextType {
   setEditingConnection: (connection: ConnectionInfo | null) => void;
   setOpenConfirmReset: (open: boolean) => void;
   setImportError: (error: string | null) => void;
+  setPendingConnection: (connection: { event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null) => void;
 
   openEditDialog: (id: string, isContainer?: boolean) => void;
   closeEditDialog: () => void;

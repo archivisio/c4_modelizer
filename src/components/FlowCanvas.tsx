@@ -26,6 +26,7 @@ import ComponentBlock from "./component/ComponentBlock";
 import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
+import { useDialogs } from "@/contexts/DialogContext";
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -82,6 +83,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   onEdgeClick,
 }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(true);
+  const { setPendingConnection } = useDialogs();
   const reactFlowInstance = useReactFlow();
 
   const toggleInteractionMode = useCallback(() => {
@@ -181,6 +183,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         zoomOnPinch={true}
         panOnScroll={true}
         panOnScrollMode={PanOnScrollMode.Free}
+        onConnectEnd={(event, connectionState) => setPendingConnection({ event, connectionState })}
       >
         <Background
           variant={BackgroundVariant.Dots}

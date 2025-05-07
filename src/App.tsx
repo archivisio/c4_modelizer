@@ -1,3 +1,4 @@
+import SearchNodeBar from "@/components/SearchNodeBar";
 import CodeEditDialog from "@components/code/CodeEditDialog";
 import ConfirmDialog from "@components/common/ConfirmDialog";
 import ComponentEditDialog from "@components/component/ComponentEditDialog";
@@ -238,6 +239,7 @@ function App() {
           />
         )}
 
+        <SearchNodeBar />
         <ErrorNotification message={importError} />
 
         {connectionDialogOpen && (
