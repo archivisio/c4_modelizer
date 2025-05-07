@@ -34,7 +34,7 @@ export function useModelActions() {
     });
   }, [setModel]);
 
-  const handleAddElement = useCallback((properties: Record<string, unknown> = {}) => {
+  const AddElement = (properties: Record<string, unknown> = {}) => {
     const randomPosition = {
       x: Math.random() * 400 + 100,
       y: Math.random() * 300 + 100,
@@ -101,6 +101,10 @@ export function useModelActions() {
         }
       );
     }
+  }
+
+  const handleAddElement = useCallback(() => {
+    AddElement();
   }, [
     model.viewLevel,
     model.activeSystemId,
@@ -195,6 +199,7 @@ export function useModelActions() {
   return {
     model,
     resetStore,
+    AddElement,
     handleAddElement,
     handleElementSave,
     handleNodeDelete,
