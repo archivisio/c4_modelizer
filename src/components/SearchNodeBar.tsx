@@ -1,5 +1,6 @@
 import TechnologyIcon from "@/components/TechnologyIcon";
 import { useDialogs } from "@/contexts/DialogContext";
+import { useModelActions } from "@/hooks/useModelActions";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { useSearch } from "@/hooks/useSearch";
 import { BaseBlock } from "@/types/c4";
@@ -12,6 +13,7 @@ import { CloseButton, DragIcon, EmptyResults, EmptyText, ItemName, ItemType, Res
 const SearchNodeBar: React.FC = () => {
   const { searchValue, setSearchValue, searchResults } = useSearch();
   const { pendingConnection, setPendingConnection } = useDialogs();
+  const { handleAddElement } = useModelActions();
   const searchBarRef = useRef<HTMLDivElement | null>(null);
   const resultFound = searchResults.length > 0;
 
@@ -29,6 +31,24 @@ const SearchNodeBar: React.FC = () => {
   const { connectionState } = pendingConnection;
   const sourceNodeId = connectionState.fromNode?.id;
   const sourceNode = connectionState.fromNode?.data as BaseBlock | undefined;
+
+  const handleSelectResult = (result: BaseBlock) => {
+    const id = crypto.randomUUID();
+    handleAddElement({
+      id,
+      name: result.name,
+      description: result.description,
+      position: {
+        x: connectionState.to?.x || 500,
+        y: connectionState.to?.y || 500,
+      },
+      technology: result.technology,
+      url: result.url,
+      type: result.type,
+    });
+    console.log({id});
+    setPendingConnection(null);
+  };
 
   return (
     <Draggable
@@ -85,7 +105,7 @@ const SearchNodeBar: React.FC = () => {
               <ResultItem
                 key={item.id}
                 onClick={() => {
-                  console.log(item);
+                  handleSelectResult(item);
                 }}
               >
                 <Stack direction="row" spacing={1} alignItems="center">

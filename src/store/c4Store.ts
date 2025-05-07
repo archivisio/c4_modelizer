@@ -40,7 +40,8 @@ export const useC4Store = create<C4State>()(
             ...state.model,
             systems: [
               ...state.model.systems,
-              { ...system, id: crypto.randomUUID(), connections: [] },
+              // @ts-expect-error id is not defined in Omit<SystemBlock, 'id' | 'containers'>
+              { ...system, id: system.id || crypto.randomUUID(), connections: [] },
             ],
           },
         })),
@@ -88,7 +89,8 @@ export const useC4Store = create<C4State>()(
                 ...system,
                 containers: [
                   ...containers,
-                  { ...container, id: crypto.randomUUID(), systemId, connections: [] }
+                  // @ts-expect-error id is not defined in Omit<ContainerBlock, 'id' | 'systemId' | 'components'>
+                  { ...container, id: container.id || crypto.randomUUID(), systemId, connections: [] }
                 ]
               };
             }
@@ -165,7 +167,8 @@ export const useC4Store = create<C4State>()(
                         ...components,
                         {
                           ...component,
-                          id: crypto.randomUUID(),
+                          // @ts-expect-error id is not defined in Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>
+                          id: component.id || crypto.randomUUID(),
                           systemId,
                           containerId,
                           connections: []
@@ -275,7 +278,8 @@ export const useC4Store = create<C4State>()(
                               ...codeElements,
                               {
                                 ...codeElement,
-                                id: crypto.randomUUID(),
+                                // @ts-expect-error id is not defined in Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>
+                                id: codeElement.id || crypto.randomUUID(),
                                 systemId,
                                 containerId,
                                 componentId,

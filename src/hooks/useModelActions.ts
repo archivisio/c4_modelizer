@@ -34,7 +34,7 @@ export function useModelActions() {
     });
   }, [setModel]);
 
-  const handleAddElement = useCallback(() => {
+  const handleAddElement = useCallback((properties: Record<string, unknown> = {}) => {
     const randomPosition = {
       x: Math.random() * 400 + 100,
       y: Math.random() * 300 + 100,
@@ -49,6 +49,7 @@ export function useModelActions() {
         technology: '',
         url: '',
         type: 'system',
+        ...properties,
       });
     } else if (model.viewLevel === 'container' && model.activeSystemId) {
       addContainer(model.activeSystemId, {
@@ -59,6 +60,7 @@ export function useModelActions() {
         technology: '',
         url: '',
         type: 'container',
+        ...properties,
       });
     } else if (
       model.viewLevel === 'component' &&
@@ -73,6 +75,7 @@ export function useModelActions() {
         technology: '',
         url: '',
         type: 'component',
+        ...properties,
       });
     } else if (
       model.viewLevel === 'code' &&
@@ -94,6 +97,7 @@ export function useModelActions() {
           url: '',
           connections: [],
           type: 'code',
+          ...properties,
         }
       );
     }
