@@ -43,6 +43,13 @@ export interface CodeBlock extends BaseBlock {
   type: 'code';
 }
 
+export interface NodeData<T extends BaseBlock> {
+  data: {
+    onEdit: () => void;
+  } & T;
+  selected: boolean;
+}
+
 export type TechnologyLevel = 'system' | 'container' | 'component' | 'code' | 'connection';
 
 export type ViewLevel = 'system' | 'container' | 'component' | 'code';

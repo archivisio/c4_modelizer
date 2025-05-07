@@ -47,8 +47,6 @@ const C4CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
     }
   };
 
-  console.log({typedData, data})
-
   return (
     <C4Block
       item={typedData}
