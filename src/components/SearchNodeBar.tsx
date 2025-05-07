@@ -12,6 +12,7 @@ const SearchNodeBar: React.FC = () => {
   const { searchValue, setSearchValue, searchResults } = useSearch();
   const { pendingConnection, setPendingConnection } = useDialogs();
   const searchBarRef = useRef<HTMLDivElement | null>(null);
+  const resultFound = searchResults.length > 0;
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -119,7 +120,7 @@ const SearchNodeBar: React.FC = () => {
           }}
         />
 
-        {searchResults.length > 0 && (
+        {resultFound && (
           <Box
             sx={{
               mt: 1,
@@ -155,6 +156,9 @@ const SearchNodeBar: React.FC = () => {
                   alignItems: "center",
                   mb: 0.5,
                 }}
+                onClick={() => {
+                  console.log(item);
+                }}
               >
                 <Typography
                   variant="body2"
@@ -185,7 +189,7 @@ const SearchNodeBar: React.FC = () => {
           </Box>
         )}
 
-        {searchResults.length === 0 && searchValue.length > 0 && (
+        {!resultFound && searchValue.length > 0 && (
           <Box
             sx={{
               py: 3,
