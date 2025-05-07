@@ -19,6 +19,7 @@ export function useNodes() {
           description: sys.description,
           technology: sys.technology,
           url: sys.url,
+          type: 'system',
           onEdit: () => openEditDialog(sys.id, false),
         },
       })),
@@ -41,6 +42,7 @@ export function useNodes() {
         description: container.description,
         technology: container.technology,
         url: container.url,
+        type: 'container',
         onEdit: () => openEditDialog(container.id, true),
       },
     }));
@@ -65,6 +67,7 @@ export function useNodes() {
         description: component.description,
         technology: component.technology,
         url: component.url,
+        type: 'component',
         onEdit: () => openEditDialog(component.id, false),
       },
     }));
@@ -94,6 +97,7 @@ export function useNodes() {
         technology: codeElement.technology,
         code: codeElement.code,
         url: codeElement.url,
+        type: 'code',
         onEdit: () => openEditDialog(codeElement.id, false),
       },
     }));

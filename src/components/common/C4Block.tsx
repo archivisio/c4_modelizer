@@ -16,6 +16,7 @@ import { ColorStyle } from "../../data/colors";
 import { getTechnologyById } from "../../data/technologies";
 import TechnologyIcon from "../TechnologyIcon";
 import { BaseBlock } from "@/types/c4";
+import { useC4Store } from "@/store/c4Store";
 
 export type HandlePositions = {
   source: Position | Position[];
@@ -51,7 +52,9 @@ const C4Block: React.FC<C4BlockProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+  const { model } = useC4Store();
   const { technology, name, description, url } = item;
+  const isImported = model.viewLevel !== item.type;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
@@ -93,6 +96,8 @@ const C4Block: React.FC<C4BlockProps> = ({
     cardSx.height = (cardSx.height as number) + (cardSx.height as number) * 0.5;
   }
 
+  console.log({ item });
+
   return (
     <>
       {Array.isArray(handlePositions.target) ? (
@@ -129,6 +134,7 @@ const C4Block: React.FC<C4BlockProps> = ({
         sx={{
           backgroundColor: "#0a1929",
           borderRadius: 3,
+          opacity: isImported ? 0.1 : 1,
         }}
       >
         <Card sx={cardSx} className="tech-card">
