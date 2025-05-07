@@ -6,32 +6,31 @@ export interface BaseBlock {
   description?: string;
   url?: string;
   position: Position;
+  type: 'system' | 'container' | 'component' | 'code';
+  technology?: string;
 }
 
 import { ConnectionData } from './connection';
 
-
-
-
 export interface SystemBlock extends BaseBlock {
-  technology?: string;
   connections: ConnectionData[];
   containers?: ContainerBlock[];
+  type: 'system';
 }
 
 export interface ContainerBlock extends BaseBlock {
   systemId: string;
   connections: ConnectionData[];
-  technology?: string;
   components?: ComponentBlock[];
+  type: 'container';
 }
 
 export interface ComponentBlock extends BaseBlock {
   containerId: string;
   systemId: string;
   connections: ConnectionData[];
-  technology?: string;
   codeElements?: CodeBlock[];
+  type: 'component';
 }
 
 export interface CodeBlock extends BaseBlock {
@@ -42,6 +41,7 @@ export interface CodeBlock extends BaseBlock {
   language?: string;
   code?: string;
   connections: ConnectionData[];
+  type: 'code';
 }
 
 export type TechnologyLevel = 'system' | 'container' | 'component' | 'code' | 'connection';

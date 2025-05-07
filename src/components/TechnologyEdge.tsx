@@ -1,3 +1,4 @@
+import { BaseBlock } from "@/types/c4";
 import TechnologyIcon from "@components/TechnologyIcon";
 import {
   BaseEdge,
@@ -69,8 +70,6 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
     bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
   }
 
-  const technologyId = props.data?.technologyId;
-
   return (
     <>
       {isBidirectional && (
@@ -122,7 +121,7 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
           className="nodrag nopan"
         >
           <TechnologyIcon
-            technologyId={technologyId as string}
+            item={props.data as unknown as BaseBlock}
             size={ICON_SIZE}
             showTooltip={true}
           />

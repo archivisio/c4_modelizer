@@ -1,20 +1,22 @@
 import { getTechnologyById } from "@data/technologies";
 import { getIconComponent } from "@icons/TechnologyIcons";
+import { BaseBlock } from "@interfaces/c4";
 import { Box, Tooltip } from "@mui/material";
 
 interface TechnologyIconProps {
-  technologyId: string;
+  item: BaseBlock;
   size?: number;
   showTooltip?: boolean;
 }
 
 const TechnologyIcon = ({
-  technologyId,
+  item,
   size = 24,
   showTooltip = true,
 }: TechnologyIconProps) => {
-  const technology = getTechnologyById(technologyId);
+  if (!item.technology) return null;
 
+  const technology = getTechnologyById(item.technology);
   if (!technology) return null;
 
   const IconComponent = getIconComponent(technology.id);

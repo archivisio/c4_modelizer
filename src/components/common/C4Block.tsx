@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { ColorStyle } from "../../data/colors";
 import { getTechnologyById } from "../../data/technologies";
 import TechnologyIcon from "../TechnologyIcon";
+import { BaseBlock } from "@/types/c4";
 
 export type HandlePositions = {
   source: Position | Position[];
@@ -163,7 +164,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                 }}
               >
                 {technology && (
-                  <TechnologyIcon technologyId={technology} size={24} />
+                  <TechnologyIcon item={{technology, name } as unknown as BaseBlock} size={24} />
                 )}
                 <Typography
                   variant="subtitle1"

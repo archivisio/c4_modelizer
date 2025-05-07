@@ -48,6 +48,7 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'system',
       });
     } else if (model.viewLevel === 'container' && model.activeSystemId) {
       addContainer(model.activeSystemId, {
@@ -57,6 +58,7 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'container',
       });
     } else if (
       model.viewLevel === 'component' &&
@@ -70,6 +72,7 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'component',
       });
     } else if (
       model.viewLevel === 'code' &&
@@ -90,6 +93,7 @@ export function useModelActions() {
           code: '',
           url: '',
           connections: [],
+          type: 'code',
         }
       );
     }
