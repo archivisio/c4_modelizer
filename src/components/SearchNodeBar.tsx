@@ -1,7 +1,9 @@
+import TechnologyIcon from "@/components/TechnologyIcon";
 import { useDialogs } from "@/contexts/DialogContext";
 import { COLORS } from "@/data/colors";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
 import { useSearch } from "@/hooks/useSearch";
+import { BaseBlock } from "@/types/c4";
 import CloseIcon from "@mui/icons-material/Close";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Box, IconButton, Stack, TextField, Typography } from "@mui/material";
@@ -26,8 +28,8 @@ const SearchNodeBar: React.FC = () => {
 
   if (!pendingConnection) return null;
   const { connectionState } = pendingConnection;
-
-  console.log(searchResults);
+  const sourceNodeId = connectionState.fromNode?.id;
+  const sourceNode = connectionState.fromNode?.data as BaseBlock | undefined;
 
   return (
     <Draggable
@@ -74,19 +76,30 @@ const SearchNodeBar: React.FC = () => {
             <DragIndicatorIcon
               sx={{ color: COLORS.primary.border, fontSize: 20 }}
             />
-            <Typography
-              variant="subtitle2"
-              sx={{ color: COLORS.primary.border, fontWeight: "600" }}
-            >
-              Search nodes
-            </Typography>
+            <Stack spacing={0.5}>
+              <Typography
+                variant="subtitle2"
+                sx={{ color: COLORS.primary.border, fontWeight: "600" }}
+              >
+                Connecter depuis: {sourceNode?.name || "Nœud inconnu"}
+              </Typography>
+              {sourceNode && sourceNode.type && (
+                <Typography
+                  variant="caption"
+                  sx={{ color: COLORS.primary.border, fontSize: "0.7rem" }}
+                >
+                  {sourceNode.type.charAt(0).toUpperCase() +
+                    sourceNode.type.slice(1)}
+                </Typography>
+              )}
+            </Stack>
           </Stack>
           <IconButton
             size="small"
             onClick={() => setPendingConnection(null)}
             sx={{
               color: COLORS.primary.border,
-              padding: "2px"
+              padding: "2px",
             }}
           >
             <CloseIcon fontSize="small" />
@@ -139,7 +152,7 @@ const SearchNodeBar: React.FC = () => {
               },
             }}
           >
-            {searchResults.map((item) => (
+            {searchResults.filter((item) => item.id !== sourceNodeId).map((item) => (
               <Box
                 key={item.id}
                 sx={{
@@ -160,15 +173,20 @@ const SearchNodeBar: React.FC = () => {
                   console.log(item);
                 }}
               >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: COLORS.primary.border,
-                    fontWeight: "500",
-                  }}
-                >
-                  {item.name}
-                </Typography>
+                <Stack direction="row" spacing={1} alignItems="center">
+                  {item.technology && (
+                    <TechnologyIcon item={item} size={18} showTooltip={false} />
+                  )}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: COLORS.primary.border,
+                      fontWeight: "500",
+                    }}
+                  >
+                    {item.name}
+                  </Typography>
+                </Stack>
                 {item.type && (
                   <Typography
                     variant="caption"
