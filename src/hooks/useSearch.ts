@@ -40,6 +40,7 @@ export function useSearch() {
 
   const searchResults = useMemo(() => {
     const searchValueLower = searchValue.toLowerCase();
+    if (!searchValueLower) return [];
     
     const filteredItems = items.filter((item) => {
       return item.name.toLowerCase().includes(searchValueLower);
