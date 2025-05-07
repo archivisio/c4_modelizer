@@ -1,37 +1,30 @@
+import { ComponentBlock as ComponentBlockType, NodeData } from "@/types/c4";
 import C4Block from "@components/common/C4Block";
 import { COLORS } from "@data/colors";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
 
-export type ComponentBlockData = {
-  name: string;
-  description?: string;
-  technology?: string;
-  url?: string;
-  onEdit: () => void;
-};
-
-interface ComponentBlockProps {
-  data: Record<string, unknown>;
-  selected: boolean;
-}
-
-const ComponentBlock: React.FC<ComponentBlockProps> = memo(
+const ComponentBlock: React.FC<NodeData<ComponentBlockType>> = memo(
   ({ data, selected }) => {
-    const typedData = data as ComponentBlockData;
-
     return (
       <C4Block
-        name={typedData.name}
-        description={typedData.description}
-        technology={typedData.technology}
-        url={typedData.url}
-        onEdit={typedData.onEdit}
+        item={data}
+        onEdit={data.onEdit}
         colors={COLORS.tertiary}
         selected={selected}
         handlePositions={{
-          source: [Position.Right, Position.Bottom, Position.Left, Position.Top],
-          target: [Position.Left, Position.Top, Position.Bottom, Position.Right],
+          source: [
+            Position.Right,
+            Position.Bottom,
+            Position.Left,
+            Position.Top,
+          ],
+          target: [
+            Position.Left,
+            Position.Top,
+            Position.Bottom,
+            Position.Right,
+          ],
         }}
       />
     );
