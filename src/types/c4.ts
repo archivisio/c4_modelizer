@@ -38,7 +38,6 @@ export interface CodeBlock extends BaseBlock {
   containerId: string;
   systemId: string;
   codeType: 'class' | 'function' | 'interface' | 'variable' | 'other';
-  language?: string;
   code?: string;
   connections: ConnectionData[];
   type: 'code';

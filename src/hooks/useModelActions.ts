@@ -89,7 +89,7 @@ export function useModelActions() {
           description: '',
           position: randomPosition,
           codeType: 'class',
-          language: '',
+          technology: '',
           code: '',
           url: '',
           connections: [],
@@ -111,12 +111,11 @@ export function useModelActions() {
 
   const handleElementSave = useCallback(
     (id: string, data: Record<string, unknown>) => {
-      const { name, description, technology, codeType, language, code, url } = data as {
+      const { name, description, technology, codeType, code, url } = data as {
         name: string;
         description?: string;
         technology?: string;
         codeType?: CodeBlock['codeType'];
-        language?: string;
         code?: string;
         url?: string;
       };
@@ -131,7 +130,7 @@ export function useModelActions() {
             name,
             description,
             codeType: codeType || 'other',
-            language,
+            technology,
             code,
             url,
           }

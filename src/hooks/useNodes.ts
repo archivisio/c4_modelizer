@@ -91,7 +91,7 @@ export function useNodes() {
         name: codeElement.name,
         description: codeElement.description,
         codeType: codeElement.codeType,
-        language: codeElement.language,
+        technology: codeElement.technology,
         code: codeElement.code,
         url: codeElement.url,
         onEdit: () => openEditDialog(codeElement.id, false),

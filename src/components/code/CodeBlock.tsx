@@ -1,26 +1,21 @@
+import { CodeBlock } from "@/types/c4";
 import C4Block from "@components/common/C4Block";
 import { COLORS, ColorStyle } from "@data/colors";
 import { Box, Chip } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
 
-export type CodeBlockData = {
-  name: string;
-  description?: string;
-  codeType: "class" | "function" | "interface" | "variable" | "other";
-  language?: string;
-  code?: string;
-  url?: string;
+export interface CodeBlockData extends CodeBlock {
   onEdit: () => void;
 };
 
 interface CodeBlockProps {
-  data: Record<string, unknown>;
+  data: CodeBlockData;
   selected: boolean;
 }
 
-const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
-  const typedData = data as CodeBlockData;
+const C4CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
+  const typedData = data
 
   const getCodeColors = (): ColorStyle => {
     switch (typedData.codeType) {
@@ -52,12 +47,11 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
     }
   };
 
+  console.log({typedData, data})
+
   return (
     <C4Block
-      name={typedData.name}
-      description={typedData.description}
-      technology={typedData.language}
-      url={typedData.url}
+      item={typedData}
       onEdit={typedData.onEdit}
       colors={getCodeColors()}
       selected={selected}
@@ -88,4 +82,4 @@ const CodeBlock: React.FC<CodeBlockProps> = memo(({ data, selected }) => {
   );
 });
 
-export default CodeBlock;
+export default C4CodeBlock;

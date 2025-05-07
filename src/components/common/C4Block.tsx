@@ -23,10 +23,7 @@ export type HandlePositions = {
 };
 
 export interface C4BlockProps {
-  name: string;
-  description?: string;
-  technology?: string;
-  url?: string;
+  item: BaseBlock;
   selected?: boolean;
   onEdit: () => void;
   colors: ColorStyle;
@@ -46,10 +43,7 @@ const hexToRgb = (hex: string): string => {
 };
 
 const C4Block: React.FC<C4BlockProps> = ({
-  name,
-  description,
-  technology,
-  url,
+  item,
   selected = false,
   onEdit,
   colors,
@@ -57,6 +51,7 @@ const C4Block: React.FC<C4BlockProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+  const { technology, name, description, url } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
