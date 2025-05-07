@@ -52,14 +52,32 @@
 
 ---
 
-## ⚙️ Requirements
+## 🔧️ Setup & Usage
 
-* Node.js **≥ 22**
-* npm **≥ 11** (or pnpm ≥ 9 / yarn ≥ 4)
+### Using Docker (recommanded)
+
+The quickest way to run C4 Modelizer:
+
+```bash
+# Pull the image from Docker Hub
+$ docker pull eth3rnit3/c4_modelizer:latest
+
+# Run the container
+$ docker run -p 8080:80 eth3rnit3/c4_modelizer:latest
+```
+
+Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
 
-## 🛠️ Setup
+## 💿 Development
+
+### Requirements
+
+* Node.js **≥ 22**
+* npm **≥ 11** (or pnpm ≥ 9 / yarn ≥ 4)
+
+### Local Setup
 
 ```bash
 # 1. Clone the repo
