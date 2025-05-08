@@ -213,7 +213,7 @@ declare global {
       /**
        * Import from fixture
        * @param {string} fixturePath - Path of the fixture file to import
-       * @example cy.importModel('basicModel-v1.json')
+       * @example cy.importModel('basicModel-v2.json')
        */
       importModel(fixturePath: string): Chainable<JQuery<HTMLElement>>;
 

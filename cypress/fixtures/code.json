@@ -1,5 +1,4 @@
 {
-  "viewLevel": "code",
   "systems": [
     {
       "name": "Web applications",
@@ -108,8 +107,123 @@
       ]
     }
   ],
+  "containers": [
+    {
+      "name": "Android app",
+      "description": "",
+      "position": {
+        "x": 280.5833755408364,
+        "y": 131.08367126622136
+      },
+      "connections": [],
+      "technology": "java",
+      "url": "",
+      "id": "7d406620-31e0-4b0d-a560-ffbce5800198",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "components": [
+        {
+          "name": "PriceComputer",
+          "description": "",
+          "position": {
+            "x": 459.80119411517666,
+            "y": 219.03174621912348
+          },
+          "connections": [],
+          "technology": "java",
+          "url": "",
+          "id": "97d8b601-b099-40c1-ae24-5d0c122c9cd6",
+          "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+          "containerId": "7d406620-31e0-4b0d-a560-ffbce5800198"
+        },
+        {
+          "name": "Confirm cart",
+          "description": "",
+          "position": {
+            "x": 458.60743036578924,
+            "y": -1.2795438249448026
+          },
+          "connections": [
+            {
+              "targetId": "97d8b601-b099-40c1-ae24-5d0c122c9cd6",
+              "sourceHandle": "source-bottom-1",
+              "targetHandle": "target-top-1",
+              "label": "items",
+              "technology": "javascript",
+              "description": "",
+              "labelPosition": 50,
+              "bidirectional": false
+            }
+          ],
+          "technology": "react",
+          "url": "",
+          "id": "a77250a5-e4f8-4337-a04d-732e95b4c868",
+          "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+          "containerId": "7d406620-31e0-4b0d-a560-ffbce5800198",
+          "codeElements": []
+        }
+      ]
+    },
+    {
+      "name": "Ios App",
+      "description": "",
+      "position": {
+        "x": 610.824684237268,
+        "y": 133.65913386693
+      },
+      "connections": [],
+      "technology": "swift",
+      "url": "",
+      "id": "36c820eb-1692-4bd7-a06b-7fd0211c370a",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "components": []
+    }
+  ],
+  "components": [
+    {
+      "name": "PriceComputer",
+      "description": "",
+      "position": {
+        "x": 459.80119411517666,
+        "y": 219.03174621912348
+      },
+      "connections": [],
+      "technology": "java",
+      "url": "",
+      "id": "97d8b601-b099-40c1-ae24-5d0c122c9cd6",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "containerId": "7d406620-31e0-4b0d-a560-ffbce5800198"
+    },
+    {
+      "name": "Confirm cart",
+      "description": "",
+      "position": {
+        "x": 458.60743036578924,
+        "y": -1.2795438249448026
+      },
+      "connections": [
+        {
+          "targetId": "97d8b601-b099-40c1-ae24-5d0c122c9cd6",
+          "sourceHandle": "source-bottom-1",
+          "targetHandle": "target-top-1",
+          "label": "items",
+          "technology": "javascript",
+          "description": "",
+          "labelPosition": 50,
+          "bidirectional": false
+        }
+      ],
+      "technology": "react",
+      "url": "",
+      "id": "a77250a5-e4f8-4337-a04d-732e95b4c868",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "containerId": "7d406620-31e0-4b0d-a560-ffbce5800198",
+      "codeElements": []
+    }
+  ],
+  "codeElements": [],
+  "viewLevel": "code",
   "activeSystemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
   "activeContainerId": "7d406620-31e0-4b0d-a560-ffbce5800198",
   "activeComponentId": "a77250a5-e4f8-4337-a04d-732e95b4c868",
-  "schemaVersion": 1
+  "schemaVersion": 2
 }

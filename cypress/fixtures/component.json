@@ -1,5 +1,4 @@
 {
-  "viewLevel": "component",
   "systems": [
     {
       "name": "Web applications",
@@ -67,7 +66,40 @@
       ]
     }
   ],
+  "containers": [
+    {
+      "name": "Android app",
+      "description": "",
+      "position": {
+        "x": 280.5833755408364,
+        "y": 131.08367126622136
+      },
+      "connections": [],
+      "technology": "java",
+      "url": "",
+      "id": "7d406620-31e0-4b0d-a560-ffbce5800198",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "components": []
+    },
+    {
+      "name": "Ios App",
+      "description": "",
+      "position": {
+        "x": 610.824684237268,
+        "y": 133.65913386693
+      },
+      "connections": [],
+      "technology": "swift",
+      "url": "",
+      "id": "36c820eb-1692-4bd7-a06b-7fd0211c370a",
+      "systemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
+      "components": []
+    }
+  ],
+  "components": [],
+  "codeElements": [],
+  "viewLevel": "component",
   "activeSystemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
   "activeContainerId": "7d406620-31e0-4b0d-a560-ffbce5800198",
-  "schemaVersion": 1
+  "schemaVersion": 2
 }
