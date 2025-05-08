@@ -17,6 +17,7 @@ import { useNodes } from "@hooks/useNodes";
 import { Box } from "@mui/material";
 import NavBarSlot from "@slots/NavBarSlot";
 import ToolbarSlot from "@slots/ToolbarSlot";
+import FooterSlot from "@slots/FooterSlot";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
@@ -251,6 +252,7 @@ function App() {
             onDelete={handleConnectionDelete}
           />
         )}
+        <FooterSlot />
       </Box>
     </ReactFlowProvider>
   );
