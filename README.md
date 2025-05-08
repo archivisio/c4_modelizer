@@ -225,18 +225,17 @@ Use the **Issues** tab. Please include:
 
 ---
 
-## 📄 License
+## 📄 License
 
-C4 Modelizer is distributed under the **Creative Commons BY‑NC 4.0** license.
+C4 Modelizer is available under the **Polyform Internal Use License 1.0.0**.
 
 You may:
 
-* **Share** — copy and redistribute the material in any medium or format.
-* **Adapt** — remix, transform and build upon the material.
+* **Share** — copy and redistribute the software **for internal use** within your organization.
+* **Adapt** — remix, transform and build upon the software **for internal use**.
 
 **Under the following conditions:**
 
-* **Attribution** — give appropriate credit, link to the licence and indicate changes.
-* **Non‑Commercial** — you may not use the material for commercial purposes.
+* **Internal Use Only** — any use beyond your organization’s internal operations (including commercial SaaS, redistribution, or offering as a service) requires a separate commercial license.
 
-See the full text → [https://creativecommons.org/licenses/by-nc/4.0/](https://creativecommons.org/licenses/by-nc/4.0/)
+
