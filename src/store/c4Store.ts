@@ -1,9 +1,10 @@
 import {C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock} from '@interfaces/c4';
 import {ConnectionData} from '@interfaces/connection';
 import {systemStateHandler} from '@store/state-handlers/system-state-handler.ts';
+import {containerStateHandler} from "@store/state-handlers/container-state-handler.ts";
+import {componentStateHandler} from "@store/state-handlers/component-state-handler.ts";
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
-import {containerStateHandler} from "@store/state-handlers/container-state-handler.ts";
 
 export interface C4State {
   model: C4Model;
@@ -55,113 +56,10 @@ export const useC4Store = create<C4State>()(
       updateContainer: (systemId, containerId, data) => containerStateHandler.update(set, systemId, containerId, data),
       removeContainer: (systemId, containerId) => containerStateHandler.remove(set, systemId, containerId),
       connectContainers: (systemId, fromId, connection) => containerStateHandler.connect(set, systemId, fromId, connection),
-      addComponent: (systemId, containerId, component) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId) {
-                    const components = container.components || [];
-                    return {
-                      ...container,
-                      components: [
-                        ...components,
-                        {
-                          ...component,
-                          // @ts-expect-error id is not defined in Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>
-                          id: component.id || crypto.randomUUID(),
-                          systemId,
-                          containerId,
-                          connections: []
-                        }
-                      ]
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      updateComponent: (systemId, containerId, componentId, data) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId && container.components) {
-                    return {
-                      ...container,
-                      components: container.components.map(component =>
-                        component.id === componentId ? { ...component, ...data } : component
-                      )
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      removeComponent: (systemId, containerId, componentId) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId && container.components) {
-                    return {
-                      ...container,
-                      components: container.components.filter(component => component.id !== componentId)
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      connectComponents: (systemId, containerId, fromId, connection) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId && container.components) {
-                    return {
-                      ...container,
-                      components: container.components.map(component => {
-
-                        const connectionExists = component.connections.some(c => c.targetId === connection.targetId);
-                        if (component.id === fromId && !connectionExists) {
-                          return {
-                            ...component,
-                            connections: [...component.connections, connection]
-                          };
-                        }
-                        return component;
-                      })
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
+      addComponent: (systemId, containerId, component) => componentStateHandler.add(set, systemId, containerId, component),
+      updateComponent: (systemId, containerId, componentId, data) => componentStateHandler.update(set, systemId, containerId, componentId, data),
+      removeComponent: (systemId, containerId, componentId) => componentStateHandler.remove(set, systemId, containerId, componentId),
+      connectComponents: (systemId, containerId, fromId, connection) => componentStateHandler.connect(set, systemId, containerId, fromId, connection),
       addCodeElement: (systemId, containerId, componentId, codeElement) =>
         set((state) => {
           const updatedSystems = state.model.systems.map(system => {
