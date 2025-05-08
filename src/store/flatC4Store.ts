@@ -109,6 +109,39 @@ export const useFlatC4Store = create<FlatC4State>()(
             systems: state.model.systems.map((s) =>
               s.id === id ? { ...s, ...data } : s
             ),
+            containers: state.model.containers.map((c) => {
+              if(c.original?.id === id){
+                const { description, technology, url, name } = data;
+                return {...c, description, technology, url, name: name ? name : c.name }
+              }
+
+              return {
+                ...c,
+                systemId: id
+              }
+            }),
+            components: state.model.components.map((c) => {
+              if(c.original?.id === id){
+                const { description, technology, url, name } = data;
+                return {...c, description, technology, url, name: name ? name : c.name }
+              }
+
+              return {
+                ...c,
+                systemId: id
+              }
+            }),
+            codeElements: state.model.codeElements.map((c) => {
+              if(c.original?.id === id){
+                const { description, technology, url, name } = data;
+                return {...c, description, technology, url, name: name ? name : c.name }
+              }
+
+              return {
+                ...c,
+                systemId: id
+              }
+            }),
           },
         })),
 
