@@ -8,6 +8,11 @@ import {
 } from '@store/state-handlers/system-state';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import {C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock} from '@interfaces/c4';
+import {ConnectionData} from '@interfaces/connection';
+import {systemStateHandler} from '@store/state-handlers/system-state-handler.ts';
+import {create} from 'zustand';
+import {persist} from 'zustand/middleware';
 
 export interface C4State {
   model: C4Model;
@@ -40,15 +45,17 @@ export type C4StateSetter =  {
   (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
   (state: (C4State | ((state: C4State) => C4State)), replace: true): void
 }
+export interface C4LayerStateHandler {
+  add: (set: C4StateSetter, ...args: never[]) => void;
+  update: (set: C4StateSetter, ...args: never[]) => void;
+  remove: (set: C4StateSetter, ...args: never[]) => void;
+  connect: (set: C4StateSetter, ...args: never[]) => void;
+}
 
 export const useC4Store = create<C4State>()(
   persist(
     (set) => ({
       model: { systems: [], viewLevel: 'system' },
-      addSystem: (system) => addSystemStateHandler(set, system),
-      updateSystem: (id, data) => updateSystemStateHandler(set, id, data),
-      removeSystem: (id) => removeSystemStateHandler(set, id),
-      connectSystems: (fromId, connection) => connectSystemsStateHandler(set, fromId, connection),
       addContainer: (systemId, container) =>
         set((state) => {
           const updatedSystems = state.model.systems.map(system => {
@@ -121,6 +128,10 @@ export const useC4Store = create<C4State>()(
 
           return { model: { ...state.model, systems: updatedSystems } };
         }),
+      addSystem: (system) => systemStateHandler.add(set, system),
+      updateSystem: (id, data) => systemStateHandler.update(set, id, data),
+      removeSystem: (id) => systemStateHandler.remove(set, id),
+      connectSystems: (fromId, connection) => systemStateHandler.connect(set, fromId, connection),
       addComponent: (systemId, containerId, component) =>
         set((state) => {
           const updatedSystems = state.model.systems.map(system => {
