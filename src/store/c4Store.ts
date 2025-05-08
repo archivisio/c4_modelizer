@@ -1,9 +1,15 @@
 import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '@interfaces/c4';
 import { ConnectionData } from '@interfaces/connection';
+import {
+  addSystemStateHandler,
+  connectSystemsStateHandler,
+  removeSystemStateHandler,
+  updateSystemStateHandler
+} from '@store/state-handlers/system-state';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface C4State {
+export interface C4State {
   model: C4Model;
   addSystem: (system: Omit<SystemBlock, 'id' | 'containers'>) => void;
   updateSystem: (id: string, data: Partial<SystemBlock>) => void;
@@ -34,52 +40,10 @@ export const useC4Store = create<C4State>()(
   persist(
     (set) => ({
       model: { systems: [], viewLevel: 'system' },
-      addSystem: (system) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            systems: [
-              ...state.model.systems,
-              // @ts-expect-error id is not defined in Omit<SystemBlock, 'id' | 'containers'>
-              { ...system, id: system.id || crypto.randomUUID(), connections: [] },
-            ],
-          },
-        })),
-      updateSystem: (id, data) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            systems: state.model.systems.map((s) =>
-              s.id === id ? { ...s, ...data } : s
-            ),
-          },
-        })),
-      removeSystem: (id) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            systems: state.model.systems.filter((s) => s.id !== id),
-          },
-        })),
-      connectSystems: (fromId, connection) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            systems: state.model.systems.map((s) => {
-              if (s.id === fromId) {
-
-                const connectionExists = s.connections.some(c => c.targetId === connection.targetId);
-                if (!connectionExists) {
-                  return {
-                    ...s,
-                    connections: [...s.connections, connection]
-                  };
-                }
-              }
-              return s;
-            }),
-          },
-        })),
+      addSystem: (system) => addSystemStateHandler(set, system),
+      updateSystem: (id, data) => updateSystemStateHandler(set, id, data),
+      removeSystem: (id) => removeSystemStateHandler(set, id),
+      connectSystems: (fromId, connection) => connectSystemsStateHandler(set, fromId, connection),
       addContainer: (systemId, container) =>
         set((state) => {
           const updatedSystems = state.model.systems.map(system => {
