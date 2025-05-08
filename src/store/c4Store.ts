@@ -36,6 +36,11 @@ export interface C4State {
   setModel: (model: C4Model) => void;
 }
 
+export type C4StateSetter =  {
+  (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
+  (state: (C4State | ((state: C4State) => C4State)), replace: true): void
+}
+
 export const useC4Store = create<C4State>()(
   persist(
     (set) => ({

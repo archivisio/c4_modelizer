@@ -1,13 +1,10 @@
 import {SystemBlock} from "@/types/c4.ts";
-import {C4State} from "../c4Store.ts"
+import {C4StateSetter} from "../c4Store.ts"
 import {ConnectionData} from "@/types/connection.ts";
 
 
 export const addSystemStateHandler = (
-    set: {
-        (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
-        (state: (C4State | ((state: C4State) => C4State)), replace: true): void
-    },
+    set: C4StateSetter,
     system: Omit<SystemBlock, 'id' | 'containers'>
 ): void => {
     set((state) => ({
@@ -21,10 +18,7 @@ export const addSystemStateHandler = (
     }))
 };
 export const updateSystemStateHandler = (
-    set: {
-        (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
-        (state: (C4State | ((state: C4State) => C4State)), replace: true): void
-    },
+    set: C4StateSetter,
     id: string,
     data: Partial<SystemBlock>
 ):void => {
@@ -38,10 +32,7 @@ export const updateSystemStateHandler = (
     }));
 };
 export const removeSystemStateHandler=  (
-    set:  {
-        (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
-        (state: (C4State | ((state: C4State) => C4State)), replace: true): void
-    },
+    set:  C4StateSetter,
     id: string
 ):void => {
     set((state) => ({
@@ -52,10 +43,7 @@ export const removeSystemStateHandler=  (
     }));
 };
 export const connectSystemsStateHandler = (
-    set: {
-        (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
-        (state: (C4State | ((state: C4State) => C4State)), replace: true): void
-    },
+    set: C4StateSetter,
     fromId: string,
     connection: ConnectionData
 ):void => {
