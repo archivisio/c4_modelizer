@@ -4,6 +4,10 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 concurrency:
   group: "docker-${{ github.ref }}"
   cancel-in-progress: true
