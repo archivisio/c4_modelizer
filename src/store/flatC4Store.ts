@@ -1,7 +1,7 @@
 import { ConnectionData } from '@interfaces/connection';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
+import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
 
 type C4EntityType = ViewLevel;
 
@@ -72,101 +72,6 @@ interface FlatC4State {
   // Model functions
   setModel: (model: FlatC4Model) => void;
 }
-
-export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
-  const flatModel: FlatC4Model = {
-    systems: [],
-    containers: [],
-    components: [],
-    codeElements: [],
-    viewLevel: nestedModel.viewLevel || 'system',
-    activeSystemId: nestedModel.activeSystemId,
-    activeContainerId: nestedModel.activeContainerId,
-    activeComponentId: nestedModel.activeComponentId,
-  };
-
-  nestedModel.systems.forEach(system => {
-    flatModel.systems.push({
-      ...system,
-      connections: [...system.connections],
-    });
-    if (system.containers) {
-      system.containers.forEach(container => {
-        flatModel.containers.push({
-          ...container,
-          connections: [...container.connections],
-        });
-
-        if (container.components) {
-          container.components.forEach(component => {
-            flatModel.components.push({
-              ...component,
-              connections: [...component.connections],
-            });
-
-            if (component.codeElements) {
-              component.codeElements.forEach(codeElement => {
-                flatModel.codeElements.push({
-                  ...codeElement,
-                  connections: [...codeElement.connections],
-                });
-              });
-            }
-          });
-        }
-      });
-    }
-  });
-
-  return flatModel;
-};
-
-export const convertToNestedModel = (flatModel: FlatC4Model): C4Model => {
-  const nestedModel: C4Model = {
-    systems: [],
-    viewLevel: flatModel.viewLevel,
-    activeSystemId: flatModel.activeSystemId,
-    activeContainerId: flatModel.activeContainerId,
-    activeComponentId: flatModel.activeComponentId,
-  };
-
-  flatModel.systems.forEach(system => {
-    const systemContainers = flatModel.containers
-      .filter(container => container.systemId === system.id)
-      .map(container => {
-        const containerComponents = flatModel.components
-          .filter(component => component.containerId === container.id)
-          .map(component => {
-            const componentCodeElements = flatModel.codeElements
-              .filter(codeElement => codeElement.componentId === component.id)
-              .map(codeElement => ({
-                ...codeElement,
-                connections: [...codeElement.connections],
-              }));
-
-            return {
-              ...component,
-              connections: [...component.connections],
-              codeElements: componentCodeElements,
-            };
-          });
-
-        return {
-          ...container,
-          connections: [...container.connections],
-          components: containerComponents,
-        };
-      });
-
-    nestedModel.systems.push({
-      ...system,
-      connections: [...system.connections],
-      containers: systemContainers,
-    });
-  });
-
-  return nestedModel;
-};
 
 export const useFlatC4Store = create<FlatC4State>()(
   persist(
@@ -655,9 +560,4 @@ export const useFilteredEntities = () => {
     codeElements: filteredCodeElements,
     viewLevel
   };
-};
-
-// Migration
-export const migrateFromNestedToFlat = (nestedModel: C4Model): FlatC4Model => {
-  return convertToFlatModel(nestedModel);
 };

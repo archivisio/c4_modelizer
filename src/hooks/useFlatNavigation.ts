@@ -48,8 +48,6 @@ export const useFlatNavigation = () => {
   const navigateToContainer = useCallback((systemId: string) => {
     if (!systemId) return;
 
-    // Dans la structure plate, nous avons toujours besoin de l'ID du système
-    // mais nous n'avons plus besoin de chercher le containerId dans la structure imbriquée
     const state: NavigationState = { level: 'container', systemId };
     updateActiveStates(state);
     window.history.pushState(state, '', buildUrl(state));
@@ -58,8 +56,6 @@ export const useFlatNavigation = () => {
   const navigateToComponent = useCallback((systemId: string, containerId: string) => {
     if (!systemId || !containerId) return;
 
-    // Dans la structure plate, nous avons besoin des IDs du système et du container
-    // mais nous n'avons plus besoin de chercher le componentId dans la structure imbriquée
     const state: NavigationState = { level: 'component', systemId, containerId };
     updateActiveStates(state);
     window.history.pushState(state, '', buildUrl(state));

@@ -18,7 +18,6 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [importError, setImportError] = useState<string | null>(null);
   const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
 
-  // Dans la structure plate, on recherche directement dans les listes correspondantes
   const editingElement = editId
     ? (model.viewLevel === "code"
         ? model.codeElements.find((c) => c.id === editId)
