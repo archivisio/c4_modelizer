@@ -8,10 +8,10 @@ import ErrorNotification from "@components/ErrorNotification";
 import FlowCanvas from "@components/FlowCanvas";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
-import { useActiveElements } from "@hooks/useActiveElements";
+import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
 import { useEdges } from "@hooks/useEdges";
 import { useFileOperations } from "@hooks/useFileOperations";
-import { useModelActions } from "@hooks/useModelActions";
+import { useFlatModelActions } from "@hooks/useFlatModelActions";
 import { useNavigation } from "@hooks/useNavigation";
 import { useNodes } from "@hooks/useNodes";
 import { Box } from "@mui/material";
@@ -49,7 +49,7 @@ function App() {
   } = useDialogs();
 
   const { activeSystem, activeContainer, activeComponent } =
-    useActiveElements();
+    useFlatActiveElements();
 
   const { currentNodes, handleNodePositionChange } = useNodes();
 
@@ -67,7 +67,7 @@ function App() {
     handleAddElement,
     handleElementSave,
     handleNodeDelete,
-  } = useModelActions();
+  } = useFlatModelActions();
 
   const { handleExport, handleFileInputChange } = useFileOperations();
 
