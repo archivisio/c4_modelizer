@@ -3,6 +3,7 @@ import {ConnectionData} from '@interfaces/connection';
 import {systemStateHandler} from '@store/state-handlers/system-state-handler.ts';
 import {containerStateHandler} from "@store/state-handlers/container-state-handler.ts";
 import {componentStateHandler} from "@store/state-handlers/component-state-handler.ts";
+import {codeStateHandler} from "@store/state-handlers/code-state-handler.ts";
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
 
@@ -60,147 +61,10 @@ export const useC4Store = create<C4State>()(
       updateComponent: (systemId, containerId, componentId, data) => componentStateHandler.update(set, systemId, containerId, componentId, data),
       removeComponent: (systemId, containerId, componentId) => componentStateHandler.remove(set, systemId, containerId, componentId),
       connectComponents: (systemId, containerId, fromId, connection) => componentStateHandler.connect(set, systemId, containerId, fromId, connection),
-      addCodeElement: (systemId, containerId, componentId, codeElement) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId) {
-                    return {
-                      ...container,
-                      components: (container.components || []).map(component => {
-                        if (component.id === componentId) {
-                          const codeElements = component.codeElements || [];
-                          return {
-                            ...component,
-                            codeElements: [
-                              ...codeElements,
-                              {
-                                ...codeElement,
-                                // @ts-expect-error id is not defined in Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>
-                                id: codeElement.id || crypto.randomUUID(),
-                                systemId,
-                                containerId,
-                                componentId,
-                                connections: []
-                              }
-                            ]
-                          };
-                        }
-                        return component;
-                      })
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      updateCodeElement: (systemId, containerId, componentId, codeElementId, data) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId) {
-                    return {
-                      ...container,
-                      components: (container.components || []).map(component => {
-                        if (component.id === componentId && component.codeElements) {
-                          return {
-                            ...component,
-                            codeElements: component.codeElements.map(codeElement =>
-                              codeElement.id === codeElementId ? { ...codeElement, ...data } : codeElement
-                            )
-                          };
-                        }
-                        return component;
-                      })
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      removeCodeElement: (systemId, containerId, componentId, codeElementId) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId) {
-                    return {
-                      ...container,
-                      components: (container.components || []).map(component => {
-                        if (component.id === componentId && component.codeElements) {
-                          return {
-                            ...component,
-                            codeElements: component.codeElements.filter(codeElement => codeElement.id !== codeElementId)
-                          };
-                        }
-                        return component;
-                      })
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      connectCodeElements: (systemId, containerId, componentId, fromId, connection) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              return {
-                ...system,
-                containers: (system.containers || []).map(container => {
-                  if (container.id === containerId) {
-                    return {
-                      ...container,
-                      components: (container.components || []).map(component => {
-                        if (component.id === componentId) {
-                          return {
-                            ...component,
-                            codeElements: (component.codeElements || []).map(codeElement => {
-
-                              const connectionExists = codeElement.connections.some(c => c.targetId === connection.targetId);
-                              if (codeElement.id === fromId && !connectionExists) {
-                                return {
-                                  ...codeElement,
-                                  connections: [...codeElement.connections, connection]
-                                };
-                              }
-                              return codeElement;
-                            })
-                          };
-                        }
-                        return component;
-                      })
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-
+      addCodeElement: (systemId, containerId, componentId, codeElement) => codeStateHandler.add(set, systemId, containerId, componentId, codeElement),
+      updateCodeElement: (systemId, containerId, componentId, codeElementId, data) => codeStateHandler.update(set, systemId, containerId, componentId, codeElementId, data),
+      removeCodeElement: (systemId, containerId, componentId, codeElementId) => codeStateHandler.remove(set, systemId, containerId, componentId, codeElementId),
+      connectCodeElements: (systemId, containerId, componentId, fromId, connection) => codeStateHandler.connect(set, systemId, containerId, componentId, fromId, connection),
       setActiveSystem: (systemId) =>
         set((state) => ({
           model: {
