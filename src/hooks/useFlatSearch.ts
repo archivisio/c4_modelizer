@@ -33,16 +33,20 @@ export function useFlatSearch() {
 
     filteredItems = filteredItems.filter((item) => {
       if (viewLevel === 'system') {
-        return item.type === 'system';
+        const systemItem = item as SystemBlock;
+        return systemItem.type === 'system';
       }
       if (viewLevel === 'container' && activeSystem) {
-        return item.type === 'container' && 'systemId' in item && item.systemId === activeSystem.id;
+        const containerItem = item as ContainerBlock;
+        return containerItem.systemId !== activeSystem.id;
       }
       if (viewLevel === 'component' && activeContainer) {
-        return item.type === 'component' && 'containerId' in item && item.containerId === activeContainer.id;
+        const componentItem = item as ComponentBlock;
+        return componentItem.containerId !== activeContainer.id;
       }
       if (viewLevel === 'code' && activeComponent) {
-        return item.type === 'code' && 'componentId' in item && item.componentId === activeComponent.id;
+        const codeItem = item as CodeBlock;
+        return codeItem.componentId !== activeComponent.id;
       }
       return true;
     });
