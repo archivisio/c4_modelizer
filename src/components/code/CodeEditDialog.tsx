@@ -19,7 +19,7 @@ interface CodeEditDialogProps {
     name: string,
     description: string,
     codeType: "class" | "function" | "interface" | "variable" | "other",
-    language: string,
+    technology: string,
     code: string,
     url: string
   ) => void;
@@ -33,7 +33,7 @@ interface CodeValues {
   name: string;
   description: string;
   codeType: CodeType;
-  language: string;
+  technology: string;
   code: string;
   url: string;
 }
@@ -54,7 +54,7 @@ export default function CodeEditDialog({
     name: initialName,
     description: initialDescription,
     codeType: initialCodeType,
-    language: initialLanguage,
+    technology: initialLanguage,
     code: initialCode,
     url: initialUrl,
   });
@@ -65,7 +65,7 @@ export default function CodeEditDialog({
       name: initialName,
       description: initialDescription,
       codeType: initialCodeType,
-      language: initialLanguage || "",
+      technology: initialLanguage || "",
       code: initialCode || "",
       url: initialUrl || "",
     });
@@ -93,7 +93,7 @@ export default function CodeEditDialog({
           values.name,
           values.description,
           values.codeType,
-          values.language,
+          values.technology,
           values.code,
           values.url
         )
@@ -147,8 +147,8 @@ export default function CodeEditDialog({
         <TechnologySelect
           fullWidth
           level="code"
-          value={values.language}
-          onChange={(value) => handleChange("language", value)}
+          value={values.technology}
+          onChange={(value) => handleChange("technology", value)}
           label={t("language")}
           placeholder={t("select_language")}
         />
@@ -158,7 +158,7 @@ export default function CodeEditDialog({
         label={t("code")}
         value={values.code}
         onChange={(value) => handleChange("code", value)}
-        language={values.language}
+        language={values.technology}
         placeholder={t("code_placeholder")}
       />
       <ThemedTextField

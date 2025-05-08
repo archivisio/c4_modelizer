@@ -6,32 +6,35 @@ export interface BaseBlock {
   description?: string;
   url?: string;
   position: Position;
+  type: 'system' | 'container' | 'component' | 'code';
+  technology?: string;
+  original?: {
+    id: string;
+    type: 'system' | 'container' | 'component' | 'code';
+  };
 }
 
 import { ConnectionData } from './connection';
 
-
-
-
 export interface SystemBlock extends BaseBlock {
-  technology?: string;
   connections: ConnectionData[];
   containers?: ContainerBlock[];
+  type: 'system';
 }
 
 export interface ContainerBlock extends BaseBlock {
   systemId: string;
   connections: ConnectionData[];
-  technology?: string;
   components?: ComponentBlock[];
+  type: 'container';
 }
 
 export interface ComponentBlock extends BaseBlock {
   containerId: string;
   systemId: string;
   connections: ConnectionData[];
-  technology?: string;
   codeElements?: CodeBlock[];
+  type: 'component';
 }
 
 export interface CodeBlock extends BaseBlock {
@@ -39,9 +42,16 @@ export interface CodeBlock extends BaseBlock {
   containerId: string;
   systemId: string;
   codeType: 'class' | 'function' | 'interface' | 'variable' | 'other';
-  language?: string;
   code?: string;
   connections: ConnectionData[];
+  type: 'code';
+}
+
+export interface NodeData<T extends BaseBlock> {
+  data: {
+    onEdit: () => void;
+  } & T;
+  selected: boolean;
 }
 
 export type TechnologyLevel = 'system' | 'container' | 'component' | 'code' | 'connection';

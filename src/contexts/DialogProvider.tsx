@@ -1,5 +1,6 @@
 import { ConnectionInfo } from "@interfaces/connection";
 import { useC4Store } from "@store/c4Store";
+import { FinalConnectionState } from "@xyflow/react";
 import React, { useState } from "react";
 import { DialogContext, DialogContextType } from "./DialogContext";
 
@@ -15,6 +16,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     useState<ConnectionInfo | null>(null);
   const [openConfirmReset, setOpenConfirmReset] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
+  const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
 
   const activeSystem = model.systems.find((s) => s.id === model.activeSystemId);
   const activeContainer = activeSystem?.containers?.find(
@@ -67,7 +69,8 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     openConfirmReset,
     importError,
     editingElement,
-
+    pendingConnection,
+    
     setEditId,
     setDialogOpen,
     setIsEditingContainer,
@@ -75,6 +78,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     setEditingConnection,
     setOpenConfirmReset,
     setImportError,
+    setPendingConnection,
 
     openEditDialog,
     closeEditDialog,

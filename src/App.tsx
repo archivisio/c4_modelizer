@@ -1,3 +1,4 @@
+import SearchNodeBar from "@/components/SearchNodeBar";
 import CodeEditDialog from "@components/code/CodeEditDialog";
 import ConfirmDialog from "@components/common/ConfirmDialog";
 import ComponentEditDialog from "@components/component/ComponentEditDialog";
@@ -216,15 +217,15 @@ function App() {
             initialName={editingElement.name}
             initialDescription={editingElement.description || ""}
             initialCodeType={(editingElement as CodeBlock).codeType || "class"}
-            initialLanguage={(editingElement as CodeBlock).language || ""}
+            initialLanguage={(editingElement as CodeBlock).technology || ""}
             initialCode={(editingElement as CodeBlock).code || ""}
             initialUrl={editingElement.url || ""}
-            onSave={(name, description, codeType, language, code, url) => {
+            onSave={(name, description, codeType, technology, code, url) => {
               handleElementSave(editingElement.id, {
                 name,
                 description,
                 codeType,
-                language,
+                technology,
                 code,
                 url,
               });
@@ -238,6 +239,7 @@ function App() {
           />
         )}
 
+        <SearchNodeBar />
         <ErrorNotification message={importError} />
 
         {connectionDialogOpen && (

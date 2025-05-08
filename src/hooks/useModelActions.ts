@@ -34,7 +34,7 @@ export function useModelActions() {
     });
   }, [setModel]);
 
-  const handleAddElement = useCallback(() => {
+  const AddElement = (properties: Record<string, unknown> = {}) => {
     const randomPosition = {
       x: Math.random() * 400 + 100,
       y: Math.random() * 300 + 100,
@@ -48,6 +48,8 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'system',
+        ...properties,
       });
     } else if (model.viewLevel === 'container' && model.activeSystemId) {
       addContainer(model.activeSystemId, {
@@ -57,6 +59,8 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'container',
+        ...properties,
       });
     } else if (
       model.viewLevel === 'component' &&
@@ -70,6 +74,8 @@ export function useModelActions() {
         connections: [],
         technology: '',
         url: '',
+        type: 'component',
+        ...properties,
       });
     } else if (
       model.viewLevel === 'code' &&
@@ -86,13 +92,19 @@ export function useModelActions() {
           description: '',
           position: randomPosition,
           codeType: 'class',
-          language: '',
+          technology: '',
           code: '',
           url: '',
           connections: [],
+          type: 'code',
+          ...properties,
         }
       );
     }
+  }
+
+  const handleAddElement = useCallback(() => {
+    AddElement();
   }, [
     model.viewLevel,
     model.activeSystemId,
@@ -107,12 +119,11 @@ export function useModelActions() {
 
   const handleElementSave = useCallback(
     (id: string, data: Record<string, unknown>) => {
-      const { name, description, technology, codeType, language, code, url } = data as {
+      const { name, description, technology, codeType, code, url } = data as {
         name: string;
         description?: string;
         technology?: string;
         codeType?: CodeBlock['codeType'];
-        language?: string;
         code?: string;
         url?: string;
       };
@@ -127,7 +138,7 @@ export function useModelActions() {
             name,
             description,
             codeType: codeType || 'other',
-            language,
+            technology,
             code,
             url,
           }
@@ -188,6 +199,7 @@ export function useModelActions() {
   return {
     model,
     resetStore,
+    AddElement,
     handleAddElement,
     handleElementSave,
     handleNodeDelete,

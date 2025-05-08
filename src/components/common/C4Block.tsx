@@ -1,3 +1,4 @@
+import { BaseBlock } from "@/types/c4";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import {
@@ -22,10 +23,7 @@ export type HandlePositions = {
 };
 
 export interface C4BlockProps {
-  name: string;
-  description?: string;
-  technology?: string;
-  url?: string;
+  item: BaseBlock;
   selected?: boolean;
   onEdit: () => void;
   colors: ColorStyle;
@@ -45,10 +43,7 @@ const hexToRgb = (hex: string): string => {
 };
 
 const C4Block: React.FC<C4BlockProps> = ({
-  name,
-  description,
-  technology,
-  url,
+  item,
   selected = false,
   onEdit,
   colors,
@@ -56,6 +51,7 @@ const C4Block: React.FC<C4BlockProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+  const { technology, name, description, url } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
@@ -133,6 +129,7 @@ const C4Block: React.FC<C4BlockProps> = ({
         sx={{
           backgroundColor: "#0a1929",
           borderRadius: 3,
+          opacity: item.original ? 0.5 : 1,
         }}
       >
         <Card sx={cardSx} className="tech-card">
@@ -163,7 +160,10 @@ const C4Block: React.FC<C4BlockProps> = ({
                 }}
               >
                 {technology && (
-                  <TechnologyIcon technologyId={technology} size={24} />
+                  <TechnologyIcon
+                    item={{ technology, name } as unknown as BaseBlock}
+                    size={24}
+                  />
                 )}
                 <Typography
                   variant="subtitle1"
@@ -235,49 +235,51 @@ const C4Block: React.FC<C4BlockProps> = ({
                   </Tooltip>
                 )}
 
-                <Tooltip title={t("edit")} arrow>
-                  <IconButton
-                    size="small"
-                    onClick={onEdit}
-                    aria-label={t("edit")}
-                    sx={{
-                      backgroundColor: "rgba(0,0,0,0.3)",
-                      color: "#fff",
-                      "&:hover": {
-                        backgroundColor: `rgba(${hexToRgb(
-                          colorStyles.hover
-                        )}, 0.2)`,
-                        borderColor: colorStyles.hover,
-                        boxShadow: `0 0 5px rgba(${hexToRgb(
-                          colorStyles.hover
-                        )}, 0.3)`,
-                      },
-                      "&:focus": {
-                        backgroundColor: `rgba(${hexToRgb(
-                          colorStyles.hover
-                        )}, 0.2)`,
-                        borderColor: colorStyles.hover,
-                        boxShadow: `0 0 5px rgba(${hexToRgb(
-                          colorStyles.hover
-                        )}, 0.3)`,
-                        outline: "none",
-                      },
-                      "&:focus-visible": {
-                        outline: "none",
-                      },
-                      width: 22,
-                      height: 22,
-                      minWidth: 22,
-                      minHeight: 22,
-                      border: `1px solid ${colorStyles.border}`,
-                      backdropFilter: "blur(4px)",
-                      transition: "all 0.2s ease",
-                      p: 0.5,
-                    }}
-                  >
-                    <EditIcon fontSize="inherit" />
-                  </IconButton>
-                </Tooltip>
+                {!item.original && (
+                  <Tooltip title={t("edit")} arrow>
+                    <IconButton
+                      size="small"
+                      onClick={onEdit}
+                      aria-label={t("edit")}
+                      sx={{
+                        backgroundColor: "rgba(0,0,0,0.3)",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: `rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.2)`,
+                          borderColor: colorStyles.hover,
+                          boxShadow: `0 0 5px rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.3)`,
+                        },
+                        "&:focus": {
+                          backgroundColor: `rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.2)`,
+                          borderColor: colorStyles.hover,
+                          boxShadow: `0 0 5px rgba(${hexToRgb(
+                            colorStyles.hover
+                          )}, 0.3)`,
+                          outline: "none",
+                        },
+                        "&:focus-visible": {
+                          outline: "none",
+                        },
+                        width: 22,
+                        height: 22,
+                        minWidth: 22,
+                        minHeight: 22,
+                        border: `1px solid ${colorStyles.border}`,
+                        backdropFilter: "blur(4px)",
+                        transition: "all 0.2s ease",
+                        p: 0.5,
+                      }}
+                    >
+                      <EditIcon fontSize="inherit" />
+                    </IconButton>
+                  </Tooltip>
+                )}
               </Box>
             </Box>
 
