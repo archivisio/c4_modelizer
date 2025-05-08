@@ -19,7 +19,7 @@ describe('C4 Modelizer - Toolbar', () => {
   })
 
   it('should import a model from JSON file', () => {
-    cy.importModel('basicModel-v1.json')
+    cy.importModel('basicModel-v2.json')
     cy.get('.react-flow__node').contains('Test system')
   })
 })

@@ -11,13 +11,13 @@ import {
 } from "@mui/material";
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { C4Model } from "../types/c4";
+import { FlatC4Model } from "../types/flatC4Model";
 export interface ToolbarProps {
   onAddSystem: () => void;
   onExport: () => void;
   onImport: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onReset: () => void;
-  model: C4Model;
+  model: FlatC4Model;
 }
 
 const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(

@@ -30,14 +30,10 @@ describe('C4 Modelizer - Code Level', () => {
   it('should add a code block and modify its code type', () => {
     cy.addNode()
     cy.get('.react-flow__node').first().click()
-    // Ouvre la boîte de dialogue d'édition via aria-label
     cy.get('.react-flow__node').first().find('button[aria-label="Edit"]').click()
-    // Sélection du type via le combobox
     cy.get('[data-testid="input_type"] [role="combobox"]').click()
     cy.get('li[data-value="function"]').click()
-    // Sauvegarde
     cy.get('[data-testid="dialog-save-button"]').click()
-    // Vérification de la présence du chip 'function'
     cy.get('.react-flow__node').first().find('.MuiChip-label').contains('function')
   })
 

@@ -1,5 +1,5 @@
 import { ConnectionInfo } from "@interfaces/connection";
-import { useC4Store } from "@store/c4Store";
+import { useFlatC4Store } from "@store/flatC4Store";
 import { FinalConnectionState } from "@xyflow/react";
 import React, { useState } from "react";
 import { DialogContext, DialogContextType } from "./DialogContext";
@@ -7,7 +7,7 @@ import { DialogContext, DialogContextType } from "./DialogContext";
 export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { model } = useC4Store();
+  const { model } = useFlatC4Store();
   const [editId, setEditId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditingContainer, setIsEditingContainer] = useState(false);
@@ -18,21 +18,13 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [importError, setImportError] = useState<string | null>(null);
   const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
 
-  const activeSystem = model.systems.find((s) => s.id === model.activeSystemId);
-  const activeContainer = activeSystem?.containers?.find(
-    (c) => c.id === model.activeContainerId
-  );
-  const activeComponent = activeContainer?.components?.find(
-    (c) => c.id === model.activeComponentId
-  );
-
   const editingElement = editId
-    ? (model.viewLevel === "code" && activeComponent?.codeElements
-        ? activeComponent.codeElements.find((c) => c.id === editId)
-        : model.viewLevel === "component" && activeContainer?.components
-        ? activeContainer.components.find((c) => c.id === editId)
-        : isEditingContainer && activeSystem?.containers
-        ? activeSystem.containers.find((c) => c.id === editId)
+    ? (model.viewLevel === "code"
+        ? model.codeElements.find((c) => c.id === editId)
+        : model.viewLevel === "component"
+        ? model.components.find((c) => c.id === editId)
+        : isEditingContainer
+        ? model.containers.find((c) => c.id === editId)
         : model.systems.find((s) => s.id === editId)) || null
     : null;
 

@@ -1,6 +1,6 @@
 import { loadPlugins } from '@/plugins/manager'
 import PortalTarget from '@/slots/PortalTarget.tsx'
-import { DialogProvider } from '@contexts/DialogProvider'
+import { DialogProvider } from '@contexts/DialogProvider.tsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'

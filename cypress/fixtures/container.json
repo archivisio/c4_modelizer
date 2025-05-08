@@ -1,5 +1,4 @@
 {
-  "viewLevel": "container",
   "systems": [
     {
       "name": "Web applications",
@@ -38,6 +37,10 @@
       "containers": []
     }
   ],
+  "containers": [],
+  "components": [],
+  "codeElements": [],
+  "viewLevel": "container",
   "activeSystemId": "4b8ed889-5ec1-4f50-befa-d35c3ef06131",
-  "schemaVersion": 1
+  "schemaVersion": 2
 }

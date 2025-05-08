@@ -8,12 +8,12 @@ import ErrorNotification from "@components/ErrorNotification";
 import FlowCanvas from "@components/FlowCanvas";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
-import { useActiveElements } from "@hooks/useActiveElements";
-import { useEdges } from "@hooks/useEdges";
+import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
+import { useFlatEdges } from "@hooks/useFlatEdges";
 import { useFileOperations } from "@hooks/useFileOperations";
-import { useModelActions } from "@hooks/useModelActions";
-import { useNavigation } from "@hooks/useNavigation";
-import { useNodes } from "@hooks/useNodes";
+import { useFlatModelActions } from "@hooks/useFlatModelActions";
+import { useFlatNavigation } from "@hooks/useFlatNavigation";
+import { useFlatNodes } from "@hooks/useFlatNodes";
 import { Box } from "@mui/material";
 import NavBarSlot from "@slots/NavBarSlot";
 import ToolbarSlot from "@slots/ToolbarSlot";
@@ -32,7 +32,7 @@ import {
 function App() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);
   const { navigateToContainer, navigateToComponent, navigateToCode } =
-    useNavigation();
+    useFlatNavigation();
   const {
     dialogOpen,
     isEditingContainer,
@@ -49,9 +49,9 @@ function App() {
   } = useDialogs();
 
   const { activeSystem, activeContainer, activeComponent } =
-    useActiveElements();
+    useFlatActiveElements();
 
-  const { currentNodes, handleNodePositionChange } = useNodes();
+  const { currentNodes, handleNodePositionChange } = useFlatNodes();
 
   const {
     edges,
@@ -59,7 +59,7 @@ function App() {
     handleEdgeClick,
     handleConnectionSave,
     handleConnectionDelete,
-  } = useEdges();
+  } = useFlatEdges();
 
   const {
     model,
@@ -67,7 +67,7 @@ function App() {
     handleAddElement,
     handleElementSave,
     handleNodeDelete,
-  } = useModelActions();
+  } = useFlatModelActions();
 
   const { handleExport, handleFileInputChange } = useFileOperations();
 

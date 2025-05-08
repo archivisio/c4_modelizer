@@ -1,7 +1,7 @@
-import { useNavigation } from "@hooks/useNavigation";
+import { useFlatNavigation } from "@hooks/useFlatNavigation";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
-import { useC4Store } from "@store/c4Store";
+import { useFlatC4Store } from "@store/flatC4Store";
 import { useReactFlow } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -17,14 +17,14 @@ const NavBar: React.FC<NavBarProps> = ({
   containerName,
   componentName,
 }) => {
-  const { model } = useC4Store();
+  const { model } = useFlatC4Store();
   const { t } = useTranslation();
   const {
     navigateToSystem,
     navigateToContainer,
     navigateToComponent,
     navigateToCode,
-  } = useNavigation();
+  } = useFlatNavigation();
   const reactFlowInstance = useReactFlow();
 
   const handleSystemsClick = (e: React.MouseEvent) => {

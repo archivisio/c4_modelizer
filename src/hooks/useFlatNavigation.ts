@@ -1,7 +1,6 @@
-import { useC4Store } from '@store/c4Store';
+import { useFlatC4Store } from '@store/flatC4Store';
+import { ViewLevel } from '../types/c4';
 import { useCallback, useEffect } from 'react';
-
-type ViewLevel = 'system' | 'container' | 'component' | 'code';
 
 interface NavigationState {
   level: ViewLevel;
@@ -10,14 +9,14 @@ interface NavigationState {
   componentId?: string;
 }
 
-export const useNavigation = () => {
+export const useFlatNavigation = () => {
   const {
     model,
     setViewLevel,
     setActiveSystem,
     setActiveContainer,
     setActiveComponent
-  } = useC4Store();
+  } = useFlatC4Store();
 
   const updateActiveStates = useCallback((state: NavigationState) => {
     setActiveSystem(state.systemId);

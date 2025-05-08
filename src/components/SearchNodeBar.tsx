@@ -1,9 +1,9 @@
 import TechnologyIcon from "@/components/TechnologyIcon";
 import { useDialogs } from "@/contexts/DialogContext";
-import { useModelActions } from "@/hooks/useModelActions";
+import { useFlatModelActions } from "@/hooks/useFlatModelActions";
+import { useFlatSearch } from "@/hooks/useFlatSearch";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
-import { useSearch } from "@/hooks/useSearch";
-import { useC4Store } from "@/store/c4Store";
+import { useFlatC4Store } from "@/store/flatC4Store";
 import { BaseBlock } from "@/types/c4";
 import CloseIcon from "@mui/icons-material/Close";
 import { Stack } from "@mui/material";
@@ -26,16 +26,16 @@ import {
 } from "./searchBarNodeStyled";
 
 const SearchNodeBar: React.FC = () => {
-  const { searchValue, setSearchValue, searchResults } = useSearch();
+  const { searchValue, setSearchValue, searchResults } = useFlatSearch();
   const { pendingConnection, setPendingConnection } = useDialogs();
-  const { AddElement } = useModelActions();
+  const { AddElement } = useFlatModelActions();
   const {
     model,
     connectSystems,
     connectContainers,
     connectComponents,
     connectCodeElements,
-  } = useC4Store();
+  } = useFlatC4Store();
   const searchBarRef = useRef<HTMLDivElement | null>(null);
   const resultFound = searchResults.length > 0;
 
@@ -84,32 +84,12 @@ const SearchNodeBar: React.FC = () => {
 
     if (model.viewLevel === "system") {
       connectSystems(sourceNodeId, connectionData);
-    } else if (model.viewLevel === "container" && model.activeSystemId) {
-      connectContainers(model.activeSystemId, sourceNodeId, connectionData);
-    } else if (
-      model.viewLevel === "component" &&
-      model.activeSystemId &&
-      model.activeContainerId
-    ) {
-      connectComponents(
-        model.activeSystemId,
-        model.activeContainerId,
-        sourceNodeId,
-        connectionData
-      );
-    } else if (
-      model.viewLevel === "code" &&
-      model.activeSystemId &&
-      model.activeContainerId &&
-      model.activeComponentId
-    ) {
-      connectCodeElements(
-        model.activeSystemId,
-        model.activeContainerId,
-        model.activeComponentId,
-        sourceNodeId,
-        connectionData
-      );
+    } else if (model.viewLevel === "container") {
+      connectContainers(sourceNodeId, connectionData);
+    } else if (model.viewLevel === "component") {
+      connectComponents(sourceNodeId, connectionData);
+    } else if (model.viewLevel === "code") {
+      connectCodeElements(sourceNodeId, connectionData);
     }
 
     setPendingConnection(null);

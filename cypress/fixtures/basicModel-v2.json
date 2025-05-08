@@ -1,5 +1,4 @@
 {
-  "viewLevel": "system",
   "systems": [
     {
       "name": "Test system",
@@ -14,5 +13,9 @@
       "id": "826a538b-df03-467f-bfd9-80ca92661648"
     }
   ],
-  "schemaVersion": 1
+  "containers": [],
+  "components": [],
+  "codeElements": [],
+  "viewLevel": "system",
+  "schemaVersion": 2
 }

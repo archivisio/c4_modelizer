@@ -1,10 +1,10 @@
 import { useDialogs } from '@contexts/DialogContext';
-import { ConnectionInfo } from '@interfaces/connection';
-import { useC4Store } from '@store/c4Store';
+import { ConnectionInfo } from '../types/connection';
+import { useFlatC4Store, useFilteredEntities } from '@store/flatC4Store';
 import { Connection, Edge } from '@xyflow/react';
 import { useCallback, useMemo } from 'react';
 
-export function useEdges() {
+export function useFlatEdges() {
   const {
     model,
     connectSystems,
@@ -13,24 +13,13 @@ export function useEdges() {
     connectCodeElements,
     updateConnection,
     removeConnection
-  } = useC4Store();
+  } = useFlatC4Store();
 
+  const { containers, components, codeElements } = useFilteredEntities();
   const { openConnectionDialog, closeConnectionDialog } = useDialogs();
 
   const edges: Edge[] = useMemo(() => {
-    const { viewLevel, systems, activeSystemId } = model;
-
-    const activeSystem = activeSystemId
-      ? systems.find(s => s.id === activeSystemId)
-      : undefined;
-
-    const activeContainer = activeSystem?.containers?.find(
-      c => c.id === model.activeContainerId
-    );
-
-    const activeComponent = activeContainer?.components?.find(
-      c => c.id === model.activeComponentId
-    );
+    const { viewLevel, systems } = model;
 
     if (viewLevel === 'system') {
       return systems.flatMap((sys) =>
@@ -50,8 +39,8 @@ export function useEdges() {
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );
-    } else if (viewLevel === 'container' && activeSystem?.containers) {
-      return activeSystem.containers.flatMap((container) =>
+    } else if (viewLevel === 'container') {
+      return containers.flatMap((container) =>
         container.connections.map((conn) => ({
           id: `${container.id}->${conn.targetId}`,
           source: container.id,
@@ -68,8 +57,8 @@ export function useEdges() {
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );
-    } else if (viewLevel === 'component' && activeContainer?.components) {
-      return activeContainer.components.flatMap((component) =>
+    } else if (viewLevel === 'component') {
+      return components.flatMap((component) =>
         component.connections.map((conn) => ({
           id: `${component.id}->${conn.targetId}`,
           source: component.id,
@@ -86,8 +75,8 @@ export function useEdges() {
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );
-    } else if (viewLevel === 'code' && activeComponent?.codeElements) {
-      return activeComponent.codeElements.flatMap((codeElement) =>
+    } else if (viewLevel === 'code') {
+      return codeElements.flatMap((codeElement) =>
         codeElement.connections.map((conn) => ({
           id: `${codeElement.id}->${conn.targetId}`,
           source: codeElement.id,
@@ -106,7 +95,7 @@ export function useEdges() {
       );
     }
     return [];
-  }, [model]);
+  }, [model, containers, components, codeElements]);
 
   const onConnect = useCallback(
     (connection: Edge | Connection) => {
@@ -120,32 +109,12 @@ export function useEdges() {
 
         if (model.viewLevel === 'system') {
           connectSystems(source, connectionData);
-        } else if (model.viewLevel === 'container' && model.activeSystemId) {
-          connectContainers(model.activeSystemId, source, connectionData);
-        } else if (
-          model.viewLevel === 'component' &&
-          model.activeSystemId &&
-          model.activeContainerId
-        ) {
-          connectComponents(
-            model.activeSystemId,
-            model.activeContainerId,
-            source,
-            connectionData
-          );
-        } else if (
-          model.viewLevel === 'code' &&
-          model.activeSystemId &&
-          model.activeContainerId &&
-          model.activeComponentId
-        ) {
-          connectCodeElements(
-            model.activeSystemId,
-            model.activeContainerId,
-            model.activeComponentId,
-            source,
-            connectionData
-          );
+        } else if (model.viewLevel === 'container') {
+          connectContainers(source, connectionData);
+        } else if (model.viewLevel === 'component') {
+          connectComponents(source, connectionData);
+        } else if (model.viewLevel === 'code') {
+          connectCodeElements(source, connectionData);
         }
 
         const edgeId = `${source}->${target}`;
@@ -161,9 +130,6 @@ export function useEdges() {
     },
     [
       model.viewLevel,
-      model.activeSystemId,
-      model.activeContainerId,
-      model.activeComponentId,
       connectSystems,
       connectContainers,
       connectComponents,
@@ -190,7 +156,6 @@ export function useEdges() {
   const handleConnectionSave = useCallback(
     (connectionInfo: ConnectionInfo) => {
       const level = model.viewLevel;
-      const systemId = model.activeSystemId || '';
       const data = {
         label: connectionInfo.label,
         technology: connectionInfo.technology,
@@ -201,7 +166,6 @@ export function useEdges() {
 
       updateConnection(
         level,
-        systemId,
         connectionInfo.sourceId,
         connectionInfo.targetId,
         data
@@ -209,23 +173,21 @@ export function useEdges() {
 
       closeConnectionDialog();
     },
-    [model.viewLevel, model.activeSystemId, updateConnection, closeConnectionDialog]
+    [model.viewLevel, updateConnection, closeConnectionDialog]
   );
 
   const handleConnectionDelete = useCallback(
     (connectionInfo: ConnectionInfo) => {
       if (connectionInfo) {
         const level = model.viewLevel;
-        const systemId = model.activeSystemId || '';
         removeConnection(
           level,
-          systemId,
           connectionInfo.sourceId,
           connectionInfo.targetId
         );
       }
     },
-    [model.viewLevel, model.activeSystemId, removeConnection]
+    [model.viewLevel, removeConnection]
   );
 
   return {

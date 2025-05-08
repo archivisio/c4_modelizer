@@ -1,9 +1,9 @@
-import { CodeBlock } from '@interfaces/c4';
-import { useC4Store } from '@store/c4Store';
+import { CodeBlock } from '../types/c4';
+import { useFlatC4Store } from '@store/flatC4Store';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export function useModelActions() {
+export function useFlatModelActions() {
   const {
     model,
     addSystem,
@@ -19,15 +19,18 @@ export function useModelActions() {
     removeComponent,
     removeCodeElement,
     setModel,
-  } = useC4Store();
+  } = useFlatC4Store();
 
   const { t } = useTranslation();
 
   const resetStore = useCallback(() => {
-    useC4Store.persist.clearStorage();
+    useFlatC4Store.persist.clearStorage();
     setModel({
       viewLevel: 'system',
       systems: [],
+      containers: [],
+      components: [],
+      codeElements: [],
       activeSystemId: undefined,
       activeContainerId: undefined,
       activeComponentId: undefined,
@@ -64,28 +67,26 @@ export function useModelActions() {
       });
     } else if (
       model.viewLevel === 'component' &&
-      model.activeSystemId &&
       model.activeContainerId
     ) {
-      addComponent(model.activeSystemId, model.activeContainerId, {
-        name: t('new_component'),
-        description: '',
-        position: randomPosition,
-        connections: [],
-        technology: '',
-        url: '',
-        type: 'component',
-        ...properties,
-      });
+      const container = model.containers.find(c => c.id === model.activeContainerId);
+      if (container) {
+        addComponent(model.activeContainerId, {
+          name: t('new_component'),
+          description: '',
+          position: randomPosition,
+          connections: [],
+          technology: '',
+          url: '',
+          type: 'component',
+          ...properties,
+        });
+      }
     } else if (
       model.viewLevel === 'code' &&
-      model.activeSystemId &&
-      model.activeContainerId &&
       model.activeComponentId
     ) {
       addCodeElement(
-        model.activeSystemId,
-        model.activeContainerId,
         model.activeComponentId,
         {
           name: t('new_code'),
@@ -115,6 +116,7 @@ export function useModelActions() {
     addContainer,
     addComponent,
     addCodeElement,
+    AddElement
   ]);
 
   const handleElementSave = useCallback(
@@ -128,11 +130,8 @@ export function useModelActions() {
         url?: string;
       };
 
-      if (model.viewLevel === 'code' && model.activeSystemId && model.activeContainerId && model.activeComponentId) {
+      if (model.viewLevel === 'code') {
         updateCodeElement(
-          model.activeSystemId,
-          model.activeContainerId,
-          model.activeComponentId,
           id,
           {
             name,
@@ -143,15 +142,15 @@ export function useModelActions() {
             url,
           }
         );
-      } else if (model.viewLevel === 'component' && model.activeSystemId && model.activeContainerId) {
-        updateComponent(model.activeSystemId, model.activeContainerId, id, {
+      } else if (model.viewLevel === 'component') {
+        updateComponent(id, {
           name,
           description,
           technology,
           url,
         });
-      } else if (model.viewLevel === 'container' && model.activeSystemId) {
-        updateContainer(model.activeSystemId, id, {
+      } else if (model.viewLevel === 'container') {
+        updateContainer(id, {
           name,
           description,
           technology,
@@ -163,9 +162,6 @@ export function useModelActions() {
     },
     [
       model.viewLevel,
-      model.activeSystemId,
-      model.activeContainerId,
-      model.activeComponentId,
       updateSystem,
       updateContainer,
       updateComponent,
@@ -175,16 +171,16 @@ export function useModelActions() {
 
   const handleNodeDelete = useCallback(
     (id: string) => {
-      const { viewLevel, activeSystemId, activeContainerId, activeComponentId } = model;
+      const { viewLevel } = model;
 
       if (viewLevel === 'system') {
         removeSystem(id);
-      } else if (viewLevel === 'container' && activeSystemId) {
-        removeContainer(activeSystemId, id);
-      } else if (viewLevel === 'component' && activeSystemId && activeContainerId) {
-        removeComponent(activeSystemId, activeContainerId, id);
-      } else if (viewLevel === 'code' && activeSystemId && activeContainerId && activeComponentId) {
-        removeCodeElement(activeSystemId, activeContainerId, activeComponentId, id);
+      } else if (viewLevel === 'container') {
+        removeContainer(id);
+      } else if (viewLevel === 'component') {
+        removeComponent(id);
+      } else if (viewLevel === 'code') {
+        removeCodeElement(id);
       }
     },
     [
