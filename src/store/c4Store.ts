@@ -1,18 +1,9 @@
-import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '@interfaces/c4';
-import { ConnectionData } from '@interfaces/connection';
-import {
-  addSystemStateHandler,
-  connectSystemsStateHandler,
-  removeSystemStateHandler,
-  updateSystemStateHandler
-} from '@store/state-handlers/system-state';
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import {C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock} from '@interfaces/c4';
 import {ConnectionData} from '@interfaces/connection';
 import {systemStateHandler} from '@store/state-handlers/system-state-handler.ts';
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
+import {containerStateHandler} from "@store/state-handlers/container-state-handler.ts";
 
 export interface C4State {
   model: C4Model;
@@ -56,82 +47,14 @@ export const useC4Store = create<C4State>()(
   persist(
     (set) => ({
       model: { systems: [], viewLevel: 'system' },
-      addContainer: (systemId, container) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId) {
-              const containers = system.containers || [];
-              return {
-                ...system,
-                containers: [
-                  ...containers,
-                  // @ts-expect-error id is not defined in Omit<ContainerBlock, 'id' | 'systemId' | 'components'>
-                  { ...container, id: container.id || crypto.randomUUID(), systemId, connections: [] }
-                ]
-              };
-            }
-            return system;
-          });
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      updateContainer: (systemId, containerId, data) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId && system.containers) {
-              return {
-                ...system,
-                containers: system.containers.map(container =>
-                  container.id === containerId ? { ...container, ...data } : container
-                )
-              };
-            }
-            return system;
-          });
-
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      removeContainer: (systemId, containerId) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId && system.containers) {
-              return {
-                ...system,
-                containers: system.containers.filter(container => container.id !== containerId)
-              };
-            }
-            return system;
-          });
-
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
-      connectContainers: (systemId, fromId, connection) =>
-        set((state) => {
-          const updatedSystems = state.model.systems.map(system => {
-            if (system.id === systemId && system.containers) {
-              return {
-                ...system,
-                containers: system.containers.map(container => {
-
-                  const connectionExists = container.connections.some(c => c.targetId === connection.targetId);
-                  if (container.id === fromId && !connectionExists) {
-                    return {
-                      ...container,
-                      connections: [...container.connections, connection]
-                    };
-                  }
-                  return container;
-                })
-              };
-            }
-            return system;
-          });
-
-          return { model: { ...state.model, systems: updatedSystems } };
-        }),
       addSystem: (system) => systemStateHandler.add(set, system),
       updateSystem: (id, data) => systemStateHandler.update(set, id, data),
       removeSystem: (id) => systemStateHandler.remove(set, id),
       connectSystems: (fromId, connection) => systemStateHandler.connect(set, fromId, connection),
+      addContainer: (systemId, container) => containerStateHandler.add(set, systemId, container),
+      updateContainer: (systemId, containerId, data) => containerStateHandler.update(set, systemId, containerId, data),
+      removeContainer: (systemId, containerId) => containerStateHandler.remove(set, systemId, containerId),
+      connectContainers: (systemId, fromId, connection) => containerStateHandler.connect(set, systemId, fromId, connection),
       addComponent: (systemId, containerId, component) =>
         set((state) => {
           const updatedSystems = state.model.systems.map(system => {
