@@ -1,5 +1,5 @@
 import { ConnectionInfo } from "@interfaces/connection";
-import { useActiveEntities, useFlatC4Store } from "@store/flatC4Store";
+import { useFlatC4Store } from "@store/flatC4Store";
 import { FinalConnectionState } from "@xyflow/react";
 import React, { useState } from "react";
 import { DialogContext, DialogContextType } from "./DialogContext";
@@ -8,7 +8,6 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const { model } = useFlatC4Store();
-  const { activeSystem, activeContainer, activeComponent, viewLevel } = useActiveEntities();
   const [editId, setEditId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditingContainer, setIsEditingContainer] = useState(false);
@@ -19,13 +18,14 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [importError, setImportError] = useState<string | null>(null);
   const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
 
+  // Dans la structure plate, on recherche directement dans les listes correspondantes
   const editingElement = editId
-    ? (viewLevel === "code" 
-        ? model.codeElements.find((c) => c.id === editId && c.componentId === activeComponent?.id)
-        : viewLevel === "component" 
-        ? model.components.find((c) => c.id === editId && c.containerId === activeContainer?.id) 
+    ? (model.viewLevel === "code"
+        ? model.codeElements.find((c) => c.id === editId)
+        : model.viewLevel === "component"
+        ? model.components.find((c) => c.id === editId)
         : isEditingContainer
-        ? model.containers.find((c) => c.id === editId && c.systemId === activeSystem?.id)
+        ? model.containers.find((c) => c.id === editId)
         : model.systems.find((s) => s.id === editId)) || null
     : null;
 

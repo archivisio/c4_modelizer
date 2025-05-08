@@ -1,6 +1,6 @@
 import { loadPlugins } from '@/plugins/manager'
 import PortalTarget from '@/slots/PortalTarget.tsx'
-import { FlatDialogProvider } from '@contexts/FlatDialogProvider'
+import { DialogProvider } from '@contexts/DialogProvider.tsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
@@ -11,9 +11,9 @@ loadPlugins().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <RootProviderSlot>
-        <FlatDialogProvider>
+        <DialogProvider>
           <App />
-        </FlatDialogProvider>
+        </DialogProvider>
       </RootProviderSlot>
       <PortalTarget id="global-overlay" />
     </StrictMode>,
