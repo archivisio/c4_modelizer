@@ -1,8 +1,8 @@
-import {C4LayerStateHandler, C4StateSetter} from "@store/c4Store.ts";
+import {C4LevelStateHandler, C4StateSetter} from "@store/c4Store.ts";
 import {ComponentBlock} from "@/types/c4.ts";
 import {ConnectionData} from "@/types/connection.ts";
 
-class ComponentStateHandler implements C4LayerStateHandler {
+class ComponentStateHandler implements C4LevelStateHandler {
     add(
         set: C4StateSetter,
         systemId: string,

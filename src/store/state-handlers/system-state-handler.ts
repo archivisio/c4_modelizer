@@ -1,8 +1,8 @@
 import {SystemBlock} from "@/types/c4.ts";
-import {C4LayerStateHandler, C4StateSetter} from "../c4Store.ts"
+import {C4LevelStateHandler, C4StateSetter} from "../c4Store.ts"
 import {ConnectionData} from "@/types/connection.ts";
 
-class SystemStateHandler implements C4LayerStateHandler{
+class SystemStateHandler implements C4LevelStateHandler{
     add(
         set: C4StateSetter,
         system: Omit<SystemBlock, 'id' | 'containers'>
@@ -58,6 +58,7 @@ class SystemStateHandler implements C4LayerStateHandler{
 
                         const connectionExists = s.connections.some(c => c.targetId === connection.targetId);
                         if (!connectionExists) {
+                            this.test()
                             return {
                                 ...s,
                                 connections: [...s.connections, connection]
@@ -69,6 +70,10 @@ class SystemStateHandler implements C4LayerStateHandler{
             },
         }));
     };
+
+    private test(){
+        console.log("test");
+    }
 }
 
 export const systemStateHandler = new SystemStateHandler();

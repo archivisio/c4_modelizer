@@ -38,7 +38,7 @@ export type C4StateSetter =  {
   (partial: (C4State | Partial<C4State> | ((state: C4State) => (C4State | Partial<C4State>))), replace?: false): void
   (state: (C4State | ((state: C4State) => C4State)), replace: true): void
 }
-export interface C4LayerStateHandler {
+export interface C4LevelStateHandler {
   add: (set: C4StateSetter, ...args: never[]) => void;
   update: (set: C4StateSetter, ...args: never[]) => void;
   remove: (set: C4StateSetter, ...args: never[]) => void;
