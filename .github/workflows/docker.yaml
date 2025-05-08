@@ -1,10 +1,8 @@
 name: Push Docker image
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -29,5 +27,5 @@ jobs:
           file: ./Dockerfile.public
           push: true
           tags: |
-            eth3rnit3/c4_modelizer:0.1.0
+            eth3rnit3/c4_modelizer:${{ github.event.release.tag_name }}
             eth3rnit3/c4_modelizer:latest
