@@ -1,11 +1,10 @@
-import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
-import { ConnectionData } from '../types/connection';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { C4Model, CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
+import { ConnectionData } from '../types/connection';
 
 type C4EntityType = ViewLevel;
 
-// Interfaces pour les structures plates
 interface FlatSystemBlock extends SystemBlock {
   connections: ConnectionData[];
 }
@@ -36,45 +35,44 @@ interface FlatC4Model {
 interface FlatC4State {
   model: FlatC4Model;
 
-  // Fonctions pour les systèmes
+  // Systems functions
   addSystem: (system: Omit<SystemBlock, 'id' | 'containers'>) => void;
   updateSystem: (id: string, data: Partial<SystemBlock>) => void;
   removeSystem: (id: string) => void;
   connectSystems: (fromId: string, connection: ConnectionData) => void;
 
-  // Fonctions pour les containers
+  // Containers functions
   addContainer: (systemId: string, container: Omit<ContainerBlock, 'id' | 'systemId' | 'components'>) => void;
   updateContainer: (containerId: string, data: Partial<ContainerBlock>) => void;
   removeContainer: (containerId: string) => void;
   connectContainers: (fromId: string, connection: ConnectionData) => void;
 
-  // Fonctions pour les composants
+  // Components functions
   addComponent: (containerId: string, component: Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>) => void;
   updateComponent: (componentId: string, data: Partial<ComponentBlock>) => void;
   removeComponent: (componentId: string) => void;
   connectComponents: (fromId: string, connection: ConnectionData) => void;
 
-  // Fonctions pour les éléments de code
+  // Code elements functions
   addCodeElement: (componentId: string, codeElement: Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>) => void;
   updateCodeElement: (codeElementId: string, data: Partial<CodeBlock>) => void;
   removeCodeElement: (codeElementId: string) => void;
   connectCodeElements: (fromId: string, connection: ConnectionData) => void;
 
-  // Fonctions pour les connections
+  // Connections functions
   updateConnection: (level: C4EntityType, sourceId: string, targetId: string, data: Partial<ConnectionData>) => void;
   removeConnection: (level: C4EntityType, sourceId: string, targetId: string) => void;
 
-  // Fonctions pour la navigation
+  // Navigation functions
   setActiveSystem: (systemId: string | undefined) => void;
   setActiveContainer: (containerId: string | undefined) => void;
   setActiveComponent: (componentId: string | undefined) => void;
   setViewLevel: (level: C4EntityType) => void;
 
-  // Fonction pour définir le modèle complet
+  // Model functions
   setModel: (model: FlatC4Model) => void;
 }
 
-// Fonction utilitaire pour convertir un modèle C4 imbriqué en modèle plat
 export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
   const flatModel: FlatC4Model = {
     systems: [],
@@ -87,15 +85,11 @@ export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
     activeComponentId: nestedModel.activeComponentId,
   };
 
-  // Convertir les systèmes et extraire leurs conteneurs
   nestedModel.systems.forEach(system => {
-    // Ajouter le système
     flatModel.systems.push({
       ...system,
       connections: [...system.connections],
     });
-
-    // Extraire les conteneurs du système
     if (system.containers) {
       system.containers.forEach(container => {
         flatModel.containers.push({
@@ -103,7 +97,6 @@ export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
           connections: [...container.connections],
         });
 
-        // Extraire les composants du conteneur
         if (container.components) {
           container.components.forEach(component => {
             flatModel.components.push({
@@ -111,7 +104,6 @@ export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
               connections: [...component.connections],
             });
 
-            // Extraire les éléments de code du composant
             if (component.codeElements) {
               component.codeElements.forEach(codeElement => {
                 flatModel.codeElements.push({
@@ -129,7 +121,6 @@ export const convertToFlatModel = (nestedModel: C4Model): FlatC4Model => {
   return flatModel;
 };
 
-// Fonction utilitaire pour reconstituer un modèle C4 imbriqué à partir d'un modèle plat
 export const convertToNestedModel = (flatModel: FlatC4Model): C4Model => {
   const nestedModel: C4Model = {
     systems: [],
@@ -139,7 +130,6 @@ export const convertToNestedModel = (flatModel: FlatC4Model): C4Model => {
     activeComponentId: flatModel.activeComponentId,
   };
 
-  // Récupérer les systèmes
   flatModel.systems.forEach(system => {
     const systemContainers = flatModel.containers
       .filter(container => container.systemId === system.id)
@@ -198,7 +188,7 @@ export const useFlatC4Store = create<FlatC4State>()(
             id: system.id || crypto.randomUUID() as string,
             connections: []
           };
-          
+
           return {
             model: {
               ...state.model,
@@ -219,17 +209,15 @@ export const useFlatC4Store = create<FlatC4State>()(
 
       removeSystem: (id) =>
         set((state) => {
-          // Supprimer tous les containers, components et codeElements associés
           const filteredContainers = state.model.containers.filter(c => c.systemId !== id);
           const filteredComponents = state.model.components.filter(c => !state.model.containers.some(cont => cont.systemId === id && cont.id === c.containerId));
           const filteredCodeElements = state.model.codeElements.filter(c => !state.model.components.some(comp => comp.systemId === id && comp.id === c.componentId));
-          
-          // Supprimer les connexions vers ce système
+
           const updatedSystemConnections = state.model.systems.map(s => ({
             ...s,
             connections: s.connections.filter(conn => conn.targetId !== id)
           }));
-          
+
           return {
             model: {
               ...state.model,
@@ -245,10 +233,10 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const sourceSystem = state.model.systems.find(s => s.id === fromId);
           if (!sourceSystem) return state;
-          
+
           const connectionExists = sourceSystem.connections.some(c => c.targetId === connection.targetId);
           if (connectionExists) return state;
-          
+
           return {
             model: {
               ...state.model,
@@ -271,7 +259,7 @@ export const useFlatC4Store = create<FlatC4State>()(
             systemId,
             connections: []
           };
-          
+
           return {
             model: {
               ...state.model,
@@ -292,16 +280,14 @@ export const useFlatC4Store = create<FlatC4State>()(
 
       removeContainer: (containerId) =>
         set((state) => {
-          // Supprimer tous les components et codeElements associés
           const filteredComponents = state.model.components.filter(c => c.containerId !== containerId);
           const filteredCodeElements = state.model.codeElements.filter(c => !state.model.components.some(comp => comp.containerId === containerId && comp.id === c.componentId));
-          
-          // Supprimer les connexions vers ce container
+
           const updatedContainerConnections = state.model.containers.map(c => ({
             ...c,
             connections: c.connections.filter(conn => conn.targetId !== containerId)
           }));
-          
+
           return {
             model: {
               ...state.model,
@@ -316,10 +302,10 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const sourceContainer = state.model.containers.find(c => c.id === fromId);
           if (!sourceContainer) return state;
-          
+
           const connectionExists = sourceContainer.connections.some(c => c.targetId === connection.targetId);
           if (connectionExists) return state;
-          
+
           return {
             model: {
               ...state.model,
@@ -337,7 +323,7 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const container = state.model.containers.find(c => c.id === containerId);
           if (!container) return state;
-          
+
           const newComponent = {
             ...component,
             // @ts-expect-error id is not defined in Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>
@@ -346,7 +332,7 @@ export const useFlatC4Store = create<FlatC4State>()(
             containerId,
             connections: []
           };
-          
+
           return {
             model: {
               ...state.model,
@@ -367,15 +353,13 @@ export const useFlatC4Store = create<FlatC4State>()(
 
       removeComponent: (componentId) =>
         set((state) => {
-          // Supprimer tous les codeElements associés
           const filteredCodeElements = state.model.codeElements.filter(c => c.componentId !== componentId);
-          
-          // Supprimer les connexions vers ce component
+
           const updatedComponentConnections = state.model.components.map(c => ({
             ...c,
             connections: c.connections.filter(conn => conn.targetId !== componentId)
           }));
-          
+
           return {
             model: {
               ...state.model,
@@ -389,10 +373,10 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const sourceComponent = state.model.components.find(c => c.id === fromId);
           if (!sourceComponent) return state;
-          
+
           const connectionExists = sourceComponent.connections.some(c => c.targetId === connection.targetId);
           if (connectionExists) return state;
-          
+
           return {
             model: {
               ...state.model,
@@ -410,7 +394,7 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const component = state.model.components.find(c => c.id === componentId);
           if (!component) return state;
-          
+
           const newCodeElement = {
             ...codeElement,
             // @ts-expect-error id is not defined in Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>
@@ -420,7 +404,7 @@ export const useFlatC4Store = create<FlatC4State>()(
             componentId,
             connections: []
           };
-          
+
           return {
             model: {
               ...state.model,
@@ -441,12 +425,11 @@ export const useFlatC4Store = create<FlatC4State>()(
 
       removeCodeElement: (codeElementId) =>
         set((state) => {
-          // Supprimer les connexions vers ce codeElement
           const updatedCodeElementConnections = state.model.codeElements.map(c => ({
             ...c,
             connections: c.connections.filter(conn => conn.targetId !== codeElementId)
           }));
-          
+
           return {
             model: {
               ...state.model,
@@ -459,10 +442,10 @@ export const useFlatC4Store = create<FlatC4State>()(
         set((state) => {
           const sourceCodeElement = state.model.codeElements.find(c => c.id === fromId);
           if (!sourceCodeElement) return state;
-          
+
           const connectionExists = sourceCodeElement.connections.some(c => c.targetId === connection.targetId);
           if (connectionExists) return state;
-          
+
           return {
             model: {
               ...state.model,
@@ -479,98 +462,98 @@ export const useFlatC4Store = create<FlatC4State>()(
       updateConnection: (level, sourceId, targetId, data) =>
         set((state) => {
           const updatedModel = { ...state.model };
-          
+
           if (level === 'system') {
-            updatedModel.systems = updatedModel.systems.map(s => 
+            updatedModel.systems = updatedModel.systems.map(s =>
               s.id === sourceId
                 ? {
-                    ...s,
-                    connections: s.connections.map(conn => 
-                      conn.targetId === targetId ? { ...conn, ...data } : conn
-                    )
-                  }
+                  ...s,
+                  connections: s.connections.map(conn =>
+                    conn.targetId === targetId ? { ...conn, ...data } : conn
+                  )
+                }
                 : s
             );
           } else if (level === 'container') {
-            updatedModel.containers = updatedModel.containers.map(c => 
+            updatedModel.containers = updatedModel.containers.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.map(conn => 
-                      conn.targetId === targetId ? { ...conn, ...data } : conn
-                    )
-                  }
+                  ...c,
+                  connections: c.connections.map(conn =>
+                    conn.targetId === targetId ? { ...conn, ...data } : conn
+                  )
+                }
                 : c
             );
           } else if (level === 'component') {
-            updatedModel.components = updatedModel.components.map(c => 
+            updatedModel.components = updatedModel.components.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.map(conn => 
-                      conn.targetId === targetId ? { ...conn, ...data } : conn
-                    )
-                  }
+                  ...c,
+                  connections: c.connections.map(conn =>
+                    conn.targetId === targetId ? { ...conn, ...data } : conn
+                  )
+                }
                 : c
             );
           } else if (level === 'code') {
-            updatedModel.codeElements = updatedModel.codeElements.map(c => 
+            updatedModel.codeElements = updatedModel.codeElements.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.map(conn => 
-                      conn.targetId === targetId ? { ...conn, ...data } : conn
-                    )
-                  }
+                  ...c,
+                  connections: c.connections.map(conn =>
+                    conn.targetId === targetId ? { ...conn, ...data } : conn
+                  )
+                }
                 : c
             );
           }
-          
+
           return { model: updatedModel };
         }),
 
       removeConnection: (level, sourceId, targetId) =>
         set((state) => {
           const updatedModel = { ...state.model };
-          
+
           if (level === 'system') {
-            updatedModel.systems = updatedModel.systems.map(s => 
+            updatedModel.systems = updatedModel.systems.map(s =>
               s.id === sourceId
                 ? {
-                    ...s,
-                    connections: s.connections.filter(conn => conn.targetId !== targetId)
-                  }
+                  ...s,
+                  connections: s.connections.filter(conn => conn.targetId !== targetId)
+                }
                 : s
             );
           } else if (level === 'container') {
-            updatedModel.containers = updatedModel.containers.map(c => 
+            updatedModel.containers = updatedModel.containers.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.filter(conn => conn.targetId !== targetId)
-                  }
+                  ...c,
+                  connections: c.connections.filter(conn => conn.targetId !== targetId)
+                }
                 : c
             );
           } else if (level === 'component') {
-            updatedModel.components = updatedModel.components.map(c => 
+            updatedModel.components = updatedModel.components.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.filter(conn => conn.targetId !== targetId)
-                  }
+                  ...c,
+                  connections: c.connections.filter(conn => conn.targetId !== targetId)
+                }
                 : c
             );
           } else if (level === 'code') {
-            updatedModel.codeElements = updatedModel.codeElements.map(c => 
+            updatedModel.codeElements = updatedModel.codeElements.map(c =>
               c.id === sourceId
                 ? {
-                    ...c,
-                    connections: c.connections.filter(conn => conn.targetId !== targetId)
-                  }
+                  ...c,
+                  connections: c.connections.filter(conn => conn.targetId !== targetId)
+                }
                 : c
             );
           }
-          
+
           return { model: updatedModel };
         }),
 
@@ -611,7 +594,7 @@ export const useFlatC4Store = create<FlatC4State>()(
             ...state.model,
             viewLevel: level
           };
-          
+
           if (level === 'system') {
             newState.activeSystemId = undefined;
             newState.activeContainerId = undefined;
@@ -626,7 +609,6 @@ export const useFlatC4Store = create<FlatC4State>()(
           return { model: newState };
         }),
 
-      // Modèle complet
       setModel: (model) => set(() => ({ model })),
     }),
     {
@@ -635,14 +617,14 @@ export const useFlatC4Store = create<FlatC4State>()(
   )
 );
 
-// Hooks utilitaires pour faciliter l'utilisation du store
+// Hooks
 export const useActiveEntities = () => {
   const store = useFlatC4Store();
-  
+
   const activeSystem = store.model.systems.find(s => s.id === store.model.activeSystemId);
   const activeContainer = store.model.containers.find(c => c.id === store.model.activeContainerId);
   const activeComponent = store.model.components.find(c => c.id === store.model.activeComponentId);
-  
+
   return {
     activeSystem,
     activeContainer,
@@ -654,19 +636,19 @@ export const useActiveEntities = () => {
 export const useFilteredEntities = () => {
   const store = useFlatC4Store();
   const { activeSystem, activeContainer, activeComponent, viewLevel } = useActiveEntities();
-  
-  const filteredContainers = store.model.containers.filter(c => 
+
+  const filteredContainers = store.model.containers.filter(c =>
     c.systemId === activeSystem?.id
   );
-  
-  const filteredComponents = store.model.components.filter(c => 
+
+  const filteredComponents = store.model.components.filter(c =>
     c.containerId === activeContainer?.id
   );
-  
-  const filteredCodeElements = store.model.codeElements.filter(c => 
+
+  const filteredCodeElements = store.model.codeElements.filter(c =>
     c.componentId === activeComponent?.id
   );
-  
+
   return {
     containers: filteredContainers,
     components: filteredComponents,
@@ -675,7 +657,7 @@ export const useFilteredEntities = () => {
   };
 };
 
-// Fonction pour migrer les données de l'ancien store vers le nouveau
+// Migration
 export const migrateFromNestedToFlat = (nestedModel: C4Model): FlatC4Model => {
   return convertToFlatModel(nestedModel);
 };
