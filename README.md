@@ -25,10 +25,10 @@
 
 | Category        | Details                                                              |
 | --------------- | -------------------------------------------------------------------- |
-| Diagram types   | System ↔ Container ↔ Component ↔ Code (C4 levels 1‑4)                |
+| Diagram types   | System ↔ Container ↔ Component ↔ Code (C4 levels 1‑4)                |
 | Edit            | Drag‑and‑drop nodes, inline rename, technology picker, context menus |
 | Blocks          | Custom icons / colours, technology tags, markdown description        |
-| Relations       | Create, edit, style connections and dependencies                     |
+| Relations       | Create, edit, style connections and dependencies between any levels   |
 | Import / Export | JSON with embedded schema version; copy‑paste between instances      |
 | UX              | Multilingual (i18n), responsive layout, dark theme                   |
 
