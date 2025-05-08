@@ -12,7 +12,8 @@ class SystemStateHandler implements C4LevelStateHandler{
                 ...state.model,
                 systems: [
                     ...state.model.systems,
-                    {...system, id: crypto.randomUUID(), connections: []},
+                    // @ts-expect-error id is not defined in Omit<SystemBlock, 'id' | 'containers'>
+                    { ...system, id: system.id || crypto.randomUUID(), connections: [] }
                 ],
             },
         }))
@@ -58,7 +59,6 @@ class SystemStateHandler implements C4LevelStateHandler{
 
                         const connectionExists = s.connections.some(c => c.targetId === connection.targetId);
                         if (!connectionExists) {
-                            this.test()
                             return {
                                 ...s,
                                 connections: [...s.connections, connection]
@@ -70,10 +70,6 @@ class SystemStateHandler implements C4LevelStateHandler{
             },
         }));
     };
-
-    private test(){
-        console.log("test");
-    }
 }
 
 export const systemStateHandler = new SystemStateHandler();

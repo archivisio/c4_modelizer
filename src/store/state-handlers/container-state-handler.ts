@@ -16,7 +16,8 @@ class ContainerStateHandler implements C4LevelStateHandler {
                         ...system,
                         containers: [
                             ...containers,
-                            {...container, id: crypto.randomUUID(), systemId, connections: []}
+                            // @ts-expect-error id is not defined in Omit<ContainerBlock, 'id' | 'systemId' | 'components'>
+                            { ...container, id: container.id || crypto.randomUUID(), systemId, connections: [] }
                         ]
                     };
                 }

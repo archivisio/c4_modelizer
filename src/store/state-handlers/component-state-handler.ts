@@ -23,7 +23,8 @@ class ComponentStateHandler implements C4LevelStateHandler {
                                         ...components,
                                         {
                                             ...component,
-                                            id: crypto.randomUUID(),
+                                            // @ts-expect-error id is not defined in Omit<ComponentBlock, 'id' | 'systemId' | 'containerId' | 'codeElements'>
+                                            id: component.id || crypto.randomUUID(),
                                             systemId,
                                             containerId,
                                             connections: []

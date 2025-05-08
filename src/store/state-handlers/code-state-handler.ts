@@ -28,7 +28,8 @@ class CodeStateHandler implements C4LevelStateHandler{
                                                     ...codeElements,
                                                     {
                                                         ...codeElement,
-                                                        id: crypto.randomUUID(),
+                                                        // @ts-expect-error id is not defined in Omit<CodeBlock, 'id' | 'systemId' | 'containerId' | 'componentId'>
+                                                        id: codeElement.id || crypto.randomUUID(),
                                                         systemId,
                                                         containerId,
                                                         componentId,
