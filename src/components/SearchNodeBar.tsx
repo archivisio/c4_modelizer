@@ -71,6 +71,10 @@ const SearchNodeBar: React.FC = () => {
       technology: result.technology,
       url: result.url,
       type: result.type,
+      original: {
+        id: result.id,
+        type: result.type,
+      },
     });
 
     const connectionData = {

@@ -8,6 +8,10 @@ export interface BaseBlock {
   position: Position;
   type: 'system' | 'container' | 'component' | 'code';
   technology?: string;
+  original?: {
+    id: string;
+    type: 'system' | 'container' | 'component' | 'code';
+  };
 }
 
 import { ConnectionData } from './connection';
