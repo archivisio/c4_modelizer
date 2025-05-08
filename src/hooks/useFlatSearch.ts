@@ -33,16 +33,16 @@ export function useFlatSearch() {
 
     filteredItems = filteredItems.filter((item) => {
       if (viewLevel === 'system') {
-        return item.type !== 'system';
+        return item.type === 'system';
       }
-      if (viewLevel === 'container') {
-        return item.systemId !== activeSystem?.id;
+      if (viewLevel === 'container' && activeSystem) {
+        return item.type === 'container' && 'systemId' in item && item.systemId === activeSystem.id;
       }
-      if (viewLevel === 'component') {
-        return item.containerId !== activeContainer?.id;
+      if (viewLevel === 'component' && activeContainer) {
+        return item.type === 'component' && 'containerId' in item && item.containerId === activeContainer.id;
       }
-      if (viewLevel === 'code') {
-        return item.componentId !== activeComponent?.id;
+      if (viewLevel === 'code' && activeComponent) {
+        return item.type === 'code' && 'componentId' in item && item.componentId === activeComponent.id;
       }
       return true;
     });

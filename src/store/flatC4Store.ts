@@ -5,23 +5,23 @@ import { ConnectionData } from '../types/connection';
 
 type C4EntityType = ViewLevel;
 
-interface FlatSystemBlock extends SystemBlock {
+export interface FlatSystemBlock extends SystemBlock {
   connections: ConnectionData[];
 }
 
-interface FlatContainerBlock extends Omit<ContainerBlock, 'components'> {
+export interface FlatContainerBlock extends Omit<ContainerBlock, 'components'> {
   connections: ConnectionData[];
 }
 
-interface FlatComponentBlock extends Omit<ComponentBlock, 'codeElements'> {
+export interface FlatComponentBlock extends Omit<ComponentBlock, 'codeElements'> {
   connections: ConnectionData[];
 }
 
-interface FlatCodeBlock extends CodeBlock {
+export interface FlatCodeBlock extends CodeBlock {
   connections: ConnectionData[];
 }
 
-interface FlatC4Model {
+export interface FlatC4Model {
   systems: FlatSystemBlock[];
   containers: FlatContainerBlock[];
   components: FlatComponentBlock[];
