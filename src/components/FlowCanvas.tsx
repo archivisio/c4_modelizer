@@ -27,6 +27,7 @@ import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
 import { useDialogs } from "@/contexts/DialogContext";
+import { ViewLevel } from "../types/c4";
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -36,7 +37,7 @@ interface FlowCanvasProps {
     id: string,
     position: { x: number; y: number }
   ) => void;
-  viewLevel: "system" | "container" | "component" | "code";
+  viewLevel: ViewLevel;
   onNodeDoubleClick?: (nodeId: string) => void;
   onEdgeClick?: (event: React.MouseEvent, edge: Edge) => void;
 }

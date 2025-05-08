@@ -9,11 +9,11 @@ import FlowCanvas from "@components/FlowCanvas";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
 import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
-import { useEdges } from "@hooks/useEdges";
+import { useFlatEdges } from "@hooks/useFlatEdges";
 import { useFileOperations } from "@hooks/useFileOperations";
 import { useFlatModelActions } from "@hooks/useFlatModelActions";
-import { useNavigation } from "@hooks/useNavigation";
-import { useNodes } from "@hooks/useNodes";
+import { useFlatNavigation } from "@hooks/useFlatNavigation";
+import { useFlatNodes } from "@hooks/useFlatNodes";
 import { Box } from "@mui/material";
 import NavBarSlot from "@slots/NavBarSlot";
 import ToolbarSlot from "@slots/ToolbarSlot";
@@ -32,7 +32,7 @@ import {
 function App() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);
   const { navigateToContainer, navigateToComponent, navigateToCode } =
-    useNavigation();
+    useFlatNavigation();
   const {
     dialogOpen,
     isEditingContainer,
@@ -51,7 +51,7 @@ function App() {
   const { activeSystem, activeContainer, activeComponent } =
     useFlatActiveElements();
 
-  const { currentNodes, handleNodePositionChange } = useNodes();
+  const { currentNodes, handleNodePositionChange } = useFlatNodes();
 
   const {
     edges,
@@ -59,7 +59,7 @@ function App() {
     handleEdgeClick,
     handleConnectionSave,
     handleConnectionDelete,
-  } = useEdges();
+  } = useFlatEdges();
 
   const {
     model,
