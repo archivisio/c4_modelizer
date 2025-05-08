@@ -1,6 +1,6 @@
+import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '@interfaces/c4';
 import { useActiveEntities, useFlatC4Store } from '@store/flatC4Store';
 import { useMemo, useState } from 'react';
-import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock } from '../types/c4';
 
 export function useFlatSearch() {
   const { model } = useFlatC4Store();

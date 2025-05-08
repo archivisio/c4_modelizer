@@ -1,8 +1,7 @@
-import { C4Model } from "@interfaces/c4";
 import { exportModel, importModel } from "@utils/jsonIO";
 
-export const handleExportModel = (model: C4Model): void => {
-  const json = exportModel(model);
+export const handleExportModel = (): void => {
+  const json = exportModel();
   const blob = new Blob([json], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -14,16 +13,14 @@ export const handleExportModel = (model: C4Model): void => {
 
 export const handleImportModel = (
   file: File,
-  setModel: (model: C4Model) => void,
   setImportError: (error: string | null) => void
 ): void => {
   const reader = new FileReader();
   reader.onload = (evt) => {
     try {
       const json = evt.target?.result as string;
-      const imported = importModel(json);
-      if (imported) {
-        setModel(imported);
+      const success = importModel(json);
+      if (success) {
         setImportError(null);
       } else {
         setImportError("Fichier JSON invalide.");
