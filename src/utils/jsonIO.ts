@@ -1,27 +1,35 @@
-import { C4Model } from '../types/c4';
+import { FlatC4Model } from '../types/flatC4Model';
+import { useFlatC4Store } from '../store/flatC4Store';
 
-export const CURRENT_SCHEMA_VERSION = 1;
+export const CURRENT_SCHEMA_VERSION = 2;
 
-export function exportModel(model: C4Model): string {
+export function exportModel(): string {
+  const store = useFlatC4Store.getState();
   const modelWithVersion = {
-    ...model,
+    ...store.model,
     schemaVersion: CURRENT_SCHEMA_VERSION,
   };
   return JSON.stringify(modelWithVersion, null, 2);
 }
 
-export function importModel(json: string): C4Model | null {
+export function importModel(json: string): boolean {
   try {
     const obj = JSON.parse(json);
-    if (obj && Array.isArray(obj.systems)) {
+    if (obj && 
+        Array.isArray(obj.systems) && 
+        Array.isArray(obj.containers) && 
+        Array.isArray(obj.components) && 
+        Array.isArray(obj.codeElements)) {
       if (typeof obj.schemaVersion === "number" && obj.schemaVersion === CURRENT_SCHEMA_VERSION) {
-        return obj as C4Model;
+        const store = useFlatC4Store.getState();
+        store.setModel(obj as FlatC4Model);
+        return true;
       } else {
-        return null;
+        return false;
       }
     }
-    return null;
+    return false;
   } catch {
-    return null;
+    return false;
   }
 }
