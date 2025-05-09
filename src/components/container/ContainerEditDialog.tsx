@@ -75,7 +75,7 @@ export default function ContainerEditDialog({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.container}
+        themeType="container"
         autoFocus
         margin="dense"
         label={t("container_name")}
@@ -85,7 +85,7 @@ export default function ContainerEditDialog({
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.container}
+        themeType="container"
         margin="dense"
         label={t("container_description")}
         fullWidth
@@ -103,7 +103,7 @@ export default function ContainerEditDialog({
         placeholder={t("select_technology")}
       />
       <ThemedTextField
-        theme={dialogThemes.container}
+        themeType="container"
         margin="dense"
         label={t("url")}
         fullWidth

@@ -1,6 +1,17 @@
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 import { COLORS } from '@/data/colors';
 
+export interface ColorStyle {
+  primaryColor: string;
+  secondaryColor: string;
+  border: string;
+  hover: string;
+  gradientStart: string;
+  gradientEnd: string;
+  hoverGradientStart: string;
+  hoverGradientEnd: string;
+}
+
 declare module '@mui/material/styles' {
   interface Theme {
     c4Colors: {
@@ -8,6 +19,7 @@ declare module '@mui/material/styles' {
       container: typeof COLORS.secondary;
       component: typeof COLORS.tertiary;
       code: typeof COLORS.quaternary;
+      connection: ColorStyle;
     };
   }
   interface ThemeOptions {
@@ -16,6 +28,7 @@ declare module '@mui/material/styles' {
       container?: typeof COLORS.secondary;
       component?: typeof COLORS.tertiary;
       code?: typeof COLORS.quaternary;
+      connection?: ColorStyle;
     };
   }
 }
@@ -52,6 +65,16 @@ const themeOptions: ThemeOptions = {
     container: COLORS.secondary,
     component: COLORS.tertiary,
     code: COLORS.quaternary,
+    connection: {
+      primaryColor: "0, 176, 255",
+      secondaryColor: "2, 136, 209",
+      gradientStart: "#0288d1",
+      gradientEnd: "#29b6f6",
+      border: "#01579b",
+      hover: "#01579b",
+      hoverGradientStart: "#01579b",
+      hoverGradientEnd: "#0288d1",
+    },
   },
 };
 

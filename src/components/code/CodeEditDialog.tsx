@@ -106,7 +106,7 @@ export default function CodeEditDialog({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         autoFocus
         margin="dense"
         label={t("code_element_name")}
@@ -116,7 +116,7 @@ export default function CodeEditDialog({
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         margin="dense"
         label={t("code_element_description")}
         fullWidth
@@ -129,7 +129,7 @@ export default function CodeEditDialog({
       <Box sx={{ display: "flex", gap: 2 }}>
         <ThemedTextField
           fullWidth
-          theme={dialogThemes.code}
+          themeType="code"
           select
           label={t("code_type")}
           value={values.codeType}
@@ -162,7 +162,7 @@ export default function CodeEditDialog({
         placeholder={t("code_placeholder")}
       />
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         margin="dense"
         label={t("url")}
         fullWidth

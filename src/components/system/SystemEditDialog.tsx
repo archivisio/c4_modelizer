@@ -75,7 +75,7 @@ export default function SystemEditDialog({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.system}
+        themeType="system"
         autoFocus
         margin="dense"
         label={t("system_name")}
@@ -85,7 +85,7 @@ export default function SystemEditDialog({
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.system}
+        themeType="system"
         margin="dense"
         label={t("system_description")}
         fullWidth
@@ -103,7 +103,7 @@ export default function SystemEditDialog({
         placeholder={t("select_technology")}
       />
       <ThemedTextField
-        theme={dialogThemes.system}
+        themeType="system"
         margin="dense"
         label={t("url")}
         fullWidth

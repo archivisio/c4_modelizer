@@ -75,7 +75,7 @@ export default function ComponentEditDialog({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.component}
+        themeType="component"
         autoFocus
         margin="dense"
         label={t("component_name")}
@@ -85,7 +85,7 @@ export default function ComponentEditDialog({
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.component}
+        themeType="component"
         margin="dense"
         label={t("component_description")}
         fullWidth
@@ -103,7 +103,7 @@ export default function ComponentEditDialog({
         placeholder={t("select_technology")}
       />
       <ThemedTextField
-        theme={dialogThemes.component}
+        themeType="component"
         margin="dense"
         label={t("url")}
         fullWidth

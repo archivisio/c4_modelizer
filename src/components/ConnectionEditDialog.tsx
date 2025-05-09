@@ -104,7 +104,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.connection}
+        themeType="connection"
         autoFocus
         margin="dense"
         label={t("connection_label")}
@@ -114,7 +114,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         data-testid="input_label"
       />
       <ThemedTextField
-        theme={dialogThemes.connection}
+        themeType="connection"
         margin="dense"
         label={t("connection_description")}
         fullWidth
