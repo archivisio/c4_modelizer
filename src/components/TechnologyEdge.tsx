@@ -7,8 +7,45 @@ import {
   type EdgeProps,
 } from "@xyflow/react";
 import React from "react";
+import { styled } from "@mui/system";
 
 const ICON_SIZE = 18;
+
+const EdgeLabelContainer = styled('div')(() => ({
+  position: "absolute",
+  transform: "translate(-50%, -50%)",
+  pointerEvents: "all",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  minWidth: 40,
+  minHeight: 24,
+  zIndex: 1
+}));
+
+const EdgeLabel = styled('span')(() => ({
+  marginTop: 2,
+  background: "rgba(255,255,255,0.95)",
+  borderRadius: 4,
+  padding: "1px 6px",
+  fontSize: 12,
+  fontWeight: 500,
+  color: "#333",
+  boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+  whiteSpace: "nowrap",
+  maxWidth: 70,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  border: "1px solid #eee"
+}));
+
+const createEdgeStyle = (style: React.CSSProperties | undefined, isBidirectional: boolean, id: string) => ({
+  ...style,
+  markerStart: isBidirectional
+    ? `url(#bidirectional-marker-${id})`
+    : undefined,
+  animation: isBidirectional ? "none" : style?.animation,
+});
 
 function cubicBezierPoint(
   t: number,
@@ -97,26 +134,12 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
         id={id}
         path={edgePath}
         markerEnd={markerEnd}
-        style={{
-          ...style,
-          markerStart: isBidirectional
-            ? `url(#bidirectional-marker-${id})`
-            : undefined,
-          animation: isBidirectional ? "none" : style?.animation,
-        }}
+        style={createEdgeStyle(style, isBidirectional, id)}
       />
       <EdgeLabelRenderer>
-        <div
+        <EdgeLabelContainer
           style={{
-            position: "absolute",
-            transform: `translate(-50%, -50%) translate(${bezierX}px,${bezierY}px)`,
-            pointerEvents: "all",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            minWidth: 40,
-            minHeight: 24,
-            zIndex: 1,
+            transform: `translate(-50%, -50%) translate(${bezierX}px,${bezierY}px)`
           }}
           className="nodrag nopan"
         >
@@ -126,27 +149,11 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
             showTooltip={true}
           />
           {props.label && (
-            <span
-              style={{
-                marginTop: 2,
-                background: "rgba(255,255,255,0.95)",
-                borderRadius: 4,
-                padding: "1px 6px",
-                fontSize: 12,
-                fontWeight: 500,
-                color: "#333",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-                whiteSpace: "nowrap",
-                maxWidth: 70,
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                border: "1px solid #eee",
-              }}
-            >
+            <EdgeLabel>
               {props.label}
-            </span>
+            </EdgeLabel>
           )}
-        </div>
+        </EdgeLabelContainer>
       </EdgeLabelRenderer>
     </>
   );
