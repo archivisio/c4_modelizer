@@ -199,19 +199,29 @@ export const useFlatC4Store = create<FlatC4State>()(
         }),
 
       updateContainer: (containerId, data) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            containers: state.model.containers.map(c =>
-              c.id === containerId ? { ...c, ...data } : c
-            ),
-          },
-        })),
+        set((state) => {
+          const container = state.model.containers.find(c => c.id === containerId);
+          if (!container) return state;
+
+          const commonChanges = omitType(data);
+
+          return {
+            model: {
+              ...state.model,
+              systems: propagateUpdate(state.model.systems, container.systemId, commonChanges),
+              containers: state.model.containers.map(c =>
+                c.id === containerId ? { ...c, ...commonChanges } : c
+              ),
+              components: propagateUpdate(state.model.components, containerId, commonChanges),
+              codeElements: propagateUpdate(state.model.codeElements, containerId, commonChanges),
+            },
+          };
+        }),
 
       removeContainer: (containerId) =>
         set((state) => {
-          const filteredComponents = state.model.components.filter(c => c.containerId !== containerId);
-          const filteredCodeElements = state.model.codeElements.filter(c => !state.model.components.some(comp => comp.containerId === containerId && comp.id === c.componentId));
+          const container = state.model.containers.find(c => c.id === containerId);
+          if (!container) return state;
 
           const updatedContainerConnections = state.model.containers.map(c => ({
             ...c,
@@ -221,9 +231,10 @@ export const useFlatC4Store = create<FlatC4State>()(
           return {
             model: {
               ...state.model,
+              systems: filterOriginalAndCopies(state.model.systems, container.systemId),
               containers: updatedContainerConnections.filter(c => c.id !== containerId),
-              components: filteredComponents,
-              codeElements: filteredCodeElements,
+              components: filterOriginalAndCopies(state.model.components, containerId),
+              codeElements: filterOriginalAndCopies(state.model.codeElements, containerId),
             },
           };
         }),
@@ -272,18 +283,26 @@ export const useFlatC4Store = create<FlatC4State>()(
         }),
 
       updateComponent: (componentId, data) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            components: state.model.components.map(c =>
-              c.id === componentId ? { ...c, ...data } : c
-            ),
-          },
-        })),
+        set((state) => {
+          const commonChanges = omitType(data);
+
+          return {
+            model: {
+              ...state.model,
+              systems: propagateUpdate(state.model.systems, componentId, commonChanges),
+              containers: propagateUpdate(state.model.containers, componentId, commonChanges),
+              components: state.model.components.map(c =>
+                c.id === componentId ? { ...c, ...commonChanges } : c
+              ),
+              codeElements: propagateUpdate(state.model.codeElements, componentId, commonChanges),
+            },
+          };
+        }),
 
       removeComponent: (componentId) =>
         set((state) => {
-          const filteredCodeElements = state.model.codeElements.filter(c => c.componentId !== componentId);
+          const component = state.model.components.find(c => c.id === componentId);
+          if (!component) return state;
 
           const updatedComponentConnections = state.model.components.map(c => ({
             ...c,
@@ -293,8 +312,10 @@ export const useFlatC4Store = create<FlatC4State>()(
           return {
             model: {
               ...state.model,
+              systems: filterOriginalAndCopies(state.model.systems, componentId),
+              containers: filterOriginalAndCopies(state.model.containers, componentId),
               components: updatedComponentConnections.filter(c => c.id !== componentId),
-              codeElements: filteredCodeElements,
+              codeElements: filterOriginalAndCopies(state.model.codeElements, componentId),
             },
           };
         }),
@@ -344,17 +365,27 @@ export const useFlatC4Store = create<FlatC4State>()(
         }),
 
       updateCodeElement: (codeElementId, data) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            codeElements: state.model.codeElements.map(c =>
-              c.id === codeElementId ? { ...c, ...data } : c
-            ),
-          },
-        })),
+        set((state) => {
+          const commonChanges = omitType(data);
+
+          return {
+            model: {
+              ...state.model,
+              systems: propagateUpdate(state.model.systems, codeElementId, commonChanges),
+              containers: propagateUpdate(state.model.containers, codeElementId, commonChanges),
+              components: propagateUpdate(state.model.components, codeElementId, commonChanges),
+              codeElements: state.model.codeElements.map(c =>
+                c.id === codeElementId ? { ...c, ...commonChanges } : c
+              ),
+            },
+          };
+        }),
 
       removeCodeElement: (codeElementId) =>
         set((state) => {
+          const codeElement = state.model.codeElements.find(c => c.id === codeElementId);
+          if (!codeElement) return state;
+
           const updatedCodeElementConnections = state.model.codeElements.map(c => ({
             ...c,
             connections: c.connections.filter(conn => conn.targetId !== codeElementId)
@@ -363,6 +394,9 @@ export const useFlatC4Store = create<FlatC4State>()(
           return {
             model: {
               ...state.model,
+              systems: filterOriginalAndCopies(state.model.systems, codeElementId),
+              containers: filterOriginalAndCopies(state.model.containers, codeElementId),
+              components: filterOriginalAndCopies(state.model.components, codeElementId),
               codeElements: updatedCodeElementConnections.filter(c => c.id !== codeElementId),
             },
           };

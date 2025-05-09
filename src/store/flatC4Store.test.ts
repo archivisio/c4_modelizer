@@ -181,4 +181,64 @@ describe("flatC4Store", () => {
     setModel({ systems: [], containers: [], components: [], codeElements: [], viewLevel: "system" } as FlatC4Model)
     expect(useFlatC4Store.getState().model.systems).toHaveLength(0)
   })
+
+  it("propagates updates from system to container copy and removes copies on deletion", () => {
+    const { addSystem, addContainer, updateSystem, removeSystem } = useFlatC4Store.getState();
+
+    addSystem(systemFactory({ name: "Original System" }));
+    const sysId = useFlatC4Store.getState().model.systems[0].id;
+
+    addContainer(sysId, containerFactory({ name: "Copy Container", original: { id: sysId }, systemId: sysId }));
+    updateSystem(sysId, { name: "Updated System" });
+
+    const containerCopy = useFlatC4Store.getState().model.containers.find(c => c.original?.id === sysId);
+    expect(containerCopy?.name).toBe("Updated System");
+
+    removeSystem(sysId);
+    const remainingContainers = useFlatC4Store.getState().model.containers.filter(c => c.original?.id === sysId);
+    expect(remainingContainers).toHaveLength(0);
+  });
+
+  it("propagates updates from container to component copy and removes copies on deletion", () => {
+    const { addSystem, addContainer, addComponent, updateContainer, removeContainer } = useFlatC4Store.getState();
+
+    addSystem(systemFactory({ name: "S" }));
+    const sysId = useFlatC4Store.getState().model.systems[0].id;
+
+    addContainer(sysId, containerFactory({ name: "Original Container", systemId: sysId }));
+    const contId = useFlatC4Store.getState().model.containers[0].id;
+
+    addComponent(contId, componentFactory({ name: "Copy Component", original: { id: contId }, systemId: sysId, containerId: contId }));
+    updateContainer(contId, { name: "Container+" });
+
+    const compCopy = useFlatC4Store.getState().model.components.find(c => c.original?.id === contId);
+    expect(compCopy?.name).toBe("Container+");
+
+    removeContainer(contId);
+    const remainingComponents = useFlatC4Store.getState().model.components.filter(c => c.original?.id === contId);
+    expect(remainingComponents).toHaveLength(0);
+  });
+
+  it("propagates updates from component to code copy and removes copies on deletion", () => {
+    const { addSystem, addContainer, addComponent, addCodeElement, updateComponent, removeComponent } = useFlatC4Store.getState();
+
+    addSystem(systemFactory({ name: "Sys" }));
+    const sysId = useFlatC4Store.getState().model.systems[0].id;
+
+    addContainer(sysId, containerFactory({ name: "Cont", systemId: sysId }));
+    const contId = useFlatC4Store.getState().model.containers[0].id;
+
+    addComponent(contId, componentFactory({ name: "Original Component", systemId: sysId, containerId: contId }));
+    const compId = useFlatC4Store.getState().model.components[0].id;
+
+    addCodeElement(compId, codeElementFactory({ name: "Copy Code", original: { id: compId }, systemId: sysId, containerId: contId, componentId: compId }));
+    updateComponent(compId, { name: "Component X" });
+
+    const codeCopy = useFlatC4Store.getState().model.codeElements.find(c => c.original?.id === compId);
+    expect(codeCopy?.name).toBe("Component X");
+
+    removeComponent(compId);
+    const remainingCodes = useFlatC4Store.getState().model.codeElements.filter(c => c.original?.id === compId);
+    expect(remainingCodes).toHaveLength(0);
+  });
 })
