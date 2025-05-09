@@ -39,34 +39,34 @@ declare module '@mui/material/styles' {
 const themeOptions: ThemeOptions = {
   palette: {
     primary: {
-      main: "#0d47a1",
-      light: "#0d47a1",
-      dark: "#0d47a1",
+      main: "rgb(81, 162, 255)",
+      light: "rgb(81, 162, 255)",
+      dark: "rgb(81, 162, 255)",
       contrastText: '#ffffff',
     },
     secondary: {
-      main: "#00695c",
-      light: "#00695c",
-      dark: "#00695c",
+      main: "rgb(0, 150, 136)",
+      light: "rgb(0, 150, 136)",
+      dark: "rgb(0, 150, 136)",
       contrastText: '#ffffff',
     },
     info: {
-      main: "#e65100",
-      light: "#e65100",
-      dark: "#e65100",
+      main: "rgb(230, 81, 0)",
+      light: "rgb(230, 81, 0)",
+      dark: "rgb(230, 81, 0)",
       contrastText: '#ffffff',
     },
     error: {
-      main: "#6a1b9a",
-      light: "#6a1b9a",
-      dark: "#6a1b9a",
+      main: "rgb(106, 27, 154)",
+      light: "rgb(106, 27, 154)",
+      dark: "rgb(106, 27, 154)",
       contrastText: '#ffffff',
     },
   },
   c4Colors: {
     system: {
-      primaryColor: "81, 162, 255",
-      secondaryColor: "25, 118, 210",
+      primaryColor: "rgb(81, 162, 255)",
+      secondaryColor: "rgb(25, 118, 210)",
       background: "rgba(13, 71, 161, 0.1)",
       gradient:
         "linear-gradient(135deg, rgba(25, 118, 210, 0.15) 0%, rgba(13, 71, 161, 0.1) 100%)",
@@ -81,8 +81,8 @@ const themeOptions: ThemeOptions = {
       hoverGradientEnd: "#1976d2",
     },
     container: {
-      primaryColor: "0, 150, 136",
-      secondaryColor: "0, 137, 123",
+      primaryColor: "rgb(0, 150, 136)",
+      secondaryColor: "rgb(0, 137, 123)",
       background: "rgba(0, 121, 107, 0.1)",
       gradient:
         "linear-gradient(135deg, rgba(0, 150, 136, 0.15) 0%, rgba(0, 121, 107, 0.1) 100%)",
@@ -97,8 +97,8 @@ const themeOptions: ThemeOptions = {
       hoverGradientEnd: "#00897b",
     },
     component: {
-      primaryColor: "255, 152, 0",
-      secondaryColor: "245, 124, 0",
+      primaryColor: "rgb(255, 152, 0)",
+      secondaryColor: "rgb(245, 124, 0)",
       background: "rgba(255, 152, 0, 0.1)",
       gradient:
         "linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 152, 0, 0.1) 100%)",
@@ -113,8 +113,8 @@ const themeOptions: ThemeOptions = {
       hoverGradientEnd: "#f57c00",
     },
     code: {
-      primaryColor: "156, 39, 176",
-      secondaryColor: "123, 31, 162",
+      primaryColor: "rgb(156, 39, 176)",
+      secondaryColor: "rgb(123, 31, 162)",
       background: "rgba(156, 39, 176, 0.1)",
       gradient:
         "linear-gradient(135deg, rgba(156, 39, 176, 0.15) 0%, rgba(156, 39, 176, 0.1) 100%)",
@@ -129,8 +129,8 @@ const themeOptions: ThemeOptions = {
       hoverGradientEnd: "#9c27b0",
     },
     connection: {
-      primaryColor: "0, 176, 255",
-      secondaryColor: "2, 136, 209",
+      primaryColor: "rgb(0, 176, 255)",
+      secondaryColor: "rgb(2, 136, 209)",
       gradientStart: "#0288d1",
       gradientEnd: "#29b6f6",
       border: "#01579b",

@@ -1,3 +1,5 @@
+import { useFlatC4Store } from "@/store/flatC4Store";
+import { useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -27,6 +29,9 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   cancelText,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
+  const { model } = useFlatC4Store();
+  const colors = theme.c4Colors[model.viewLevel];
   
   return (
   <Dialog open={open} onClose={onCancel} data-testid="confirm-dialog">
@@ -35,10 +40,10 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       <DialogContentText>{content}</DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={onCancel} color="primary" data-testid="cancel-button">
+      <Button onClick={onCancel} data-testid="cancel-button" sx={{ color: colors.primaryColor, borderColor: colors.primaryColor }}>
         {cancelText || t("cancel")}
       </Button>
-      <Button onClick={onConfirm} color="error" variant="contained" data-testid="confirm-button">
+      <Button onClick={onConfirm} variant="contained" data-testid="confirm-button" sx={{ borderColor: colors.primaryColor, backgroundColor: colors.primaryColor }}>
         {confirmText || t("confirm")}
       </Button>
     </DialogActions>

@@ -1,3 +1,4 @@
+import { FlatC4Model } from "@interfaces/flatC4Model";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -10,9 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import PortalTarget from "@slots/PortalTarget";
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatC4Model } from "../types/flatC4Model";
 
 const StyledAppBar = styled(AppBar)(() => ({
   background: "linear-gradient(90deg, #051937 0%, #004d7a 100%)",
@@ -63,6 +64,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
           <AppTitle variant="h6">
             {t("app_title", { Level: model.viewLevel })}
           </AppTitle>
+          <PortalTarget id="toolbar-actions-before" />
           <Tooltip title={t("add_block")} arrow>
             <div>
               <ToolbarIconButton
@@ -116,6 +118,7 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
               </ToolbarIconButton>
             </div>
           </Tooltip>
+          <PortalTarget id="toolbar-actions-after" />
         </MuiToolbar>
       </StyledAppBar>
     );

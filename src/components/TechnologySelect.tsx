@@ -12,14 +12,14 @@ interface TechColorProps {
   labelFocus: string;
 }
 
-const TechColorDot = styled(Box)<{ bgColor: string }>(({ bgColor }) => ({
+const TechColorDot = styled(Box)<{ bgcolor: string }>(({ bgcolor }) => ({
   width: 20,
   height: 20,
   borderRadius: '50%',
-  backgroundColor: bgColor,
+  backgroundColor: bgcolor,
   display: 'inline-block',
   marginRight: 8,
-  boxShadow: `0 0 5px ${bgColor}80`
+  boxShadow: `0 0 5px ${bgcolor}80`
 }));
 
 const TechOptionText = styled(Typography)(() => ({
@@ -133,7 +133,7 @@ const TechnologySelect = ({
             data-testid={`technology_option_${option.id}`}
             {...otherProps}
           >
-            <TechColorDot bgColor={option.color} />
+            <TechColorDot bgcolor={option.color} />
             <TechOptionText variant="body2">
               {option.name}
             </TechOptionText>
