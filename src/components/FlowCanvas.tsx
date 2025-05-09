@@ -20,6 +20,7 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { styled } from "@mui/system";
 
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
@@ -28,6 +29,39 @@ import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
 import { useDialogs } from "@/contexts/DialogContext";
 import { ViewLevel } from "../types/c4";
+
+const FlowCanvasContainer = styled(Box)(() => ({
+  width: "100vw",
+  height: "calc(100vh - 100px)",
+  backgroundColor: "#0a1929"
+}));
+
+const StyledReactFlow = styled(ReactFlow)(() => ({
+  width: "100%",
+  height: "100%"
+}));
+
+const StyledBackground = styled(Background)(() => ({
+  "& .react-flow__background-dots": {
+    color: "rgba(81, 162, 255, 0.2)"
+  }
+}));
+
+const defaultEdgeStyle = {
+  animated: true,
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    width: 18,
+    height: 18,
+    color: "#51a2ff",
+  },
+  style: {
+    strokeWidth: 2.5,
+    stroke: "#51a2ff",
+    opacity: 0.8,
+    filter: "drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))",
+  },
+};
 
 interface FlowCanvasProps {
   nodes: Node[];
@@ -119,21 +153,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [onNodeDoubleClick, viewLevel, reactFlowInstance]
   );
 
-  const defaultEdgeOptions = {
-    animated: true,
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      width: 18,
-      height: 18,
-      color: "#51a2ff",
-    },
-    style: {
-      strokeWidth: 2.5,
-      stroke: "#51a2ff",
-      opacity: 0.8,
-      filter: "drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))",
-    },
-  };
+  const defaultEdgeOptions = defaultEdgeStyle;
 
   const preparedEdges = edges.map((edge) => {
     const technologyId = (edge.data &&
@@ -159,10 +179,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   );
 
   return (
-    <Box
-      sx={{ width: "100vw", height: "calc(100vh - 100px)", bgcolor: "#0a1929" }}
-    >
-      <ReactFlow
+    <FlowCanvasContainer>
+      <StyledReactFlow
         nodes={internalNodes}
         edges={preparedEdges}
         edgeTypes={{ technology: TechnologyEdge }}
@@ -174,7 +192,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         onEdgeClick={onEdgeClick ? handleEdgeClick : undefined}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
-        style={{ width: "100%", height: "100%" }}
         selectionOnDrag={isSelectionMode}
         multiSelectionKeyCode="Control"
         selectionMode={SelectionMode.Partial}
@@ -186,11 +203,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         panOnScrollMode={PanOnScrollMode.Free}
         onConnectEnd={(event, connectionState) => setPendingConnection({ event, connectionState })}
       >
-        <Background
+        <StyledBackground
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
-          color="rgba(81, 162, 255, 0.2)"
         />
         <MiniMap zoomable pannable />
         <Controls>
@@ -199,8 +215,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
             onToggle={toggleInteractionMode}
           />
         </Controls>
-      </ReactFlow>
-    </Box>
+      </StyledReactFlow>
+    </FlowCanvasContainer>
   );
 };
 

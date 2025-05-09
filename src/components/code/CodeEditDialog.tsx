@@ -1,9 +1,8 @@
 import BaseEditDialog from "@components/common/BaseEditDialog";
 import CodeEditor from "@components/common/CodeEditor";
-import { dialogThemes } from "@components/common/dialogThemes";
 import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
-import { Box, MenuItem } from "@mui/material";
+import { Box, MenuItem, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -59,6 +58,7 @@ export default function CodeEditDialog({
     url: initialUrl,
   });
   const { t } = useTranslation();
+  const theme = useTheme();
 
   useEffect(() => {
     setValues({
@@ -87,7 +87,7 @@ export default function CodeEditDialog({
     <BaseEditDialog
       open={open}
       title={t("edit_code_element")}
-      theme={dialogThemes.code}
+      themeType="code"
       onSave={() =>
         onSave(
           values.name,
@@ -106,7 +106,7 @@ export default function CodeEditDialog({
       })}
     >
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         autoFocus
         margin="dense"
         label={t("code_element_name")}
@@ -116,7 +116,7 @@ export default function CodeEditDialog({
         data-testid="input_name"
       />
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         margin="dense"
         label={t("code_element_description")}
         fullWidth
@@ -129,7 +129,7 @@ export default function CodeEditDialog({
       <Box sx={{ display: "flex", gap: 2 }}>
         <ThemedTextField
           fullWidth
-          theme={dialogThemes.code}
+          themeType="code"
           select
           label={t("code_type")}
           value={values.codeType}
@@ -154,7 +154,7 @@ export default function CodeEditDialog({
         />
       </Box>
       <CodeEditor
-        theme={dialogThemes.code}
+        theme={theme.c4Colors.code}
         label={t("code")}
         value={values.code}
         onChange={(value) => handleChange("code", value)}
@@ -162,7 +162,7 @@ export default function CodeEditDialog({
         placeholder={t("code_placeholder")}
       />
       <ThemedTextField
-        theme={dialogThemes.code}
+        themeType="code"
         margin="dense"
         label={t("url")}
         fullWidth

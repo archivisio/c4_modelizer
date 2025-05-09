@@ -3,19 +3,23 @@ import PortalTarget from '@/slots/PortalTarget.tsx'
 import { DialogProvider } from '@contexts/DialogProvider.tsx'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { ThemeProvider } from '@mui/material/styles'
 import App from './App.tsx'
 import './index.css'
 import RootProviderSlot from './RootProviderSlot.tsx'
+import theme from './theme/theme'
 
 loadPlugins().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <RootProviderSlot>
-        <DialogProvider>
-          <App />
-        </DialogProvider>
-      </RootProviderSlot>
-      <PortalTarget id="global-overlay" />
+      <ThemeProvider theme={theme}>
+        <RootProviderSlot>
+          <DialogProvider>
+            <App />
+          </DialogProvider>
+        </RootProviderSlot>
+        <PortalTarget id="global-overlay" />
+      </ThemeProvider>
     </StrictMode>,
   )
 });

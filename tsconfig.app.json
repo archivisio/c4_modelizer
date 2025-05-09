@@ -20,7 +20,8 @@
       "@interfaces/*": ["src/types/*"],
       "@utils/*": ["src/utils/*"],
       "@plugins/*": ["src/plugins/*"],
-      "@slots/*": ["src/slots/*"]
+      "@slots/*": ["src/slots/*"],
+      "@theme/*": ["src/theme/*"],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

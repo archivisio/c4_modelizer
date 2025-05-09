@@ -1,26 +1,27 @@
+import { ColorStyle } from "@/theme/theme";
 import { CodeBlock as CodeBlockType, NodeData } from "@/types/c4";
 import C4Block from "@components/common/C4Block";
-import { COLORS, ColorStyle } from "@data/colors";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
 
 const CodeBlock: React.FC<NodeData<CodeBlockType>> = memo(
   ({ data, selected }) => {
     const typedData = data;
+    const theme = useTheme();
 
     const getCodeColors = (): ColorStyle => {
       switch (typedData.codeType) {
         case "class":
-          return COLORS.quaternary;
+          return theme.c4Colors.code;
         case "function":
-          return COLORS.secondary;
+          return theme.c4Colors.system;
         case "interface":
-          return COLORS.tertiary;
+          return theme.c4Colors.container;
         case "variable":
-          return COLORS.primary;
+          return theme.c4Colors.component;
         default:
-          return COLORS.quaternary;
+          return theme.c4Colors.code;
       }
     };
 

@@ -1,19 +1,24 @@
+import { ColorStyle } from "@/theme/theme";
 import { Box, FormLabel, SxProps, TextField, Theme } from "@mui/material";
-import { CSSProperties, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { dialogThemes } from "./dialogThemes";
+import {
+  createSyntaxHighlighterStyle,
+  getEditorClickableBoxStyles,
+  getEditorContainerStyles,
+  getFormLabelStyles,
+  getPlaceholderBoxStyles,
+  getTextFieldStyles,
+} from "./codeEditorStyled";
 
-type DialogTheme = typeof dialogThemes.system;
-
-interface CodeEditorProps {
+export interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: string;
   label?: string;
   placeholder?: string;
-  theme: DialogTheme;
+  theme: ColorStyle;
   sx?: SxProps<Theme>;
 }
 
@@ -75,37 +80,11 @@ const CodeEditor = ({
     onChange(newValue);
   };
 
-  const customStyle = {
-    ...vscDarkPlus,
-    'pre[class*="language-"]': {
-      ...vscDarkPlus['pre[class*="language-"]'],
-      margin: 0,
-      padding: "12px",
-      backgroundColor: "rgba(0, 0, 0, 0.2)",
-      border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
-      borderRadius: "4px",
-      cursor: "pointer",
-      maxHeight: "200px",
-      overflowY: "auto",
-    },
-  } as { [key: string]: CSSProperties };
+  const customStyle = createSyntaxHighlighterStyle(theme);
 
   return (
-    <Box sx={{ mt: 2, ...sx }}>
-      {label && (
-        <FormLabel
-          sx={{
-            color: "rgba(255, 255, 255, 0.7)",
-            mb: 1,
-            display: "block",
-            "&.Mui-focused": {
-              color: theme.gradientEnd,
-            },
-          }}
-        >
-          {label}
-        </FormLabel>
-      )}
+    <Box sx={getEditorContainerStyles(sx)}>
+      {label && <FormLabel sx={getFormLabelStyles(theme)}>{label}</FormLabel>}
 
       {isEditing ? (
         <TextField
@@ -118,27 +97,14 @@ const CodeEditor = ({
           onBlur={() => setIsEditing(false)}
           data-testid="input_code"
           autoFocus
-          sx={{
-            fontFamily: '"Fira Code", "Roboto Mono", monospace',
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.3)` },
-              "&:hover fieldset": {
-                borderColor: `rgba(${theme.primaryColor}, 0.5)`,
-              },
-              "&.Mui-focused fieldset": { borderColor: theme.gradientStart },
-            },
-            "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-            "& .MuiInputLabel-root.Mui-focused": { color: theme.gradientEnd },
-            "& .MuiInputBase-input": {
-              color: "#fff",
-              fontFamily: '"Fira Code", "Roboto Mono", monospace',
-              backgroundColor: "rgba(0, 0, 0, 0.2)",
-              borderRadius: "4px",
-            },
-          }}
+          sx={getTextFieldStyles(theme)}
         />
       ) : (
-        <Box onClick={() => setIsEditing(true)} sx={{ cursor: "pointer" }} title={t("click_to_edit")}>
+        <Box
+          sx={getEditorClickableBoxStyles()}
+          onClick={() => setIsEditing(true)}
+          title={t("click_to_edit")}
+        >
           {editorValue ? (
             <SyntaxHighlighter
               data-testid="input_code"
@@ -150,21 +116,7 @@ const CodeEditor = ({
               {editorValue}
             </SyntaxHighlighter>
           ) : (
-            <Box
-              data-testid="input_code"
-              sx={{
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
-                borderRadius: "4px",
-                padding: "12px",
-                color: "rgba(255, 255, 255, 0.5)",
-                fontStyle: "italic",
-                minHeight: "200px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <Box data-testid="input_code" sx={getPlaceholderBoxStyles(theme)}>
               {placeholder || t("enter_code_here")}
             </Box>
           )}

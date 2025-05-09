@@ -1,30 +1,28 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
+import { Tooltip, useTheme } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmDialog from "./ConfirmDialog";
+import {
+  CancelButton,
+  DeleteButton,
+  SaveButton,
+  StyledDialog,
+  StyledDialogActions,
+  StyledDialogContent,
+  StyledDialogTitle,
+  createDialogActionsStyles,
+  createDialogPaperStyles,
+  createDialogTitleStyles,
+  createSaveButtonStyles,
+} from "./baseEditDialogStyled";
 
-export interface DialogTheme {
-  primaryColor: string;
-  secondaryColor: string;
-  gradientStart: string;
-  gradientEnd: string;
-  hoverGradientStart: string;
-  hoverGradientEnd: string;
-}
+export type DialogThemeType = 'system' | 'container' | 'component' | 'code' | 'connection';
 
 export interface BaseEditDialogProps {
   open: boolean;
   title: string;
-  theme: DialogTheme;
+  themeType?: DialogThemeType;
   children?: ReactNode;
   onSave: () => void;
   onClose: () => void;
@@ -37,7 +35,7 @@ export interface BaseEditDialogProps {
 export default function BaseEditDialog({
   open,
   title,
-  theme,
+  themeType = 'system',
   children,
   onSave,
   onClose,
@@ -48,131 +46,8 @@ export default function BaseEditDialog({
 }: BaseEditDialogProps) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { t } = useTranslation();
-
-  const dialogStyles = {
-    paper: {
-      bgcolor: "#0a1929",
-      color: "#fff",
-      border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
-      borderRadius: 2,
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
-    },
-    title: {
-      borderBottom: `1px solid rgba(${theme.primaryColor}, 0.2)`,
-      pb: 2,
-      "& .MuiTypography-root": {
-        fontWeight: 600,
-        background: `linear-gradient(90deg, ${theme.gradientStart} 0%, ${theme.gradientEnd} 100%)`,
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      },
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-    },
-    input: {
-      mb: 2,
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.3)` },
-        "&:hover fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.5)` },
-        "&.Mui-focused fieldset": { borderColor: theme.gradientStart },
-      },
-      "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-      "& .MuiInputLabel-root.Mui-focused": { color: theme.gradientEnd },
-      "& .MuiInputBase-input": { color: "#fff" },
-    },
-    codeInput: {
-      fontFamily: '"Fira Code", "Roboto Mono", monospace',
-      mt: 2,
-      "& .MuiOutlinedInput-root": {
-        "& fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.3)` },
-        "&:hover fieldset": { borderColor: `rgba(${theme.primaryColor}, 0.5)` },
-        "&.Mui-focused fieldset": { borderColor: theme.gradientStart },
-      },
-      "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-      "& .MuiInputLabel-root.Mui-focused": { color: theme.gradientEnd },
-      "& .MuiInputBase-input": {
-        color: "#fff",
-        backgroundColor: "rgba(0, 0, 0, 0.2)",
-        borderRadius: "4px",
-      },
-    },
-    actions: {
-      px: 3,
-      py: 2,
-      borderTop: `1px solid rgba(${theme.primaryColor}, 0.2)`,
-    },
-    cancelButton: {
-      color: "rgba(255, 255, 255, 0.7)",
-      "&:hover": {
-        color: "#fff",
-        backgroundColor: `rgba(${theme.primaryColor}, 0.1)`,
-      },
-    },
-    saveButton: {
-      background: `linear-gradient(90deg, ${theme.gradientStart} 0%, ${theme.gradientEnd} 100%)`,
-      boxShadow: `0 4px 10px rgba(${theme.primaryColor}, 0.3)`,
-      "&:hover": {
-        background: `linear-gradient(90deg, ${theme.hoverGradientStart} 0%, ${theme.hoverGradientEnd} 100%)`,
-      },
-      "&.Mui-disabled": {
-        background: `rgba(${theme.primaryColor}, 0.1)`,
-        color: "rgba(255, 255, 255, 0.3)",
-      },
-    },
-    deleteButton: {
-      color: "#ff5252",
-      "&:hover": {
-        backgroundColor: "rgba(255, 82, 82, 0.1)",
-      },
-    },
-    confirmDialog: {
-      bgcolor: "#0a1929",
-      color: "#fff",
-      border: "1px solid rgba(255, 82, 82, 0.3)",
-      borderRadius: 2,
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
-      maxWidth: "500px",
-      width: "90%",
-      margin: "auto",
-    },
-    confirmTitle: {
-      borderBottom: "1px solid rgba(255, 82, 82, 0.2)",
-      pb: 2,
-      "& .MuiTypography-root": {
-        fontWeight: 600,
-        color: "#ff5252",
-        fontSize: "1.2rem",
-      },
-    },
-    confirmContent: {
-      py: 3,
-    },
-    confirmText: {
-      color: "rgba(255, 255, 255, 0.7)",
-    },
-    confirmActions: {
-      px: 3,
-      py: 2,
-      borderTop: "1px solid rgba(255, 82, 82, 0.2)",
-    },
-    confirmCancelButton: {
-      color: "rgba(255, 255, 255, 0.9)",
-      border: "1px solid rgba(255, 255, 255, 0.3)",
-      "&:hover": {
-        color: "#fff",
-        backgroundColor: `rgba(${theme.primaryColor}, 0.2)`,
-        border: "1px solid rgba(255, 255, 255, 0.5)",
-      },
-    },
-    confirmDeleteButton: {
-      background: "linear-gradient(90deg, #ff5252 0%, #ff7676 100%)",
-      boxShadow: "0 4px 10px rgba(255, 82, 82, 0.3)",
-      "&:hover": {
-        background: "linear-gradient(90deg, #d32f2f 0%, #ff5252 100%)",
-      },
-    },
-  };
+  const theme = useTheme();
+  const themeColor = theme.c4Colors[themeType];
 
   const handleDelete = () => {
     if (onDelete) {
@@ -183,50 +58,47 @@ export default function BaseEditDialog({
   };
 
   return (
-    <Dialog
+    <StyledDialog
       open={open}
       onClose={onClose}
       maxWidth="md"
       fullWidth
       PaperProps={{
-        sx: dialogStyles.paper,
+        sx: createDialogPaperStyles(themeColor),
       }}
     >
-      <DialogTitle sx={dialogStyles.title}>
-        <div>{title}</div>
-        {onDelete && (
-          <Tooltip title={t("deleteNode")} arrow>
-            <IconButton
-              data-testid="dialog-delete-button"
-              onClick={() => setShowDeleteConfirmation(true)}
-              size="small"
-              sx={dialogStyles.deleteButton}
-              aria-label={t("deleteNode")}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </DialogTitle>
-      <DialogContent sx={{ py: 3 }}>{children}</DialogContent>
-      <DialogActions sx={dialogStyles.actions}>
-        <Button 
-          data-testid="dialog-cancel-button"
-          onClick={onClose} 
-          sx={dialogStyles.cancelButton}
-        >
+      <StyledDialogTitle sx={createDialogTitleStyles(themeColor)}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+          <span>{title}</span>
+          {onDelete && (
+            <Tooltip title={t("deleteNode")} arrow>
+              <DeleteButton
+                data-testid="dialog-delete-button"
+                onClick={() => setShowDeleteConfirmation(true)}
+                size="small"
+                aria-label={t("deleteNode")}
+              >
+                <DeleteIcon />
+              </DeleteButton>
+            </Tooltip>
+          )}
+        </div>
+      </StyledDialogTitle>
+      <StyledDialogContent>{children}</StyledDialogContent>
+      <StyledDialogActions sx={createDialogActionsStyles(themeColor)}>
+        <CancelButton data-testid="dialog-cancel-button" onClick={onClose}>
           {t("cancel")}
-        </Button>
-        <Button
+        </CancelButton>
+        <SaveButton
           data-testid="dialog-save-button"
           onClick={onSave}
           variant="contained"
           disabled={saveDisabled}
-          sx={dialogStyles.saveButton}
+          sx={createSaveButtonStyles(themeColor)}
         >
           {t("save")}
-        </Button>
-      </DialogActions>
+        </SaveButton>
+      </StyledDialogActions>
 
       <ConfirmDialog
         open={showDeleteConfirmation}
@@ -237,6 +109,6 @@ export default function BaseEditDialog({
         confirmText={t("delete")}
         cancelText={t("cancel")}
       />
-    </Dialog>
+    </StyledDialog>
   );
 }

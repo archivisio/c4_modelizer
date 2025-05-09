@@ -1,10 +1,34 @@
 import { useFlatNavigation } from "@hooks/useFlatNavigation";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
+import { styled } from "@mui/system";
 import { useFlatC4Store } from "@store/flatC4Store";
 import { useReactFlow } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+const NavBarContainer = styled(Box)(() => ({
+  padding: 12,
+  backgroundColor: "#132f4c",
+  borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
+  backdropFilter: "blur(8px)"
+}));
+
+const StyledNavigateNextIcon = styled(NavigateNextIcon)(() => ({
+  color: "#51a2ff",
+  fontSize: "small"
+}));
+
+const NavLink = styled(Link)<{ active: boolean }>(({ active }) => ({
+  display: "flex",
+  alignItems: "center",
+  fontWeight: 500,
+  transition: "all 0.2s ease",
+  color: active ? "#51a2ff" : "rgba(255, 255, 255, 0.7)",
+  "&:hover": { 
+    color: "#51a2ff" 
+  }
+}));
 
 export interface NavBarProps {
   systemName?: string;
@@ -50,93 +74,51 @@ const NavBar: React.FC<NavBarProps> = ({
   };
 
   return (
-    <Box
-      sx={{
-        p: 1.5,
-        bgcolor: "#132f4c",
-        borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
-        backdropFilter: "blur(8px)",
-      }}
-    >
+    <NavBarContainer>
       <Breadcrumbs
-        separator={
-          <NavigateNextIcon fontSize="small" sx={{ color: "#51a2ff" }} />
-        }
+        separator={<StyledNavigateNextIcon />}
         aria-label="breadcrumb"
         data-testid="breadcrumb"
       >
-        <Link
+        <NavLink
           underline="hover"
-          color={
-            model.viewLevel === "system"
-              ? "#51a2ff"
-              : "rgba(255, 255, 255, 0.7)"
-          }
+          active={model.viewLevel === "system"}
           href="#"
           onClick={handleSystemsClick}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            fontWeight: 500,
-            transition: "all 0.2s ease",
-            "&:hover": { color: "#51a2ff" },
-          }}
         >
           {t("systems")}
-        </Link>
+        </NavLink>
 
         {(model.viewLevel === "container" ||
           model.viewLevel === "component" ||
           model.viewLevel === "code") &&
           systemName && (
-            <Link
+            <NavLink
               underline="hover"
-              color={
-                model.viewLevel === "container"
-                  ? "#51a2ff"
-                  : "rgba(255, 255, 255, 0.7)"
-              }
+              active={model.viewLevel === "container"}
               href="#"
               onClick={handleContainersClick}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                fontWeight: 500,
-                transition: "all 0.2s ease",
-                "&:hover": { color: "#51a2ff" },
-              }}
             >
               {systemName} {t("containers")}
-            </Link>
+            </NavLink>
           )}
 
         {(model.viewLevel === "component" || model.viewLevel === "code") &&
           containerName && (
-            <Link
+            <NavLink
               underline="hover"
-              color={
-                model.viewLevel === "component"
-                  ? "#51a2ff"
-                  : "rgba(255, 255, 255, 0.7)"
-              }
+              active={model.viewLevel === "component"}
               href="#"
               onClick={handleComponentsClick}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                fontWeight: 500,
-                transition: "all 0.2s ease",
-                "&:hover": { color: "#51a2ff" },
-              }}
             >
               {containerName} {t("components")}
-            </Link>
+            </NavLink>
           )}
 
         {model.viewLevel === "code" && componentName && (
-          <Link
+          <NavLink
             underline="hover"
-            color="#51a2ff"
+            active={true}
             href="#"
             onClick={(e) => {
               e.preventDefault();
@@ -152,19 +134,12 @@ const NavBar: React.FC<NavBarProps> = ({
                 );
               }
             }}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              fontWeight: 500,
-              transition: "all 0.2s ease",
-              "&:hover": { color: "#51a2ff" },
-            }}
           >
             {componentName} {t("code")}
-          </Link>
+          </NavLink>
         )}
       </Breadcrumbs>
-    </Box>
+    </NavBarContainer>
   );
 };
 

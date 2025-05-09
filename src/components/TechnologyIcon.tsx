@@ -2,6 +2,18 @@ import { getTechnologyById } from "@data/technologies";
 import { getIconComponent } from "@icons/TechnologyIcons";
 import { BaseBlock } from "@interfaces/c4";
 import { Box, Tooltip } from "@mui/material";
+import { styled } from "@mui/system";
+
+const IconContainer = styled(Box)<{ iconSize: number; iconColor: string }>(
+  ({ iconSize, iconColor }) => ({
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: iconSize,
+    height: iconSize,
+    color: iconColor,
+  })
+);
 
 interface TechnologyIconProps {
   item: BaseBlock;
@@ -22,24 +34,22 @@ const TechnologyIcon = ({
   const IconComponent = getIconComponent(technology.id);
 
   const content = (
-    <Box
-      sx={{
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: size,
-        height: size,
-        color: technology.color,
-      }}
+    <IconContainer
+      iconSize={size}
+      iconColor={technology.color}
       data-testid={`technology_icon_${technology.id}`}
       aria-label={technology.name}
     >
       <IconComponent size={size} />
-    </Box>
+    </IconContainer>
   );
 
   if (showTooltip) {
-    return <Tooltip title={technology.name} arrow>{content}</Tooltip>;
+    return (
+      <Tooltip title={technology.name} arrow>
+        {content}
+      </Tooltip>
+    );
   }
 
   return content;
