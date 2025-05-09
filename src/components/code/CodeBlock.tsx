@@ -13,15 +13,15 @@ const CodeBlock: React.FC<NodeData<CodeBlockType>> = memo(
     const getCodeColors = (): ColorStyle => {
       switch (typedData.codeType) {
         case "class":
-          return theme.c4Colors.system;
-        case "function":
-          return theme.c4Colors.container;
-        case "interface":
-          return theme.c4Colors.component;
-        case "variable":
           return theme.c4Colors.code;
-        default:
+        case "function":
           return theme.c4Colors.system;
+        case "interface":
+          return theme.c4Colors.container;
+        case "variable":
+          return theme.c4Colors.component;
+        default:
+          return theme.c4Colors.code;
       }
     };
 
