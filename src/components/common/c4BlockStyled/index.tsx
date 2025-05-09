@@ -1,4 +1,4 @@
-import { ColorStyle } from "@/data/colors";
+import { ColorStyle } from "@/theme/theme";
 import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
