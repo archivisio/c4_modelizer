@@ -2,9 +2,9 @@ import BaseEditDialog from "@components/common/BaseEditDialog";
 import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
 import { ConnectionInfo } from "@interfaces/connection";
-import { Box, Checkbox, FormControlLabel, Slider, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { LabelText, StyledCheckbox, StyledFormControlLabel, StyledFormControlWrapper, StyledSlider } from "./connectionEditDialogStyled";
 
 interface ConnectionEditDialogProps {
   open: boolean;
@@ -30,7 +30,6 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
   onDelete,
 }) => {
   const { t } = useTranslation();
-  const theme = useTheme();
 
   const [values, setValues] = useState<ConnectionValues>({
     label: "",
@@ -131,18 +130,11 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
         label={t("technology")}
         placeholder={t("select_technology")}
       />
-      <Box sx={{ mt: 2 }}>
-        <label
-          style={{
-            color: "#fff",
-            fontSize: 14,
-            marginBottom: 4,
-            display: "block",
-          }}
-        >
+      <StyledFormControlWrapper>
+        <LabelText>
           {t("label_position")}
-        </label>
-        <Slider
+        </LabelText>
+        <StyledSlider
           value={values.labelPosition}
           min={0}
           max={100}
@@ -156,42 +148,20 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
           }
           valueLabelDisplay="auto"
           data-testid="input_label_position"
-          sx={{
-            color: theme.c4Colors.connection.primaryColor,
-            "& .MuiSlider-markLabel": {
-              color: "#fff",
-            },
-          }}
         />
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <FormControlLabel
+      </StyledFormControlWrapper>
+      <StyledFormControlWrapper>
+        <StyledFormControlLabel
           control={
-            <Checkbox
+            <StyledCheckbox
               checked={values.bidirectional}
-              onChange={(e) => handleChange("bidirectional", e.target.checked)}
-              sx={{
-                color: "#fff",
-                "&.Mui-checked": {
-                  color: theme.c4Colors.connection.primaryColor,
-                },
-                "& .MuiSvgIcon-root": {
-                  width: "0.9em",
-                  height: "0.9em",
-                },
-              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange("bidirectional", e.target.checked)}
             />
           }
           label={t("bidirectional_connection")}
           data-testid="input_bidirectional"
-          sx={{
-            "& .MuiFormControlLabel-label": {
-              color: "#fff",
-              fontSize: 14,
-            },
-          }}
         />
-      </Box>
+      </StyledFormControlWrapper>
     </BaseEditDialog>
   );
 };
