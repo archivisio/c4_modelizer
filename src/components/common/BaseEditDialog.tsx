@@ -1,5 +1,5 @@
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Tooltip } from "@mui/material";
+import { Tooltip, useTheme } from "@mui/material";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmDialog from "./ConfirmDialog";
@@ -17,19 +17,12 @@ import {
   createSaveButtonStyles,
 } from "./baseEditDialogStyled";
 
-export interface DialogTheme {
-  primaryColor: string;
-  secondaryColor: string;
-  gradientStart: string;
-  gradientEnd: string;
-  hoverGradientStart: string;
-  hoverGradientEnd: string;
-}
+export type DialogThemeType = 'system' | 'container' | 'component' | 'code' | 'connection';
 
 export interface BaseEditDialogProps {
   open: boolean;
   title: string;
-  theme: DialogTheme;
+  themeType?: DialogThemeType;
   children?: ReactNode;
   onSave: () => void;
   onClose: () => void;
@@ -42,7 +35,7 @@ export interface BaseEditDialogProps {
 export default function BaseEditDialog({
   open,
   title,
-  theme,
+  themeType = 'system',
   children,
   onSave,
   onClose,
@@ -53,6 +46,8 @@ export default function BaseEditDialog({
 }: BaseEditDialogProps) {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { t } = useTranslation();
+  const theme = useTheme();
+  const themeColor = theme.c4Colors[themeType];
 
   const handleDelete = () => {
     if (onDelete) {
@@ -69,10 +64,10 @@ export default function BaseEditDialog({
       maxWidth="md"
       fullWidth
       PaperProps={{
-        sx: createDialogPaperStyles(theme),
+        sx: createDialogPaperStyles(themeColor),
       }}
     >
-      <StyledDialogTitle sx={createDialogTitleStyles(theme)}>
+      <StyledDialogTitle sx={createDialogTitleStyles(themeColor)}>
         <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
           <span>{title}</span>
           {onDelete && (
@@ -90,7 +85,7 @@ export default function BaseEditDialog({
         </div>
       </StyledDialogTitle>
       <StyledDialogContent>{children}</StyledDialogContent>
-      <StyledDialogActions sx={createDialogActionsStyles(theme)}>
+      <StyledDialogActions sx={createDialogActionsStyles(themeColor)}>
         <CancelButton data-testid="dialog-cancel-button" onClick={onClose}>
           {t("cancel")}
         </CancelButton>
@@ -99,7 +94,7 @@ export default function BaseEditDialog({
           onClick={onSave}
           variant="contained"
           disabled={saveDisabled}
-          sx={createSaveButtonStyles(theme)}
+          sx={createSaveButtonStyles(themeColor)}
         >
           {t("save")}
         </SaveButton>

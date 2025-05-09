@@ -1,5 +1,4 @@
 import BaseEditDialog from "@components/common/BaseEditDialog";
-import { dialogThemes } from "@components/common/dialogThemes";
 import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
 import { useEffect, useState } from "react";
@@ -63,7 +62,7 @@ export default function ContainerEditDialog({
     <BaseEditDialog
       open={open}
       title={t("edit_container")}
-      theme={dialogThemes.container}
+      themeType="container"
       onSave={() =>
         onSave(values.name, values.description, values.technology, values.url)
       }

@@ -1,4 +1,4 @@
-import { DialogTheme } from "@/components/common/BaseEditDialog";
+import { ColorStyle } from "@/theme/theme";
 import {
   Button,
   Dialog,
@@ -40,16 +40,16 @@ export const DeleteButton = styled(IconButton)(() => ({
   },
 }));
 
-export const createDialogPaperStyles = (theme: DialogTheme) => ({
+export const createDialogPaperStyles = (theme: ColorStyle) => ({
   bgcolor: "#0a1929",
   color: "#fff",
-  border: `1px solid rgba(${theme.primaryColor}, 0.3)`,
+  border: `1px solid ${theme.border}4D`, // 30% opacity
   borderRadius: 8,
   boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
 });
 
-export const createDialogTitleStyles = (theme: DialogTheme) => ({
-  borderBottom: `1px solid rgba(${theme.primaryColor}, 0.2)`,
+export const createDialogTitleStyles = (theme: ColorStyle) => ({
+  borderBottom: `1px solid ${theme.border}33`, // 20% opacity
   paddingBottom: 16,
   "& .MuiTypography-root": {
     fontWeight: 600,
@@ -62,27 +62,27 @@ export const createDialogTitleStyles = (theme: DialogTheme) => ({
   alignItems: "center",
 });
 
-export const createDialogActionsStyles = (theme: DialogTheme) => ({
+export const createDialogActionsStyles = (theme: ColorStyle) => ({
   paddingLeft: 24,
   paddingRight: 24,
   paddingTop: 16,
   paddingBottom: 16,
-  borderTop: `1px solid rgba(${theme.primaryColor}, 0.2)`,
+  borderTop: `1px solid ${theme.border}33`, // 20% opacity
 });
 
-export const createSaveButtonStyles = (theme: DialogTheme) => ({
+export const createSaveButtonStyles = (theme: ColorStyle) => ({
   background: `linear-gradient(90deg, ${theme.gradientStart} 0%, ${theme.gradientEnd} 100%)`,
-  boxShadow: `0 4px 10px rgba(${theme.primaryColor}, 0.3)`,
+  boxShadow: theme.glow,
   "&:hover": {
     background: `linear-gradient(90deg, ${theme.hoverGradientStart} 0%, ${theme.hoverGradientEnd} 100%)`,
   },
   "&.Mui-disabled": {
-    background: `rgba(${theme.primaryColor}, 0.1)`,
+    background: `${theme.border}1A`, // 10% opacity
     color: "rgba(255, 255, 255, 0.3)",
   },
 });
 
-export const DialogPaper = (props: PaperProps & { theme?: DialogTheme }) => {
+export const DialogPaper = (props: PaperProps & { theme?: ColorStyle }) => {
   const { theme, ...otherProps } = props;
   return (
     <Paper
@@ -93,7 +93,7 @@ export const DialogPaper = (props: PaperProps & { theme?: DialogTheme }) => {
 };
 
 export const StyledDialogTitle = (
-  props: React.ComponentProps<typeof DialogTitle> & { theme?: DialogTheme }
+  props: React.ComponentProps<typeof DialogTitle> & { theme?: ColorStyle }
 ) => {
   const { theme, ...otherProps } = props;
   return (
@@ -105,7 +105,7 @@ export const StyledDialogTitle = (
 };
 
 export const StyledDialogActions = (
-  props: React.ComponentProps<typeof DialogActions> & { theme?: DialogTheme }
+  props: React.ComponentProps<typeof DialogActions> & { theme?: ColorStyle }
 ) => {
   const { theme, ...otherProps } = props;
   return (
@@ -117,7 +117,7 @@ export const StyledDialogActions = (
 };
 
 export const SaveButton = (
-  props: React.ComponentProps<typeof Button> & { theme?: DialogTheme }
+  props: React.ComponentProps<typeof Button> & { theme?: ColorStyle }
 ) => {
   const { theme, ...otherProps } = props;
   return (

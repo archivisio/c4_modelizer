@@ -1,9 +1,8 @@
 import BaseEditDialog from "@components/common/BaseEditDialog";
-import { dialogThemes } from "@components/common/dialogThemes";
 import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
 import { ConnectionInfo } from "@interfaces/connection";
-import { Box, Checkbox, FormControlLabel, Slider } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Slider, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -31,6 +30,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
   onDelete,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const [values, setValues] = useState<ConnectionValues>({
     label: "",
@@ -95,7 +95,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
     <BaseEditDialog
       open={open}
       title={t("edit_connection")}
-      theme={dialogThemes.connection}
+      themeType="connection"
       onSave={handleSave}
       onClose={onClose}
       onDelete={connection && onDelete ? handleDelete : undefined}
@@ -157,7 +157,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
           valueLabelDisplay="auto"
           data-testid="input_label_position"
           sx={{
-            color: dialogThemes.connection.primaryColor,
+            color: theme.c4Colors.connection.primaryColor,
             "& .MuiSlider-markLabel": {
               color: "#fff",
             },
@@ -173,7 +173,7 @@ const ConnectionEditDialog: React.FC<ConnectionEditDialogProps> = ({
               sx={{
                 color: "#fff",
                 "&.Mui-checked": {
-                  color: dialogThemes.connection.primaryColor,
+                  color: theme.c4Colors.connection.primaryColor,
                 },
                 "& .MuiSvgIcon-root": {
                   width: "0.9em",

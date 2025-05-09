@@ -1,6 +1,5 @@
-import BaseEditDialog from "@components/common/BaseEditDialog";
-import { dialogThemes } from "@components/common/dialogThemes";
-import ThemedTextField from "@components/common/ThemedTextField";
+import BaseEditDialog from "@/components/common/BaseEditDialog";
+import ThemedTextField from "@/components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -59,17 +58,20 @@ export default function SystemEditDialog({
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleSave = () =>
+    onSave(values.name, values.description, values.technology, values.url);
+
+  const isValid = !!values.name.trim();
+
   return (
     <BaseEditDialog
       open={open}
       title={t("edit_system")}
-      theme={dialogThemes.system}
-      onSave={() =>
-        onSave(values.name, values.description, values.technology, values.url)
-      }
+      themeType="system"
+      onSave={handleSave}
       onClose={onClose}
       onDelete={onDelete}
-      saveDisabled={!values.name.trim()}
+      saveDisabled={!isValid}
       deleteConfirmationMessage={t("delete_system_confirmation", {
         name: initialName,
       })}
