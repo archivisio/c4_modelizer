@@ -1,8 +1,42 @@
 import { getTechnologiesByLevel, Technology } from "@data/technologies";
 import { TechnologyLevel } from "@interfaces/c4";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+interface TechColorProps {
+  border: string;
+  borderHover: string;
+  borderFocus: string;
+  labelFocus: string;
+}
+
+const TechColorDot = styled(Box)<{ bgColor: string }>(({ bgColor }) => ({
+  width: 20,
+  height: 20,
+  borderRadius: '50%',
+  backgroundColor: bgColor,
+  display: 'inline-block',
+  marginRight: 8,
+  boxShadow: `0 0 5px ${bgColor}80`
+}));
+
+const TechOptionText = styled(Typography)(() => ({
+  color: '#0a1929'
+}));
+
+const StyledTextField = styled(TextField)<{ colors: TechColorProps }>(({ colors }) => ({
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': { borderColor: colors.border },
+    '&:hover fieldset': { borderColor: colors.borderHover },
+    '&.Mui-focused fieldset': { borderColor: colors.borderFocus }
+  },
+  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
+  '& .MuiInputLabel-root.Mui-focused': { color: colors.labelFocus },
+  '& .MuiInputBase-input': { color: '#fff' },
+  '& .MuiSvgIcon-root': { color: 'rgba(255, 255, 255, 0.7)' }
+}));
 
 interface TechnologySelectProps {
   fullWidth?: boolean;
@@ -95,45 +129,25 @@ const TechnologySelect = ({
           <Box
             key={key}
             component="li"
-            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+            sx={{ display: 'flex', alignItems: 'center' }}
             data-testid={`technology_option_${option.id}`}
             {...otherProps}
           >
-            <Box
-              sx={{
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                backgroundColor: option.color,
-                display: "inline-block",
-                mr: 1,
-                boxShadow: `0 0 5px ${option.color}80`,
-              }}
-            />
-            <Typography variant="body2" sx={{ color: "#0a1929" }}>
+            <TechColorDot bgColor={option.color} />
+            <TechOptionText variant="body2">
               {option.name}
-            </Typography>
+            </TechOptionText>
           </Box>
         );
       }}
       renderInput={(params) => (
-        <TextField
+        <StyledTextField
           {...params}
           label={label || t("technology")}
           placeholder={placeholder || t("select_technology")}
           fullWidth
           margin="dense"
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: colors.border },
-              "&:hover fieldset": { borderColor: colors.borderHover },
-              "&.Mui-focused fieldset": { borderColor: colors.borderFocus },
-            },
-            "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
-            "& .MuiInputLabel-root.Mui-focused": { color: colors.labelFocus },
-            "& .MuiInputBase-input": { color: "#fff" },
-            "& .MuiSvgIcon-root": { color: "rgba(255, 255, 255, 0.7)" },
-          }}
+          colors={colors}
         />
       )}
       data-testid="input_technology"
