@@ -1,9 +1,9 @@
-import { ColorStyle } from "@/data/colors";
 import { getTechnologyById } from "@/data/technologies";
+import { ColorStyle } from "@/theme/theme";
 import { BaseBlock } from "@/types/c4";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Tooltip } from "@mui/material";
+import { Tooltip, useTheme } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -52,11 +52,13 @@ const C4Block: React.FC<C4BlockProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { technology, name, description, url } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
     ? {
+        ...theme.c4Colors.system,
         background: `rgba(${hexToRgb(techData.color)}, 0.1)`,
         gradient: `linear-gradient(135deg, rgba(${hexToRgb(
           techData.color

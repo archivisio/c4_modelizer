@@ -1,6 +1,6 @@
+import { ColorStyle } from "@/theme/theme";
 import { CodeBlock as CodeBlockType, NodeData } from "@/types/c4";
 import C4Block from "@components/common/C4Block";
-import { ColorStyle } from "@data/colors";
 import { Box, Chip, useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";

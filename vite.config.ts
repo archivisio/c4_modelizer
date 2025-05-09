@@ -22,7 +22,8 @@ export default defineConfig({
       '@interfaces': path.resolve(__dirname, './src/types'),
       '@utils': path.resolve(__dirname, './src/utils'),
       '@plugins': path.resolve(__dirname, './src/plugins'),
-      '@slots': path.resolve(__dirname, './src/slots')
+      '@slots': path.resolve(__dirname, './src/slots'),
+      '@theme': path.resolve(__dirname, './src/theme'),
     },
   },
 })
