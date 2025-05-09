@@ -1,10 +1,10 @@
+import { ColorStyle } from "@/theme/theme";
 import { Box, FormLabel, SxProps, TextField, Theme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   createSyntaxHighlighterStyle,
-  DialogTheme,
   getEditorClickableBoxStyles,
   getEditorContainerStyles,
   getFormLabelStyles,
@@ -18,7 +18,7 @@ export interface CodeEditorProps {
   language?: string;
   label?: string;
   placeholder?: string;
-  theme: DialogTheme;
+  theme: ColorStyle;
   sx?: SxProps<Theme>;
 }
 
@@ -100,7 +100,11 @@ const CodeEditor = ({
           sx={getTextFieldStyles(theme)}
         />
       ) : (
-        <Box sx={getEditorClickableBoxStyles()} onClick={() => setIsEditing(true)} title={t("click_to_edit")}>
+        <Box
+          sx={getEditorClickableBoxStyles()}
+          onClick={() => setIsEditing(true)}
+          title={t("click_to_edit")}
+        >
           {editorValue ? (
             <SyntaxHighlighter
               data-testid="input_code"
@@ -112,10 +116,7 @@ const CodeEditor = ({
               {editorValue}
             </SyntaxHighlighter>
           ) : (
-            <Box
-              data-testid="input_code"
-              sx={getPlaceholderBoxStyles(theme)}
-            >
+            <Box data-testid="input_code" sx={getPlaceholderBoxStyles(theme)}>
               {placeholder || t("enter_code_here")}
             </Box>
           )}
