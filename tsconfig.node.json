@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["cypress", "@4tw/cypress-drag-drop", "jest", "node"]
+    "types": ["cypress", "@4tw/cypress-drag-drop", "jest", "node"],
   },
   "include": ["vite.config.ts"]
 }
