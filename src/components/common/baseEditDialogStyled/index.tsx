@@ -71,10 +71,9 @@ export const createDialogActionsStyles = (theme: ColorStyle) => ({
 });
 
 export const createSaveButtonStyles = (theme: ColorStyle) => ({
-  background: `linear-gradient(90deg, ${theme.gradientStart} 0%, ${theme.gradientEnd} 100%)`,
-  boxShadow: theme.glow,
+  background: theme.gradient,
   "&:hover": {
-    background: `linear-gradient(90deg, ${theme.hoverGradientStart} 0%, ${theme.hoverGradientEnd} 100%)`,
+    background: theme.gradientHover,
   },
   "&.Mui-disabled": {
     background: `${theme.border}1A`, // 10% opacity
@@ -119,11 +118,6 @@ export const StyledDialogActions = (
 export const SaveButton = (
   props: React.ComponentProps<typeof Button> & { theme?: ColorStyle }
 ) => {
-  const { theme, ...otherProps } = props;
-  return (
-    <Button
-      {...otherProps}
-      sx={theme ? createSaveButtonStyles(theme) : undefined}
-    />
-  );
+  const { ...otherProps } = props;
+  return <Button {...otherProps} />;
 };
