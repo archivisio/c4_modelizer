@@ -1,21 +1,25 @@
+import { ColorStyle } from "@/data/colors";
+import { getTechnologyById } from "@/data/technologies";
 import { BaseBlock } from "@/types/c4";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import {
-  Box,
-  Card,
-  CardContent,
-  IconButton,
-  SxProps,
-  Theme,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
+import React from "react";
 import { useTranslation } from "react-i18next";
-import { ColorStyle } from "../../data/colors";
-import { getTechnologyById } from "../../data/technologies";
 import TechnologyIcon from "../TechnologyIcon";
+import {
+  ActionIconButton,
+  ActionsContainer,
+  BlockContainer,
+  BlockTitle,
+  DescriptionText,
+  HeaderContainer,
+  hexToRgb,
+  StyledCard,
+  StyledCardContent,
+  TitleContainer,
+} from "./c4BlockStyled";
 
 export type HandlePositions = {
   source: Position | Position[];
@@ -31,16 +35,13 @@ export interface C4BlockProps {
   children?: React.ReactNode;
 }
 
-const hexToRgb = (hex: string): string => {
-  const cleanHex = hex.startsWith("#") ? hex.slice(1) : hex;
-
-  const bigint = parseInt(cleanHex, 16);
-  const r = (bigint >> 16) & 255;
-  const g = (bigint >> 8) & 255;
-  const b = bigint & 255;
-
-  return `${r}, ${g}, ${b}`;
-};
+const createHandleStyle = (colorStyles: ColorStyle, isSource = false) => ({
+  background: colorStyles.border,
+  border: `2px solid ${colorStyles.border}`,
+  width: isSource ? 10 : 8,
+  height: isSource ? 10 : 8,
+  ...(isSource && { boxShadow: `0 0 5px ${colorStyles.border}` }),
+});
 
 const C4Block: React.FC<C4BlockProps> = ({
   item,
@@ -69,46 +70,17 @@ const C4Block: React.FC<C4BlockProps> = ({
       }
     : defaultColorStyle;
 
-  const cardSx: SxProps<Theme> = {
-    width: 200,
-    height: 80,
-    borderRadius: 2,
-    position: "relative",
-    overflow: "hidden",
-    transition: "all 0.2s ease",
-    boxShadow: selected
-      ? `0 0 0 2px ${colorStyles.border}, ${colorStyles.glow}`
-      : "0 4px 20px rgba(0,0,0,0.15)",
-    background: colorStyles.gradient,
-    border: `1px solid ${colorStyles.border}`,
-    "&:hover": {
-      boxShadow: `0 0 0 2px ${colorStyles.hover}, ${colorStyles.glow}`,
-      background: colorStyles.gradientHover,
-    },
-    display: "flex",
-    flexDirection: "column",
-  };
-
-  if (description) {
-    cardSx.height = (cardSx.height as number) + (cardSx.height as number) * 0.5;
-  }
-
   return (
     <>
       {Array.isArray(handlePositions.target) ? (
-        handlePositions.target.map((position, index) => (
+        handlePositions.target.map((position: Position, index: number) => (
           <Handle
             key={`target-${index}`}
             type="target"
             position={position}
             data-testid={`target-${position}-${index}`}
             id={`target-${position}-${index}`}
-            style={{
-              background: colorStyles.border,
-              border: `2px solid ${colorStyles.border}`,
-              width: 8,
-              height: 8,
-            }}
+            style={createHandleStyle(colorStyles)}
           />
         ))
       ) : (
@@ -117,214 +89,75 @@ const C4Block: React.FC<C4BlockProps> = ({
           position={handlePositions.target}
           data-testid={`target-${handlePositions.target}`}
           id={`target-${handlePositions.target}`}
-          style={{
-            background: colorStyles.border,
-            border: `2px solid ${colorStyles.border}`,
-            width: 8,
-            height: 8,
-          }}
+          style={createHandleStyle(colorStyles)}
         />
       )}
-      <Box
-        sx={{
-          backgroundColor: "#0a1929",
-          borderRadius: 3,
-          opacity: item.original ? 0.5 : 1,
-        }}
-      >
-        <Card sx={cardSx} className="tech-card">
-          <CardContent
-            sx={{
-              p: 1.5,
-              color: "#fff",
-              overflow: "hidden",
-              flex: 1,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                mb: 1,
-              }}
-            >
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  minWidth: 0,
-                }}
-              >
+      <BlockContainer sx={{ opacity: item.original ? 0.5 : 1 }}>
+        <StyledCard
+          colorstyles={colorStyles}
+          selected={selected}
+          hasDescription={!!description}
+          className="tech-card"
+        >
+          <StyledCardContent>
+            <HeaderContainer>
+              <TitleContainer>
                 {technology && (
                   <TechnologyIcon
                     item={{ technology, name } as unknown as BaseBlock}
                     size={24}
                   />
                 )}
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: "bold",
-                    color: "#fff",
-                    textShadow: "0 0 10px rgba(255,255,255,0.3)",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    maxWidth: "130px",
-                  }}
-                >
-                  {name}
-                </Typography>
-              </Box>
+                <BlockTitle variant="subtitle1">{name}</BlockTitle>
+              </TitleContainer>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  minWidth: 0,
-                }}
-              >
+              <ActionsContainer>
                 {url && (
                   <Tooltip title={t("open_url")} arrow>
-                    <IconButton
+                    <ActionIconButton
                       size="small"
                       onClick={() => window.open(url, "_blank")}
                       aria-label={t("open_url")}
-                      sx={{
-                        backgroundColor: "rgba(0,0,0,0.3)",
-                        color: "#fff",
-                        "&:hover": {
-                          backgroundColor: `rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.2)`,
-                          borderColor: colorStyles.hover,
-                          boxShadow: `0 0 5px rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.3)`,
-                        },
-                        "&:focus": {
-                          backgroundColor: `rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.2)`,
-                          borderColor: colorStyles.hover,
-                          boxShadow: `0 0 5px rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.3)`,
-                          outline: "none",
-                        },
-                        "&:focus-visible": {
-                          outline: "none",
-                        },
-                        width: 22,
-                        height: 22,
-                        minWidth: 22,
-                        minHeight: 22,
-                        border: `1px solid ${colorStyles.border}`,
-                        backdropFilter: "blur(4px)",
-                        transition: "all 0.2s ease",
-                        p: 0.5,
-                      }}
+                      colorstyles={colorStyles}
                     >
                       <OpenInNewIcon fontSize="inherit" />
-                    </IconButton>
+                    </ActionIconButton>
                   </Tooltip>
                 )}
 
                 {!item.original && (
                   <Tooltip title={t("edit")} arrow>
-                    <IconButton
+                    <ActionIconButton
                       size="small"
                       onClick={onEdit}
                       aria-label={t("edit")}
-                      sx={{
-                        backgroundColor: "rgba(0,0,0,0.3)",
-                        color: "#fff",
-                        "&:hover": {
-                          backgroundColor: `rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.2)`,
-                          borderColor: colorStyles.hover,
-                          boxShadow: `0 0 5px rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.3)`,
-                        },
-                        "&:focus": {
-                          backgroundColor: `rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.2)`,
-                          borderColor: colorStyles.hover,
-                          boxShadow: `0 0 5px rgba(${hexToRgb(
-                            colorStyles.hover
-                          )}, 0.3)`,
-                          outline: "none",
-                        },
-                        "&:focus-visible": {
-                          outline: "none",
-                        },
-                        width: 22,
-                        height: 22,
-                        minWidth: 22,
-                        minHeight: 22,
-                        border: `1px solid ${colorStyles.border}`,
-                        backdropFilter: "blur(4px)",
-                        transition: "all 0.2s ease",
-                        p: 0.5,
-                      }}
+                      colorstyles={colorStyles}
                     >
                       <EditIcon fontSize="inherit" />
-                    </IconButton>
+                    </ActionIconButton>
                   </Tooltip>
                 )}
-              </Box>
-            </Box>
+              </ActionsContainer>
+            </HeaderContainer>
 
             {description && (
-              <Typography
-                variant="body2"
-                sx={{
-                  mt: 1.5,
-                  color: "rgba(255,255,255,0.8)",
-                  backgroundColor: "rgba(0,0,0,0.2)",
-                  p: 1,
-                  borderRadius: 1,
-                  backdropFilter: "blur(4px)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  lineHeight: "1.2em",
-                  maxHeight: "3.6em",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {description}
-              </Typography>
+              <DescriptionText variant="body2">{description}</DescriptionText>
             )}
+
             {children}
-          </CardContent>
-        </Card>
-      </Box>
+          </StyledCardContent>
+        </StyledCard>
+      </BlockContainer>
+
       {Array.isArray(handlePositions.source) ? (
-        handlePositions.source.map((position, index) => (
+        handlePositions.source.map((position: Position, index: number) => (
           <Handle
             key={`source-${index}`}
             type="source"
             position={position}
-            id={`source-${position}-${index}`}
             data-testid={`source-${position}-${index}`}
-            style={{
-              background: colorStyles.border,
-              border: `2px solid ${colorStyles.border}`,
-              width: 10,
-              height: 10,
-              boxShadow: `0 0 5px ${colorStyles.border}`,
-            }}
+            id={`source-${position}-${index}`}
+            style={createHandleStyle(colorStyles, true)}
           />
         ))
       ) : (
@@ -333,13 +166,7 @@ const C4Block: React.FC<C4BlockProps> = ({
           position={handlePositions.source}
           id={`source-${handlePositions.source}`}
           data-testid={`source-${handlePositions.source}`}
-          style={{
-            background: colorStyles.border,
-            border: `2px solid ${colorStyles.border}`,
-            width: 10,
-            height: 10,
-            boxShadow: `0 0 5px ${colorStyles.border}`,
-          }}
+          style={createHandleStyle(colorStyles, true)}
         />
       )}
     </>
