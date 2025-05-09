@@ -1,6 +1,8 @@
 export default {
   roots: ["<rootDir>"],
   preset: "ts-jest",
+  testEnvironment: "node",
+  verbose: true,
   moduleNameMapper: {
     "^@components/(.*)$": "<rootDir>/src/components/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",
