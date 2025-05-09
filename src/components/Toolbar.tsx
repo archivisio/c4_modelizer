@@ -9,9 +9,38 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/system";
 import React, { forwardRef, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatC4Model } from "../types/flatC4Model";
+
+const StyledAppBar = styled(AppBar)(() => ({
+  background: "linear-gradient(90deg, #051937 0%, #004d7a 100%)",
+  borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
+}));
+
+const AppTitle = styled(Typography)(() => ({
+  flexGrow: 1,
+  fontWeight: 600,
+  background: "linear-gradient(90deg, #51a2ff 0%, #8ed6ff 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  letterSpacing: "0.5px",
+}));
+
+const ToolbarIconButton = styled(IconButton)(() => ({
+  color: "#fff",
+  background: "rgba(81, 162, 255, 0.1)",
+  backdropFilter: "blur(4px)",
+  marginRight: 8,
+  transition: "all 0.2s ease",
+  "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
+}));
+
+const HiddenInput = styled("input")(() => ({
+  display: "none",
+}));
+
 export interface ToolbarProps {
   onAddSystem: () => void;
   onExport: () => void;
@@ -29,108 +58,66 @@ const Toolbar = forwardRef<HTMLButtonElement, ToolbarProps>(
     const { t } = useTranslation();
 
     return (
-      <AppBar
-        position="static"
-        elevation={0}
-        sx={{
-          background: "linear-gradient(90deg, #051937 0%, #004d7a 100%)",
-          borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
-        }}
-      >
+      <StyledAppBar position="static" elevation={0}>
         <MuiToolbar>
-          <Typography
-            variant="h6"
-            sx={{
-              flexGrow: 1,
-              fontWeight: 600,
-              background: "linear-gradient(90deg, #51a2ff 0%, #8ed6ff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              letterSpacing: "0.5px",
-            }}
-          >
+          <AppTitle variant="h6">
             {t("app_title", { Level: model.viewLevel })}
-          </Typography>
+          </AppTitle>
           <Tooltip title={t("add_block")} arrow>
-            <IconButton
-              data-testid="toolbar-add-system"
-              onClick={onAddSystem}
-              aria-label={t("add_block")}
-              sx={{
-                color: "#fff",
-                background: "rgba(81, 162, 255, 0.1)",
-                backdropFilter: "blur(4px)",
-                mr: 1,
-                transition: "all 0.2s ease",
-                "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
-              }}
-            >
-              <AddIcon />
-            </IconButton>
+            <div>
+              <ToolbarIconButton
+                data-testid="toolbar-add-system"
+                onClick={onAddSystem}
+                aria-label={t("add_block")}
+              >
+                <AddIcon />
+              </ToolbarIconButton>
+            </div>
           </Tooltip>
           <Tooltip title={t("export_json")} arrow>
-            <IconButton
-              data-testid="toolbar-export-model"
-              onClick={onExport}
-              aria-label={t("export_json")}
-              sx={{
-                color: "#fff",
-                background: "rgba(81, 162, 255, 0.1)",
-                backdropFilter: "blur(4px)",
-                mr: 1,
-                transition: "all 0.2s ease",
-                "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
-              }}
-            >
-              <DownloadIcon />
-            </IconButton>
+            <div>
+              <ToolbarIconButton
+                data-testid="toolbar-export-model"
+                onClick={onExport}
+                aria-label={t("export_json")}
+              >
+                <DownloadIcon />
+              </ToolbarIconButton>
+            </div>
           </Tooltip>
           <Tooltip title={t("import_json")} arrow>
-            <IconButton
-              data-testid="toolbar-import-model"
-              component="span"
-              onClick={() => fileInputRef.current?.click()}
-              aria-label={t("import_json")}
-              sx={{
-                color: "#fff",
-                background: "rgba(81, 162, 255, 0.1)",
-                backdropFilter: "blur(4px)",
-                mr: 1,
-                transition: "all 0.2s ease",
-                "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
-              }}
-            >
-              <UploadFileIcon />
-              <input
-                type="file"
-                accept="application/json"
-                ref={fileInputRef}
-                data-testid="toolbar-file-input"
-                style={{ display: "none" }}
-                onChange={onImport}
-              />
-            </IconButton>
+            <div>
+              <ToolbarIconButton
+                data-testid="toolbar-import-model"
+                onClick={() => fileInputRef.current?.click()}
+                aria-label={t("import_json")}
+              >
+                <UploadFileIcon />
+                <HiddenInput
+                  type="file"
+                  accept="application/json"
+                  ref={fileInputRef}
+                  data-testid="toolbar-file-input"
+                  onChange={onImport}
+                />
+              </ToolbarIconButton>
+            </div>
           </Tooltip>
           <Tooltip title={t("reset_store")} arrow>
-            <IconButton
-              data-testid="toolbar-reset-model"
-              component="span"
-              onClick={onReset}
-              aria-label={t("reset_store")}
-              ref={resetButtonRef as React.Ref<HTMLButtonElement>}
-              sx={{
-                color: "#fff",
-                background: "rgba(81, 162, 255, 0.1)",
-                backdropFilter: "blur(4px)",
-                transition: "all 0.2s ease",
-                "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <div>
+              <ToolbarIconButton
+                data-testid="toolbar-reset-model"
+                onClick={onReset}
+                aria-label={t("reset_store")}
+                ref={resetButtonRef as React.Ref<HTMLButtonElement>}
+                sx={{ marginRight: 0 }}
+              >
+                <DeleteIcon />
+              </ToolbarIconButton>
+            </div>
           </Tooltip>
         </MuiToolbar>
-      </AppBar>
+      </StyledAppBar>
     );
   }
 );
