@@ -1,3 +1,4 @@
+import { ToolbarIconButton } from "@components/common/ToolbarIconButton";
 import { FlatC4Model } from "@interfaces/flatC4Model";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -5,10 +6,9 @@ import DownloadIcon from "@mui/icons-material/Download";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   AppBar,
-  IconButton,
   Toolbar as MuiToolbar,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import { styled } from "@mui/system";
 import PortalTarget from "@slots/PortalTarget";
@@ -27,15 +27,6 @@ const AppTitle = styled(Typography)(() => ({
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   letterSpacing: "0.5px",
-}));
-
-const ToolbarIconButton = styled(IconButton)(() => ({
-  color: "#fff",
-  background: "rgba(81, 162, 255, 0.1)",
-  backdropFilter: "blur(4px)",
-  marginRight: 8,
-  transition: "all 0.2s ease",
-  "&:hover": { background: "rgba(81, 162, 255, 0.2)" },
 }));
 
 const HiddenInput = styled("input")(() => ({
