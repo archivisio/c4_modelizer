@@ -5,7 +5,8 @@ import { FlatC4Model, useFlatC4Store } from "@store/flatC4Store"
 // @ts-ignore
 if (!global.crypto) global.crypto = { randomUUID: () => Math.random().toString(36).slice(2) }
 
-const systemFactory = (properties: { [key: string]: string }): SystemBlock => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const systemFactory = (properties: { [key: string]: any }): SystemBlock => ({
   id: crypto.randomUUID(),
   name: "",
   description: "",
@@ -17,7 +18,8 @@ const systemFactory = (properties: { [key: string]: string }): SystemBlock => ({
   type: "system",
 })
 
-const containerFactory = (properties: { [key: string]: string }): ContainerBlock => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const containerFactory = (properties: { [key: string]: any }): ContainerBlock => ({
   id: crypto.randomUUID(),
   systemId: "",
   name: "",
@@ -30,7 +32,8 @@ const containerFactory = (properties: { [key: string]: string }): ContainerBlock
   type: "container",
 })
 
-const componentFactory = (properties: { [key: string]: string }): ComponentBlock => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const componentFactory = (properties: { [key: string]: any }): ComponentBlock => ({
   id: crypto.randomUUID(),
   systemId: "",
   containerId: "",
@@ -44,7 +47,8 @@ const componentFactory = (properties: { [key: string]: string }): ComponentBlock
   type: "component",
 })
 
-const codeElementFactory = (properties: { [key: string]: string }): CodeBlock => ({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const codeElementFactory = (properties: { [key: string]: any }): CodeBlock => ({
   id: crypto.randomUUID(),
   systemId: "",
   containerId: "",
