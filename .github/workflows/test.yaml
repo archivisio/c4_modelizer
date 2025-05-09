@@ -1,0 +1,32 @@
+name: tester
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: "test-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm run test:node
