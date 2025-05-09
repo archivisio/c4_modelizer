@@ -103,14 +103,33 @@ export const useFlatC4Store = create<FlatC4State>()(
         }),
 
       updateSystem: (id, data) =>
-        set((state) => ({
-          model: {
-            ...state.model,
-            systems: state.model.systems.map((s) =>
-              s.id === id ? { ...s, ...data } : s
-            ),
-          },
-        })),
+        set((state) => {
+          const updateEntities = <T extends { original?: { id: string }, name: string, systemId: string }>(entities: T[]): T[] => entities.map((entity) => {
+            if (entity.original?.id === id) {
+              const { description, technology, url, name } = data;
+              return { 
+                ...entity, 
+                description, 
+                technology, 
+                url, 
+                name: name ? name : entity.name 
+              };
+            }
+            return { ...entity, systemId: id };
+          });
+
+          return {
+            model: {
+              ...state.model,
+              systems: state.model.systems.map((s) =>
+                s.id === id ? { ...s, ...data } : s
+              ),
+              containers: updateEntities(state.model.containers),
+              components: updateEntities(state.model.components),
+              codeElements: updateEntities(state.model.codeElements),
+            },
+          }
+        }),
 
       removeSystem: (id) =>
         set((state) => {
