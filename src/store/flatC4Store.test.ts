@@ -5,6 +5,62 @@ import { FlatC4Model, useFlatC4Store } from "@store/flatC4Store"
 // @ts-ignore
 if (!global.crypto) global.crypto = { randomUUID: () => Math.random().toString(36).slice(2) }
 
+const systemFactory = (properties: { [key: string]: string }): SystemBlock => ({
+  id: crypto.randomUUID(),
+  name: "",
+  description: "",
+  position: { x: 0, y: 0 },
+  technology: "",
+  url: "",
+  connections: [],
+  ...properties,
+  type: "system",
+})
+
+const containerFactory = (properties: { [key: string]: string }): ContainerBlock => ({
+  id: crypto.randomUUID(),
+  systemId: "",
+  name: "",
+  description: "",
+  position: { x: 0, y: 0 },
+  technology: "",
+  url: "",
+  connections: [],
+  ...properties,
+  type: "container",
+})
+
+const componentFactory = (properties: { [key: string]: string }): ComponentBlock => ({
+  id: crypto.randomUUID(),
+  systemId: "",
+  containerId: "",
+  name: "",
+  description: "",
+  position: { x: 0, y: 0 },
+  technology: "",
+  url: "",
+  connections: [],
+  ...properties,
+  type: "component",
+})
+
+const codeElementFactory = (properties: { [key: string]: string }): CodeBlock => ({
+  id: crypto.randomUUID(),
+  systemId: "",
+  containerId: "",
+  componentId: "",
+  name: "",
+  description: "",
+  position: { x: 0, y: 0 },
+  technology: "",
+  codeType: "class",
+  code: "",
+  url: "",
+  connections: [],
+  ...properties,
+  type: "code",
+})
+
 describe("flatC4Store", () => {
   const reset = () => {
     useFlatC4Store.setState({

@@ -73,6 +73,34 @@ interface FlatC4State {
   setModel: (model: FlatC4Model) => void;
 }
 
+/** Les blocs peuvent porter un champ { original: { id: string } } */
+type WithOriginal = { id: string; original?: { id: string } };
+
+const omitType = <T extends { type?: unknown }>(obj: Partial<T>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { type, ...rest } = obj;
+  return rest as Omit<typeof rest, 'type'>;
+};
+
+
+/** Propage les changements vers toutes les copies d’un original */
+const propagateUpdate = <T extends WithOriginal>(
+  items: T[],
+  originalId: string,
+  changes: Partial<T>,
+): T[] =>
+  items.map(i =>
+    i.original?.id === originalId ? { ...i, ...changes } : i,
+  );
+
+/** Supprime l’original et toutes ses copies */
+const filterOriginalAndCopies = <T extends WithOriginal>(
+  items: T[],
+  originalId: string,
+): T[] =>
+  items.filter(i => i.id !== originalId && i.original?.id !== originalId);
+
+
 export const useFlatC4Store = create<FlatC4State>()(
   persist(
     (set) => ({
@@ -103,55 +131,33 @@ export const useFlatC4Store = create<FlatC4State>()(
         }),
 
       updateSystem: (id, data) =>
-        set((state) => {
-          const updateEntities = <T extends { original?: { id: string }, name: string, systemId: string }>(entities: T[]): T[] => entities.map((entity) => {
-            if (entity.original?.id === id) {
-              const { description, technology, url, name } = data;
-              return { 
-                ...entity, 
-                description, 
-                technology, 
-                url, 
-                name: name ? name : entity.name 
-              };
-            }
-            return { ...entity, systemId: id };
-          });
+        set(state => {
+          const systems = state.model.systems.map(s =>
+            s.id === id ? { ...s, ...data } : s,
+          );
+          const commonChanges = omitType(data);
 
           return {
             model: {
               ...state.model,
-              systems: state.model.systems.map((s) =>
-                s.id === id ? { ...s, ...data } : s
-              ),
-              containers: updateEntities(state.model.containers),
-              components: updateEntities(state.model.components),
-              codeElements: updateEntities(state.model.codeElements),
-            },
-          }
-        }),
-
-      removeSystem: (id) =>
-        set((state) => {
-          const filteredContainers = state.model.containers.filter(c => c.systemId !== id);
-          const filteredComponents = state.model.components.filter(c => !state.model.containers.some(cont => cont.systemId === id && cont.id === c.containerId));
-          const filteredCodeElements = state.model.codeElements.filter(c => !state.model.components.some(comp => comp.systemId === id && comp.id === c.componentId));
-
-          const updatedSystemConnections = state.model.systems.map(s => ({
-            ...s,
-            connections: s.connections.filter(conn => conn.targetId !== id)
-          }));
-
-          return {
-            model: {
-              ...state.model,
-              systems: updatedSystemConnections.filter(s => s.id !== id),
-              containers: filteredContainers,
-              components: filteredComponents,
-              codeElements: filteredCodeElements,
+              systems,
+              containers: propagateUpdate(state.model.containers, id, commonChanges),
+              components: propagateUpdate(state.model.components, id, commonChanges),
+              codeElements: propagateUpdate(state.model.codeElements, id, commonChanges),
             },
           };
         }),
+
+      removeSystem: id =>
+        set(state => ({
+          model: {
+            ...state.model,
+            systems: filterOriginalAndCopies(state.model.systems, id),
+            containers: filterOriginalAndCopies(state.model.containers, id),
+            components: filterOriginalAndCopies(state.model.components, id),
+            codeElements: filterOriginalAndCopies(state.model.codeElements, id),
+          },
+        })),
 
       connectSystems: (fromId, connection) =>
         set((state) => {
