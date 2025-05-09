@@ -1,4 +1,3 @@
-import { COLORS } from '@/data/colors';
 import { createTheme, ThemeOptions } from '@mui/material/styles';
 
 export interface ColorStyle {
@@ -40,27 +39,27 @@ declare module '@mui/material/styles' {
 const themeOptions: ThemeOptions = {
   palette: {
     primary: {
-      main: COLORS.primary.border,
-      light: COLORS.primary.hover,
-      dark: '#0d47a1',
+      main: "#0d47a1",
+      light: "#0d47a1",
+      dark: "#0d47a1",
       contrastText: '#ffffff',
     },
     secondary: {
-      main: COLORS.secondary.border,
-      light: COLORS.secondary.hover,
-      dark: '#00695c',
+      main: "#00695c",
+      light: "#00695c",
+      dark: "#00695c",
       contrastText: '#ffffff',
     },
     info: {
-      main: COLORS.tertiary.border,
-      light: COLORS.tertiary.hover,
-      dark: '#e65100',
+      main: "#e65100",
+      light: "#e65100",
+      dark: "#e65100",
       contrastText: '#ffffff',
     },
     error: {
-      main: COLORS.quaternary.border,
-      light: COLORS.quaternary.hover,
-      dark: '#6a1b9a',
+      main: "#6a1b9a",
+      light: "#6a1b9a",
+      dark: "#6a1b9a",
       contrastText: '#ffffff',
     },
   },

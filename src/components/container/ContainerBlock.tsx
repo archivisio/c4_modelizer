@@ -1,16 +1,17 @@
 import { ContainerBlock as ContainerBlockType, NodeData } from "@/types/c4";
 import C4Block from "@components/common/C4Block";
-import { COLORS } from "@data/colors";
+import { useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";
 import { memo } from "react";
 
 const ContainerBlock: React.FC<NodeData<ContainerBlockType>> = memo(
   ({ data, selected }) => {
+    const theme = useTheme();
     return (
       <C4Block
         item={data}
         onEdit={data.onEdit}
-        colors={COLORS.secondary}
+        colors={theme.c4Colors.container}
         handlePositions={{
           source: [
             Position.Right,
