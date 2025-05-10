@@ -83,6 +83,10 @@ const nodeTypes = {
   code: CodeBlock,
 };
 
+const edgeTypes = {
+  technology: TechnologyEdge
+};
+
 const SelectionPanToggle = ({
   isSelectionMode,
   onToggle,
@@ -183,7 +187,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
       <StyledReactFlow
         nodes={internalNodes}
         edges={preparedEdges}
-        edgeTypes={{ technology: TechnologyEdge }}
+        edgeTypes={edgeTypes}
         onConnect={onConnect}
         onNodesChange={handleNodesChange}
         onNodeDragStop={handleNodeDragStop}

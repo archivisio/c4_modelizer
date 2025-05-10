@@ -21,10 +21,10 @@ export const BlockContainer = styled(Box)(() => ({
 export const StyledCard = styled(Card)<{
   colorstyles: ColorStyle;
   selected: boolean;
-  hasDescription: boolean;
-}>(({ colorstyles, selected, hasDescription }) => ({
+  'data-has-description'?: string;
+}>(({ colorstyles, selected, ...props }) => ({
   width: 200,
-  height: hasDescription ? 120 : 80,
+  height: props['data-has-description'] === 'true' ? 120 : 80,
   borderRadius: 8,
   position: "relative",
   overflow: "hidden",

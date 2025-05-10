@@ -93,7 +93,9 @@ function App() {
 
   const handleCloseReset = () => {
     handleCloseResetDialog();
-    resetButtonRef.current?.focus();
+    setTimeout(() => {
+      resetButtonRef.current?.focus();
+    }, 100);
   };
 
   return (
