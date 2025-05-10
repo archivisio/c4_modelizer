@@ -24,10 +24,35 @@ export function useFlatSearch() {
     const searchValueLower = searchValue.toLowerCase();
     if (!searchValueLower) return [];
 
+    const clonesInCurrentView = new Set<string>();
+    items.forEach((item) => {
+      if (item.original && item.original.id) {
+        let isInCurrentView = false;
+
+        if (viewLevel === 'system') {
+          isInCurrentView = (item as SystemBlock).type === 'system';
+        } else if (viewLevel === 'container' && activeSystem) {
+          isInCurrentView = (item as ContainerBlock).systemId === activeSystem.id;
+        } else if (viewLevel === 'component' && activeContainer) {
+          isInCurrentView = (item as ComponentBlock).containerId === activeContainer.id;
+        } else if (viewLevel === 'code' && activeComponent) {
+          isInCurrentView = (item as CodeBlock).componentId === activeComponent.id;
+        }
+
+        if (isInCurrentView) {
+          clonesInCurrentView.add(item.original.id);
+        }
+      }
+    });
+
     let filteredItems = items.filter((item) => {
       if (item.original) {
         return false;
       }
+      if (clonesInCurrentView.has(item.id)) {
+        return false;
+      }
+
       return item.name.toLowerCase().includes(searchValueLower);
     });
 

@@ -23,6 +23,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDialogs } from "@/contexts/DialogContext";
+import useFlatStore from "@/hooks/useFlatStore";
 import { ViewLevel } from "../types/c4";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
@@ -123,6 +124,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
 }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(true);
   const { setPendingConnection } = useDialogs();
+  const { getBlockById } = useFlatStore();
   const reactFlowInstance = useReactFlow();
 
   const toggleInteractionMode = useCallback(() => {
@@ -182,9 +184,25 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [onEdgeClick]
   );
 
-  const isValidConnection = (connectionState: Edge | Connection) => {
-    return connectionState.source !== connectionState.target;
-  };
+  const isValidConnection = useCallback(
+    (connectionState: Edge | Connection) => {
+      if (connectionState.source === connectionState.target) {
+        return false;
+      }
+
+      const sourceNode = getBlockById(connectionState.source);
+      if (
+        sourceNode?.connections
+          ?.map((conn) => conn.targetId)
+          .includes(connectionState.target)
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+    [getBlockById]
+  );
 
   return (
     <FlowCanvasContainer>
@@ -212,9 +230,11 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         isValidConnection={(connectionState) =>
           isValidConnection(connectionState)
         }
-        onConnectEnd={(event, connectionState) =>
-          setPendingConnection({ event, connectionState })
-        }
+        onConnectEnd={(event, connectionState) => {
+          if (connectionState.fromNode && !connectionState.toNode) {
+            setPendingConnection({ event, connectionState });
+          }
+        }}
       >
         <StyledBackground variant={BackgroundVariant.Dots} gap={20} size={1} />
         <MiniMap zoomable pannable />
