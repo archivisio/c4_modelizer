@@ -83,6 +83,13 @@ export function useFlatNodes() {
     }
   }, [model.viewLevel, systemNodes, containerNodes, componentNodes, codeNodes]);
 
+  const getNodeById = useCallback(
+    (id: string) => {
+      return [...systemNodes, ...containerNodes, ...componentNodes, ...codeNodes].find((node) => node.id === id);
+    },
+    [systemNodes, containerNodes, componentNodes, codeNodes]
+  );
+
   const handleNodePositionChange = useCallback(
     (id: string, position: { x: number; y: number }) => {
       if (model.viewLevel === 'system') {
@@ -110,6 +117,7 @@ export function useFlatNodes() {
     componentNodes,
     codeNodes,
     currentNodes,
-    handleNodePositionChange
+    handleNodePositionChange,
+    getNodeById
   };
 }

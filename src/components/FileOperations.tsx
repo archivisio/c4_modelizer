@@ -13,7 +13,7 @@ export const handleExportModel = (): void => {
 
 export const handleImportModel = (
   file: File,
-  setImportError: (error: string | null) => void
+  setNotificationError: (error: string | null) => void
 ): void => {
   const reader = new FileReader();
   reader.onload = (evt) => {
@@ -21,12 +21,12 @@ export const handleImportModel = (
       const json = evt.target?.result as string;
       const success = importModel(json);
       if (success) {
-        setImportError(null);
+        setNotificationError(null);
       } else {
-        setImportError("Fichier JSON invalide.");
+        setNotificationError("Invalid JSON file.");
       }
     } catch {
-      setImportError("Erreur lors de la lecture du fichier.");
+      setNotificationError("Error reading file.");
     }
   };
   reader.readAsText(file);

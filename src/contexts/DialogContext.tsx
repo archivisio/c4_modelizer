@@ -22,7 +22,7 @@ export interface DialogContextType {
   connectionDialogOpen: boolean;
   editingConnection: ConnectionInfo | null;
   openConfirmReset: boolean;
-  importError: string | null;
+  notificationError: string | null;
   editingElement: EditingElement;
   pendingConnection: { event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null;
 
@@ -32,7 +32,7 @@ export interface DialogContextType {
   setConnectionDialogOpen: (open: boolean) => void;
   setEditingConnection: (connection: ConnectionInfo | null) => void;
   setOpenConfirmReset: (open: boolean) => void;
-  setImportError: (error: string | null) => void;
+  setNotificationError: (error: string | null) => void;
   setPendingConnection: (connection: { event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null) => void;
 
   openEditDialog: (id: string, isContainer?: boolean) => void;

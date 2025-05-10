@@ -1,6 +1,6 @@
 import { useFlatC4Store } from '@store/flatC4Store';
-import { ViewLevel } from '../types/c4';
 import { useCallback, useEffect } from 'react';
+import { ViewLevel } from '../types/c4';
 
 interface NavigationState {
   level: ViewLevel;
@@ -38,6 +38,12 @@ export const useFlatNavigation = () => {
 
     return url;
   }, []);
+
+  const navigateToView = useCallback((viewLevel: ViewLevel, systemId?: string, containerId?: string, componentId?: string) => {
+    const state: NavigationState = { level: viewLevel, systemId, containerId, componentId };
+    updateActiveStates(state);
+    window.history.pushState(state, '', buildUrl(state));
+  }, [updateActiveStates, buildUrl]);
 
   const navigateToSystem = useCallback(() => {
     const state: NavigationState = { level: 'system' };
@@ -129,6 +135,7 @@ export const useFlatNavigation = () => {
     navigateToSystem,
     navigateToContainer,
     navigateToComponent,
-    navigateToCode
+    navigateToCode,
+    navigateToView
   };
 };

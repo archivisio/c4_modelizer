@@ -1,6 +1,7 @@
 import SelectionIcon from "@mui/icons-material/HighlightAlt";
 import PanToolIcon from "@mui/icons-material/PanTool";
 import { Box } from "@mui/material";
+import { styled } from "@mui/system";
 import {
   Background,
   BackgroundVariant,
@@ -20,31 +21,31 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { styled } from "@mui/system";
 
+import { useDialogs } from "@/contexts/DialogContext";
+import useFlatStore from "@/hooks/useFlatStore";
+import { ViewLevel } from "../types/c4";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
 import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
-import { useDialogs } from "@/contexts/DialogContext";
-import { ViewLevel } from "../types/c4";
 
 const FlowCanvasContainer = styled(Box)(() => ({
   width: "100vw",
   height: "calc(100vh - 100px)",
-  backgroundColor: "#0a1929"
+  backgroundColor: "#0a1929",
 }));
 
 const StyledReactFlow = styled(ReactFlow)(() => ({
   width: "100%",
-  height: "100%"
+  height: "100%",
 }));
 
 const StyledBackground = styled(Background)(() => ({
   "& .react-flow__background-dots": {
-    color: "rgba(81, 162, 255, 0.2)"
-  }
+    color: "rgba(81, 162, 255, 0.2)",
+  },
 }));
 
 const defaultEdgeStyle = {
@@ -84,7 +85,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  technology: TechnologyEdge
+  technology: TechnologyEdge,
 };
 
 const SelectionPanToggle = ({
@@ -117,12 +118,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   edges,
   onConnect,
   onNodePositionChange,
-  viewLevel,
   onNodeDoubleClick,
   onEdgeClick,
 }) => {
   const [isSelectionMode, setIsSelectionMode] = useState(true);
   const { setPendingConnection } = useDialogs();
+  const { getBlockById } = useFlatStore();
   const reactFlowInstance = useReactFlow();
 
   const toggleInteractionMode = useCallback(() => {
@@ -149,12 +150,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
 
-      if (onNodeDoubleClick && viewLevel !== "code") {
+      if (onNodeDoubleClick) {
         onNodeDoubleClick(node.id);
         reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
       }
     },
-    [onNodeDoubleClick, viewLevel, reactFlowInstance]
+    [onNodeDoubleClick, reactFlowInstance]
   );
 
   const defaultEdgeOptions = defaultEdgeStyle;
@@ -182,6 +183,26 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [onEdgeClick]
   );
 
+  const isValidConnection = useCallback(
+    (connectionState: Edge | Connection) => {
+      if (connectionState.source === connectionState.target) {
+        return false;
+      }
+
+      const sourceNode = getBlockById(connectionState.source);
+      if (
+        sourceNode?.connections
+          ?.map((conn) => conn.targetId)
+          .includes(connectionState.target)
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+    [getBlockById]
+  );
+
   return (
     <FlowCanvasContainer>
       <StyledReactFlow
@@ -205,13 +226,16 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         zoomOnPinch={true}
         panOnScroll={true}
         panOnScrollMode={PanOnScrollMode.Free}
-        onConnectEnd={(event, connectionState) => setPendingConnection({ event, connectionState })}
+        isValidConnection={(connectionState) =>
+          isValidConnection(connectionState)
+        }
+        onConnectEnd={(event, connectionState) => {
+          if (connectionState.fromNode && !connectionState.toNode) {
+            setPendingConnection({ event, connectionState });
+          }
+        }}
       >
-        <StyledBackground
-          variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1}
-        />
+        <StyledBackground variant={BackgroundVariant.Dots} gap={20} size={1} />
         <MiniMap zoomable pannable />
         <Controls>
           <SelectionPanToggle
