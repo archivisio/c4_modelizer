@@ -23,10 +23,10 @@ export const handleImportModel = (
       if (success) {
         setNotificationError(null);
       } else {
-        setNotificationError("Fichier JSON invalide.");
+        setNotificationError("Invalid JSON file.");
       }
     } catch {
-      setNotificationError("Erreur lors de la lecture du fichier.");
+      setNotificationError("Error reading file.");
     }
   };
   reader.readAsText(file);
