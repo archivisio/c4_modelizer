@@ -1,6 +1,7 @@
 import SelectionIcon from "@mui/icons-material/HighlightAlt";
 import PanToolIcon from "@mui/icons-material/PanTool";
 import { Box } from "@mui/material";
+import { styled } from "@mui/system";
 import {
   Background,
   BackgroundVariant,
@@ -20,31 +21,30 @@ import {
 } from "@xyflow/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { styled } from "@mui/system";
 
+import { useDialogs } from "@/contexts/DialogContext";
+import { ViewLevel } from "../types/c4";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
 import ContainerBlock from "./container/ContainerBlock";
 import SystemBlock from "./system/SystemBlock";
 import TechnologyEdge from "./TechnologyEdge";
-import { useDialogs } from "@/contexts/DialogContext";
-import { ViewLevel } from "../types/c4";
 
 const FlowCanvasContainer = styled(Box)(() => ({
   width: "100vw",
   height: "calc(100vh - 100px)",
-  backgroundColor: "#0a1929"
+  backgroundColor: "#0a1929",
 }));
 
 const StyledReactFlow = styled(ReactFlow)(() => ({
   width: "100%",
-  height: "100%"
+  height: "100%",
 }));
 
 const StyledBackground = styled(Background)(() => ({
   "& .react-flow__background-dots": {
-    color: "rgba(81, 162, 255, 0.2)"
-  }
+    color: "rgba(81, 162, 255, 0.2)",
+  },
 }));
 
 const defaultEdgeStyle = {
@@ -84,7 +84,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  technology: TechnologyEdge
+  technology: TechnologyEdge,
 };
 
 const SelectionPanToggle = ({
@@ -182,6 +182,10 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     [onEdgeClick]
   );
 
+  const isValidConnection = (connectionState: Edge | Connection) => {
+    return connectionState.source !== connectionState.target;
+  };
+
   return (
     <FlowCanvasContainer>
       <StyledReactFlow
@@ -205,13 +209,14 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         zoomOnPinch={true}
         panOnScroll={true}
         panOnScrollMode={PanOnScrollMode.Free}
-        onConnectEnd={(event, connectionState) => setPendingConnection({ event, connectionState })}
+        isValidConnection={(connectionState) =>
+          isValidConnection(connectionState)
+        }
+        onConnectEnd={(event, connectionState) =>
+          setPendingConnection({ event, connectionState })
+        }
       >
-        <StyledBackground
-          variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1}
-        />
+        <StyledBackground variant={BackgroundVariant.Dots} gap={20} size={1} />
         <MiniMap zoomable pannable />
         <Controls>
           <SelectionPanToggle

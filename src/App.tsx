@@ -39,9 +39,9 @@ function App() {
     connectionDialogOpen,
     editingConnection,
     openConfirmReset,
-    importError,
+    notificationError,
     editingElement,
-    setImportError,
+    setNotificationError,
     closeEditDialog,
     closeConnectionDialog,
     handleOpenResetDialog,
@@ -88,7 +88,7 @@ function App() {
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    handleFileInputChange(e, setImportError);
+    handleFileInputChange(e, setNotificationError);
   };
 
   const handleCloseReset = () => {
@@ -243,7 +243,7 @@ function App() {
         )}
 
         <SearchNodeBar />
-        <ErrorNotification message={importError} />
+        <ErrorNotification message={notificationError} />
 
         {connectionDialogOpen && (
           <ConnectionEditDialog

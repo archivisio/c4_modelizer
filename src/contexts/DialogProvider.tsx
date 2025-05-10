@@ -15,7 +15,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [editingConnection, setEditingConnection] =
     useState<ConnectionInfo | null>(null);
   const [openConfirmReset, setOpenConfirmReset] = useState(false);
-  const [importError, setImportError] = useState<string | null>(null);
+  const [notificationError, setNotificationError] = useState<string | null>(null);
   const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
 
   const editingElement = editId
@@ -59,7 +59,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     connectionDialogOpen,
     editingConnection,
     openConfirmReset,
-    importError,
+    notificationError,
     editingElement,
     pendingConnection,
     
@@ -69,7 +69,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     setConnectionDialogOpen,
     setEditingConnection,
     setOpenConfirmReset,
-    setImportError,
+    setNotificationError,
     setPendingConnection,
 
     openEditDialog,
