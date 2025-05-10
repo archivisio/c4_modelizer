@@ -118,7 +118,6 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   edges,
   onConnect,
   onNodePositionChange,
-  viewLevel,
   onNodeDoubleClick,
   onEdgeClick,
 }) => {
@@ -151,12 +150,12 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
     (event: React.MouseEvent, node: Node) => {
       event.preventDefault();
 
-      if (onNodeDoubleClick && viewLevel !== "code") {
+      if (onNodeDoubleClick) {
         onNodeDoubleClick(node.id);
         reactFlowInstance.fitView({ padding: 0.2, includeHiddenNodes: false });
       }
     },
-    [onNodeDoubleClick, viewLevel, reactFlowInstance]
+    [onNodeDoubleClick, reactFlowInstance]
   );
 
   const defaultEdgeOptions = defaultEdgeStyle;

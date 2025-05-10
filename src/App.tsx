@@ -8,19 +8,20 @@ import ErrorNotification from "@components/ErrorNotification";
 import FlowCanvas from "@components/FlowCanvas";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
+import { useFileOperations } from "@hooks/useFileOperations";
 import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
 import { useFlatEdges } from "@hooks/useFlatEdges";
-import { useFileOperations } from "@hooks/useFileOperations";
 import { useFlatModelActions } from "@hooks/useFlatModelActions";
 import { useFlatNavigation } from "@hooks/useFlatNavigation";
 import { useFlatNodes } from "@hooks/useFlatNodes";
 import { Box } from "@mui/material";
+import FooterSlot from "@slots/FooterSlot";
 import NavBarSlot from "@slots/NavBarSlot";
 import ToolbarSlot from "@slots/ToolbarSlot";
-import FooterSlot from "@slots/FooterSlot";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
+import useFlatStore from "./hooks/useFlatStore";
 import "./i18n";
 import {
   CodeBlock,
@@ -31,8 +32,12 @@ import {
 
 function App() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);
-  const { navigateToContainer, navigateToComponent, navigateToCode } =
-    useFlatNavigation();
+  const {
+    navigateToContainer,
+    navigateToComponent,
+    navigateToCode,
+    navigateToView,
+  } = useFlatNavigation();
   const {
     dialogOpen,
     isEditingContainer,
@@ -52,6 +57,7 @@ function App() {
     useFlatActiveElements();
 
   const { currentNodes, handleNodePositionChange } = useFlatNodes();
+  const { getBlockById } = useFlatStore();
 
   const {
     edges,
@@ -71,7 +77,34 @@ function App() {
 
   const { handleExport, handleFileInputChange } = useFileOperations();
 
+  const handleCloneDoubleClick = (
+    block: SystemBlock | ContainerBlock | ComponentBlock | CodeBlock
+  ) => {
+    const originalId = block.original?.id;
+    if (!originalId) return;
+
+    const originalBlock = getBlockById(originalId);
+    if (originalBlock?.type === "system") {
+      navigateToView("container", originalBlock.id);
+    } else if (originalBlock?.type === "container") {
+      const containerBlock = originalBlock as ContainerBlock;
+      navigateToView("component", containerBlock.systemId, containerBlock.id);
+    } else if (originalBlock?.type === "component") {
+      const componentBlock = originalBlock as ComponentBlock;
+      navigateToView(
+        "code",
+        componentBlock.systemId,
+        componentBlock.containerId,
+        componentBlock.id
+      );
+    }
+  };
+
   const handleNodeDoubleClick = (nodeId: string) => {
+    const block = getBlockById(nodeId);
+    if (block?.original) {
+      return handleCloneDoubleClick(block);
+    }
     if (model.viewLevel === "system") {
       navigateToContainer(nodeId);
     } else if (model.viewLevel === "container" && model.activeSystemId) {
