@@ -11,24 +11,34 @@ const NavBarContainer = styled(Box)(() => ({
   padding: 12,
   backgroundColor: "#132f4c",
   borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
-  backdropFilter: "blur(8px)"
+  backdropFilter: "blur(8px)",
 }));
 
 const StyledNavigateNextIcon = styled(NavigateNextIcon)(() => ({
   color: "#51a2ff",
-  fontSize: "small"
+  fontSize: "small",
 }));
 
-const NavLink = styled(Link)<{ active: boolean }>(({ active }) => ({
+const StyledLink = styled(Link)(() => ({
   display: "flex",
   alignItems: "center",
   fontWeight: 500,
   transition: "all 0.2s ease",
-  color: active ? "#51a2ff" : "rgba(255, 255, 255, 0.7)",
-  "&:hover": { 
-    color: "#51a2ff" 
-  }
+  color: "rgba(255, 255, 255, 0.7)",
+  "&:hover": {
+    color: "#51a2ff",
+  },
+  "&.active": {
+    color: "#51a2ff",
+  },
 }));
+
+const NavLink = ({
+  isActive,
+  ...props
+}: { isActive: boolean } & React.ComponentProps<typeof StyledLink>) => (
+  <StyledLink className={isActive ? "active" : ""} {...props} />
+);
 
 export interface NavBarProps {
   systemName?: string;
@@ -82,7 +92,7 @@ const NavBar: React.FC<NavBarProps> = ({
       >
         <NavLink
           underline="hover"
-          active={model.viewLevel === "system"}
+          isActive={model.viewLevel === "system"}
           href="#"
           onClick={handleSystemsClick}
         >
@@ -95,7 +105,7 @@ const NavBar: React.FC<NavBarProps> = ({
           systemName && (
             <NavLink
               underline="hover"
-              active={model.viewLevel === "container"}
+              isActive={model.viewLevel === "container"}
               href="#"
               onClick={handleContainersClick}
             >
@@ -107,7 +117,7 @@ const NavBar: React.FC<NavBarProps> = ({
           containerName && (
             <NavLink
               underline="hover"
-              active={model.viewLevel === "component"}
+              isActive={model.viewLevel === "component"}
               href="#"
               onClick={handleComponentsClick}
             >
@@ -118,7 +128,7 @@ const NavBar: React.FC<NavBarProps> = ({
         {model.viewLevel === "code" && componentName && (
           <NavLink
             underline="hover"
-            active={true}
+            isActive={true}
             href="#"
             onClick={(e) => {
               e.preventDefault();

@@ -98,7 +98,7 @@ const C4Block: React.FC<C4BlockProps> = ({
         <StyledCard
           colorstyles={colorStyles}
           selected={selected}
-          hasDescription={!!description}
+          data-has-description={description ? "true" : "false"}
           className="tech-card"
         >
           <StyledCardContent>
