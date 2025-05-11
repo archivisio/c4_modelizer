@@ -1,6 +1,6 @@
 import { ConnectionData } from '@interfaces/connection';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, subscribeWithSelector } from 'zustand/middleware';
 import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
 
 type C4EntityType = ViewLevel;
@@ -102,11 +102,12 @@ const filterOriginalAndCopies = <T extends WithOriginal>(
 
 
 export const useFlatC4Store = create<FlatC4State>()(
-  persist(
-    (set) => ({
-      model: {
-        systems: [],
-        containers: [],
+  subscribeWithSelector(
+    persist(
+      (set) => ({
+        model: {
+          systems: [],
+          containers: [],
         components: [],
         codeElements: [],
         viewLevel: 'system'
@@ -579,7 +580,7 @@ export const useFlatC4Store = create<FlatC4State>()(
       name: 'c4modelizer_flat_store',
     }
   )
-);
+));
 
 // Hooks
 export const useActiveEntities = () => {
