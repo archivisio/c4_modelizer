@@ -59,7 +59,7 @@ export function useFlatSearch() {
     filteredItems = filteredItems.filter((item) => {
       if (viewLevel === 'system') {
         const systemItem = item as SystemBlock;
-        return systemItem.type === 'system';
+        return systemItem.type !== 'system';
       }
       if (viewLevel === 'container' && activeSystem) {
         const containerItem = item as ContainerBlock;
