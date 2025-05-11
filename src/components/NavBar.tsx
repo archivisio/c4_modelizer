@@ -13,6 +13,7 @@ const NavBarContainer = styled(Box)(() => ({
   backgroundColor: "#132f4c",
   borderBottom: "1px solid rgba(81, 162, 255, 0.2)",
   backdropFilter: "blur(8px)",
+  display: "flex",
 }));
 
 const StyledNavigateNextIcon = styled(NavigateNextIcon)(() => ({
