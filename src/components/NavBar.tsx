@@ -1,3 +1,4 @@
+import PortalTarget from "@/slots/PortalTarget";
 import { useFlatNavigation } from "@hooks/useFlatNavigation";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
@@ -85,6 +86,7 @@ const NavBar: React.FC<NavBarProps> = ({
 
   return (
     <NavBarContainer>
+      <PortalTarget id="navbar-before" />
       <Breadcrumbs
         separator={<StyledNavigateNextIcon />}
         aria-label="breadcrumb"
@@ -149,6 +151,7 @@ const NavBar: React.FC<NavBarProps> = ({
           </NavLink>
         )}
       </Breadcrumbs>
+      <PortalTarget id="navbar-after" />
     </NavBarContainer>
   );
 };

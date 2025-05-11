@@ -186,8 +186,10 @@ registry.registerPortal('global-overlay', <NewOverlay />)  // replace
 | `toolbar:main`   | Main action toolbar       | `Toolbar`        |
 | `navbar:main`    | Breadcrumb / nav bar      | `NavBar`         |
 | `global-overlay` | Full‑screen portal target | *(empty)*        |
-| `toolbar:actions-before` | Actions before the main toolbar | *(empty)*        |
-| `toolbar:actions-after` | Actions after the main toolbar | *(empty)*        |
+| `toolbar:actions-before` | Portal before the main toolbar | *(empty)*        |
+| `toolbar:actions-after` | Portal after the main toolbar | *(empty)*        |
+| `navbar:before` | Portal before the main navbar | *(empty)*        |
+| `navbar:after` | Portal after the main navbar | *(empty)*        |
 
 *(Need another slot? Open an issue or PR!)*
 
