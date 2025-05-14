@@ -7,7 +7,7 @@ const defaultPlugins = ['@archivisio/default', '@archivisio/simon-brown-credit']
 export async function loadPlugins() {
   registry.registerMethod('useStore', () => useFlatC4Store)
 
-  const wanted = import.meta.env.VITE_PLUGINS ? (import.meta.env.VITE_PLUGINS ?? '').split(',').filter(Boolean) : defaultPlugins
+  const wanted = process.env.VITE_PLUGINS ? (process.env.VITE_PLUGINS ?? '').split(',').filter(Boolean) : defaultPlugins
 
   await Promise.all(
     wanted.map(async (name: string) => {

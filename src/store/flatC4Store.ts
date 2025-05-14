@@ -575,7 +575,7 @@ const createStore: StateCreator<FlatC4State> = (set) => ({
 })
 
 // Check if storage is active
-const activeStorage = import.meta.env.VITE_STORAGE_ACTIVE !== 'false'
+const activeStorage = process.env.VITE_STORAGE_ACTIVE !== 'false'
 
 // Create the store with the middlewares
 const createFlatC4Store = () => {
