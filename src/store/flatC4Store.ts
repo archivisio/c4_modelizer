@@ -1,6 +1,7 @@
 import { ConnectionData } from '@interfaces/connection';
 import { create, StateCreator } from 'zustand';
-import { persist, subscribeWithSelector } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
+import { subscribeWithSelector } from 'zustand/middleware';
 import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
 
 type C4EntityType = ViewLevel;
@@ -73,7 +74,7 @@ interface FlatC4State {
   setModel: (model: FlatC4Model) => void;
 }
 
-/** Les blocs peuvent porter un champ { original: { id: string } } */
+/** Blocs can have an { original: { id: string } } field */
 type WithOriginal = { id: string; original?: { id: string } };
 
 const omitType = <T extends { type?: unknown }>(obj: Partial<T>) => {
@@ -83,7 +84,7 @@ const omitType = <T extends { type?: unknown }>(obj: Partial<T>) => {
 };
 
 
-/** Propage les changements vers toutes les copies d’un original */
+// Propagate changes to all copies of an original
 const propagateUpdate = <T extends WithOriginal>(
   items: T[],
   originalId: string,
@@ -93,13 +94,14 @@ const propagateUpdate = <T extends WithOriginal>(
     i.original?.id === originalId ? { ...i, ...changes } : i,
   );
 
-/** Supprime l’original et toutes ses copies */
+// Remove the original and all its copies
 const filterOriginalAndCopies = <T extends WithOriginal>(
   items: T[],
   originalId: string,
 ): T[] =>
   items.filter(i => i.id !== originalId && i.original?.id !== originalId);
 
+// Create the store
 const createStore: StateCreator<FlatC4State> = (set) => ({
   model: {
     systems: [],
@@ -573,18 +575,22 @@ const createStore: StateCreator<FlatC4State> = (set) => ({
   setModel: (model) => set(() => ({ model })),
 })
 
-const persistStore = persist(
-  createStore,
-  {
-    name: 'c4modelizer',
-  }
-)
-
+// Check if storage is active
 const activeStorage = import.meta.env.VITE_STORAGE_ACTIVE !== 'false'
-const store = activeStorage ? persistStore : createStore
 
-export const useFlatC4Store = create<FlatC4State>()(
-  subscribeWithSelector(store));
+// Create the store with the middlewares
+const createFlatC4Store = () => {
+  if (activeStorage) {
+    return create<FlatC4State>()(persist(
+      subscribeWithSelector(createStore),
+      { name: 'c4modelizer' }
+    ));
+  } else {
+    return create<FlatC4State>()(subscribeWithSelector(createStore));
+  }
+};
+
+export const useFlatC4Store = createFlatC4Store();
 
 // Hooks
 export const useActiveEntities = () => {
