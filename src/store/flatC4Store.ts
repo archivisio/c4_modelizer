@@ -1,7 +1,6 @@
 import { ConnectionData } from '@interfaces/connection';
 import { create, StateCreator } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { subscribeWithSelector } from 'zustand/middleware';
+import { persist, subscribeWithSelector } from 'zustand/middleware';
 import { CodeBlock, ComponentBlock, ContainerBlock, SystemBlock, ViewLevel } from '../types/c4';
 
 type C4EntityType = ViewLevel;
