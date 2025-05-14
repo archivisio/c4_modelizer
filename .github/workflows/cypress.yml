@@ -14,6 +14,10 @@ concurrency:
   group: "cypress-${{ github.ref }}"
   cancel-in-progress: true
 
+env:
+  VITE_STORAGE_ACTIVE: true
+  VITE_PLUGINS: "@archivisio/defaul,@archivisio/cross-level-connections,@archivisio/simon-brown-credit"
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -30,11 +34,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install server
+        run: npm install -g serve
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
-          start: npm run dev
+          start: serve -l 5173 -s dist
           command: npm run test:ci
           wait-on: 'http://localhost:5173'
           browser: chrome
