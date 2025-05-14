@@ -24,7 +24,10 @@ export function useFlatModelActions() {
   const { t } = useTranslation();
 
   const resetStore = useCallback(() => {
-    useFlatC4Store.persist.clearStorage();
+    if (process.env.VITE_STORAGE_ACTIVE !== 'false') {
+      // @ts-expect-error persist is defined if storage is active
+      useFlatC4Store.persist.clearStorage();
+    }
     setModel({
       viewLevel: 'system',
       systems: [],
