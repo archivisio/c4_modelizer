@@ -30,11 +30,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install server
+        run: npm install -g serve
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
-          start: npm run dev
+          start: serve -l 5173 -s dist
           wait-on: 'http://localhost:5173'
           browser: chrome
           record: false
