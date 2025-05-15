@@ -63,7 +63,7 @@ const defaultEdgeStyle = {
     color: "#51a2ff",
   },
   style: {
-    strokeWidth: 2.5,
+    strokeWidth: 1.5,
     stroke: "#51a2ff",
     opacity: 0.8,
     filter: "drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))",
