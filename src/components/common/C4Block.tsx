@@ -38,8 +38,8 @@ export interface C4BlockProps {
 const createHandleStyle = (colorStyles: ColorStyle, isSource = false) => ({
   background: colorStyles.border,
   border: `2px solid ${colorStyles.border}`,
-  width: isSource ? 10 : 8,
-  height: isSource ? 10 : 8,
+  width: 6,
+  height: 6,
   ...(isSource && { boxShadow: `0 0 5px ${colorStyles.border}` }),
 });
 

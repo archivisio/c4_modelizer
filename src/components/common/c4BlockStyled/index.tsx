@@ -23,7 +23,7 @@ export const StyledCard = styled(Card)<{
   selected: boolean;
   'data-has-description'?: string;
 }>(({ colorstyles, selected, ...props }) => ({
-  width: 200,
+  width: 250,
   height: props['data-has-description'] === 'true' ? 120 : 80,
   borderRadius: 8,
   position: "relative",
@@ -112,7 +112,7 @@ export const ActionIconButton = styled(IconButton)<{ colorstyles: ColorStyle }>(
 );
 
 export const DescriptionText = styled(Typography)(() => ({
-  marginTop: 12,
+  marginTop: 15,
   color: "rgba(255,255,255,0.8)",
   backgroundColor: "rgba(0,0,0,0.2)",
   padding: 8,
