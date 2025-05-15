@@ -1,5 +1,5 @@
 import { ColorStyle } from "@/theme/theme";
-import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
+import { Box, Card, CardContent, IconButton, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 export const hexToRgb = (hex: string): string => {
@@ -63,6 +63,7 @@ export const TitleContainer = styled(Box)(() => ({
   alignItems: "center",
   gap: 8,
   minWidth: 0,
+  cursor: "text",
 }));
 
 export const BlockTitle = styled(Typography)(() => ({
@@ -73,6 +74,27 @@ export const BlockTitle = styled(Typography)(() => ({
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   maxWidth: "130px",
+}));
+
+export const EditTitleInput = styled(TextField)(() => ({
+  width: "100%",
+  height: "30px",
+  backgroundColor: "rgba(0,0,0,0.2)",
+  color: "#fff",
+  border: "none",
+  outline: "none",
+  '&:focus': {
+    outline: "none",
+  },
+  '&:focus-visible': {
+    outline: "none",
+  },
+  '&:hover': {
+    outline: "none",
+  },
+  '&:active': {
+    outline: "none",
+  },
 }));
 
 export const ActionsContainer = styled(Box)(() => ({
