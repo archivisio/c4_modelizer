@@ -1,13 +1,13 @@
 import { BaseBlock } from "@/types/c4";
 import TechnologyIcon from "@components/TechnologyIcon";
+import { styled } from "@mui/system";
 import {
   BaseEdge,
   EdgeLabelRenderer,
   getBezierPath,
-  type EdgeProps,
+  type EdgeProps
 } from "@xyflow/react";
 import React from "react";
-import { styled } from "@mui/system";
 
 const ICON_SIZE = 18;
 
@@ -39,11 +39,8 @@ const EdgeLabel = styled('span')(() => ({
   border: "1px solid #eee"
 }));
 
-const createEdgeStyle = (style: React.CSSProperties | undefined, isBidirectional: boolean, id: string) => ({
+const createEdgeStyle = (style: React.CSSProperties | undefined, isBidirectional: boolean) => ({
   ...style,
-  markerStart: isBidirectional
-    ? `url(#bidirectional-marker-${id})`
-    : undefined,
   animation: isBidirectional ? "none" : style?.animation,
 });
 
@@ -73,6 +70,7 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
   targetPosition,
   style,
   markerEnd,
+  markerStart,
   ...props
 }) => {
   const isBidirectional = props.data?.bidirectional === true;
@@ -109,32 +107,12 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
 
   return (
     <>
-      {isBidirectional && (
-        <svg>
-          <defs>
-            <marker
-              id={`bidirectional-marker-${id}`}
-              markerWidth="8"
-              markerHeight="8"
-              refX="0"
-              refY="4"
-              orient="auto"
-            >
-              <polyline
-                points="0,0 0,8 8,4 0,0"
-                fill="#51a2ff"
-                transform="translate(8, 0) scale(-1, 1)"
-              />
-            </marker>
-          </defs>
-        </svg>
-      )}
-
       <BaseEdge
         id={id}
         path={edgePath}
+        markerStart={isBidirectional ? markerStart : undefined}
         markerEnd={markerEnd}
-        style={createEdgeStyle(style, isBidirectional, id)}
+        style={createEdgeStyle(style, isBidirectional)}
       />
       <EdgeLabelRenderer>
         <EdgeLabelContainer

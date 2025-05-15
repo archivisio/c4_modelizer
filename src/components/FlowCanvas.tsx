@@ -56,6 +56,12 @@ const defaultEdgeStyle = {
     height: 18,
     color: "#51a2ff",
   },
+  markerStart: {
+    type: MarkerType.ArrowClosed,
+    width: 18,
+    height: 18,
+    color: "#51a2ff",
+  },
   style: {
     strokeWidth: 2.5,
     stroke: "#51a2ff",
