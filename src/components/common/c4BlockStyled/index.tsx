@@ -24,7 +24,7 @@ export const StyledCard = styled(Card)<{
   'data-has-description'?: string;
 }>(({ colorstyles, selected, ...props }) => ({
   width: 250,
-  height: props['data-has-description'] === 'true' ? 120 : 80,
+  height: props['data-has-description'] === 'true' ? 120 : 60,
   borderRadius: 8,
   position: "relative",
   overflow: "hidden",
@@ -66,7 +66,7 @@ export const TitleContainer = styled(Box)(() => ({
   cursor: "text",
 }));
 
-export const BlockTitle = styled(Typography)(() => ({
+export const BlockTitle = styled(Box)(() => ({
   fontWeight: "bold",
   color: "#fff",
   textShadow: "0 0 10px rgba(255,255,255,0.3)",
@@ -78,23 +78,28 @@ export const BlockTitle = styled(Typography)(() => ({
 
 export const EditTitleInput = styled(TextField)(() => ({
   width: "100%",
-  height: "30px",
-  backgroundColor: "rgba(0,0,0,0.2)",
-  color: "#fff",
-  border: "none",
-  outline: "none",
-  '&:focus': {
-    outline: "none",
+  '& .MuiInputBase-root': {
+    backgroundColor: 'rgba(0,0,0,0.15)',
+    borderRadius: '4px',
+    border: '1px solid rgba(255,255,255,0.1)',
+    transition: 'all 0.2s ease',
+    overflow: 'hidden',
+    '&:hover, &.Mui-focused': {
+      backgroundColor: 'rgba(0,0,0,0.25)',
+      border: '1px solid rgba(255,255,255,0.2)',
+      boxShadow: '0 0 8px rgba(255,255,255,0.1)'
+    }
   },
-  '&:focus-visible': {
-    outline: "none",
+  '& .MuiInputBase-input': {
+    padding: '2px',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    textShadow: '0 0 10px rgba(255,255,255,0.3)'
   },
-  '&:hover': {
-    outline: "none",
-  },
-  '&:active': {
-    outline: "none",
-  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    border: 'none'
+  }
 }));
 
 export const ActionsContainer = styled(Box)(() => ({

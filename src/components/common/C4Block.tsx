@@ -4,7 +4,7 @@ import { ColorStyle } from "@/theme/theme";
 import { BaseBlock } from "@/types/c4";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Tooltip, useTheme } from "@mui/material";
+import { Tooltip, Typography, useTheme } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -58,7 +58,7 @@ const C4Block: React.FC<C4BlockProps> = ({
   const { technology, name, description, url } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const [isEditing, setIsEditing] = useState(false);
-   const { handleElementSave } = useFlatModelActions();
+  const { handleElementSave } = useFlatModelActions();
   const [title, setTitle] = useState(name);
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
@@ -119,36 +119,38 @@ const C4Block: React.FC<C4BlockProps> = ({
                     size={24}
                   />
                 )}
-                <BlockTitle
-                  variant="subtitle1"
-                  onClick={() => setIsEditing(true)}
-                >
-                  {
-                    isEditing || title.length === 0 ? (
-                      <EditTitleInput
-                        type="text"
-                        value={title}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleElementSave(item.id, { ...item, name: title });
-                            setIsEditing(false)
-                          }
-                          if (e.key === "Escape") {
-                            setTitle(name)
-                            setIsEditing(false)
-                          }
-                        }}
-                        onChange={(e) => onTitleChange(e.target.value)}
-                        onBlur={() => {
-                          handleElementSave(item.id, { ...item, name: title });
-                          setIsEditing(false)
-                        }}
-                        autoFocus
-                      />
-                    ) : (
-                      title
-                    )
-                  }
+
+                <BlockTitle onClick={() => setIsEditing(true)}>
+                  {isEditing || title.length === 0 ? (
+                    <EditTitleInput
+                      type="text"
+                      value={title}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleElementSave(item.id, {
+                            ...item,
+                            name: title,
+                          });
+                          setIsEditing(false);
+                        }
+                        if (e.key === "Escape") {
+                          setTitle(name);
+                          setIsEditing(false);
+                        }
+                      }}
+                      onDoubleClick={(e) => e.stopPropagation()}
+                      onChange={(e) => onTitleChange(e.target.value)}
+                      onBlur={() => {
+                        handleElementSave(item.id, { ...item, name: title });
+                        setIsEditing(false);
+                      }}
+                      autoFocus
+                    />
+                  ) : (
+                    <Tooltip title={title} arrow>
+                      <Typography noWrap variant="subtitle1">{title}</Typography>
+                    </Tooltip>
+                  )}
                 </BlockTitle>
               </TitleContainer>
 
