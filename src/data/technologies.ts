@@ -18,6 +18,7 @@ export interface Technology {
   icon: string;
   color: string;
   levels: TechnologyLevel[];
+  shape?: 'default' | 'user' | 'database' | 'storage';
 }
 
 export const technologies = [...cloud, ...codes, ...databases, ...devops, ...frameworks, ...languages, ...messageBrokers, ...monitoring, ...saas, ...security, ...systems, ...protocols] as Technology[];

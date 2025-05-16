@@ -8,6 +8,7 @@ export interface BaseBlock {
   position: Position;
   type: 'system' | 'container' | 'component' | 'code';
   technology?: string;
+  shape?: 'default' | 'user' | 'database' | 'storage';
   original?: {
     id: string;
     type: 'system' | 'container' | 'component' | 'code';

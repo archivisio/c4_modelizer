@@ -3,27 +3,12 @@ import { useClonePath } from "@/hooks/useClonePath";
 import { useFlatModelActions } from "@/hooks/useFlatModelActions";
 import { ColorStyle } from "@/theme/theme";
 import { BaseBlock } from "@/types/c4";
-import EditIcon from "@mui/icons-material/Edit";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Tooltip, Typography, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import TechnologyIcon from "../TechnologyIcon";
-import {
-  ActionIconButton,
-  ActionsContainer,
-  BlockContainer,
-  BlockTitle,
-  DescriptionText,
-  EditTitleInput,
-  HeaderContainer,
-  hexToRgb,
-  PathText,
-  StyledCard,
-  StyledCardContent,
-  TitleContainer,
-} from "./c4BlockStyled";
+import { hexToRgb } from "./c4BlockStyled";
+import { getShapeByType } from "./shapes/shapesUtils";
+import { ShapeType } from "./shapes/BaseShape";
 
 export type HandlePositions = {
   source: Position | Position[];
@@ -52,18 +37,17 @@ const C4Block: React.FC<C4BlockProps> = ({
   selected = false,
   onEdit,
   colors,
-  handlePositions = { source: Position.Bottom, target: Position.Top },
+  handlePositions: customHandlePositions,
   children,
 }) => {
-  const { t } = useTranslation();
   const theme = useTheme();
-  const { technology, name, description, url } = item;
+  const { technology, name, description, url, shape } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
   const [isEditing, setIsEditing] = useState(false);
   const { handleElementSave } = useFlatModelActions();
   const [title, setTitle] = useState(name);
   const clonePath = useClonePath(item);
-  const isClone = item.original;
+  const isClone = !!item.original;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
     ? {
@@ -81,8 +65,26 @@ const C4Block: React.FC<C4BlockProps> = ({
       }
     : defaultColorStyle;
 
+  // Determine the shape to use based on the item's shape property or technology shape
+  const shapeType = (shape || (techData?.shape) || 'default') as ShapeType;
+  const { Component: ShapeComponent, handlePositions: defaultHandlePositions } = getShapeByType(shapeType);
+  const handlePositions = customHandlePositions || defaultHandlePositions;
+  
   const onTitleChange = (newTitle: string) => {
     setTitle(newTitle);
+  };
+
+  const onEditStart = () => {
+    setIsEditing(true);
+  };
+
+  const onEditFinish = (save: boolean) => {
+    if (save) {
+      handleElementSave(item.id, { ...item, name: title });
+    } else {
+      setTitle(name);
+    }
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -111,105 +113,24 @@ const C4Block: React.FC<C4BlockProps> = ({
           style={createHandleStyle(colorStyles)}
         />
       )}
-      <BlockContainer sx={{ opacity: item.original ? 0.5 : 1 }}>
-        <StyledCard
-          colorstyles={colorStyles}
-          selected={selected}
-          data-has-description={description ? "true" : "false"}
-          className="tech-card"
-        >
-          <StyledCardContent>
-            <HeaderContainer>
-              <TitleContainer>
-                {technology && (
-                  <TechnologyIcon
-                    item={{ technology, name } as unknown as BaseBlock}
-                    size={24}
-                  />
-                )}
 
-                <BlockTitle onClick={() => setIsEditing(true)}>
-                  {isEditing || title.length === 0 ? (
-                    <EditTitleInput
-                      type="text"
-                      value={title}
-                      data-testid="block-title-input"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleElementSave(item.id, {
-                            ...item,
-                            name: title,
-                          });
-                          setIsEditing(false);
-                        }
-                        if (e.key === "Escape") {
-                          setTitle(name);
-                          setIsEditing(false);
-                        }
-                      }}
-                      onDoubleClick={(e) => e.stopPropagation()}
-                      onChange={(e) => onTitleChange(e.target.value)}
-                      onBlur={() => {
-                        handleElementSave(item.id, { ...item, name: title });
-                        setIsEditing(false);
-                      }}
-                      autoFocus
-                    />
-                  ) : (
-                    <Tooltip title={title} arrow>
-                      <Typography
-                        noWrap
-                        variant="subtitle1"
-                        data-testid="block-title"
-                      >
-                        {title}
-                      </Typography>
-                    </Tooltip>
-                  )}
-                </BlockTitle>
-              </TitleContainer>
-
-              <ActionsContainer>
-                {url && (
-                  <Tooltip title={t("open_url")} arrow>
-                    <ActionIconButton
-                      size="small"
-                      onClick={() => window.open(url, "_blank")}
-                      aria-label={t("open_url")}
-                      colorstyles={colorStyles}
-                    >
-                      <OpenInNewIcon fontSize="inherit" />
-                    </ActionIconButton>
-                  </Tooltip>
-                )}
-
-                {!isClone && (
-                  <Tooltip title={t("edit")} arrow>
-                    <ActionIconButton
-                      size="small"
-                      onClick={onEdit}
-                      aria-label={t("edit")}
-                      colorstyles={colorStyles}
-                    >
-                      <EditIcon fontSize="inherit" />
-                    </ActionIconButton>
-                  </Tooltip>
-                )}
-              </ActionsContainer>
-            </HeaderContainer>
-
-            {description && (
-              <DescriptionText variant="body2">{description}</DescriptionText>
-            )}
-
-            {children}
-
-            {isClone && clonePath && (
-              <PathText variant="caption">{clonePath}</PathText>
-            )}
-          </StyledCardContent>
-        </StyledCard>
-      </BlockContainer>
+      <ShapeComponent
+        item={item}
+        selected={selected}
+        colorStyles={colorStyles}
+        description={description}
+        isClone={isClone}
+        clonePath={clonePath || undefined}
+        title={title}
+        isEditing={isEditing}
+        onEditStart={onEditStart}
+        onEditFinish={onEditFinish}
+        onTitleChange={onTitleChange}
+        url={url}
+        onEdit={onEdit}
+      >
+        {children}
+      </ShapeComponent>
 
       {Array.isArray(handlePositions.source) ? (
         handlePositions.source.map((position: Position, index: number) => (
