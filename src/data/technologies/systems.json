@@ -3,7 +3,8 @@
     "id": "users",
     "name": "Users",
     "color": "#f3f3f3",
-    "levels": ["system"]
+    "levels": ["system"],
+    "shape": "user"
   },
   {
     "id": "server",
@@ -15,7 +16,8 @@
     "id": "database-server",
     "name": "Database Server",
     "color": "#5e35b1",
-    "levels": ["system"]
+    "levels": ["system"],
+    "shape": "database"
   },
   {
     "id": "client-device",

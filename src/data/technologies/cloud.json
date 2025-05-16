@@ -52,5 +52,12 @@
     "name": "Netlify",
     "color": "#00c7b7",
     "levels": ["system", "container"]
+  },
+  {
+    "id": "bucket",
+    "name": "Bucket",
+    "color": "#00c7b7",
+    "levels": ["system", "container"],
+    "shape": "storage"
   }
 ]

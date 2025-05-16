@@ -3,84 +3,98 @@
     "id": "postgresql",
     "name": "PostgreSQL",
     "color": "#336791",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "mysql",
     "name": "MySQL",
     "color": "#4479a1",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "mariadb",
     "name": "MariaDB",
     "color": "#f3f3f3",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "mongodb",
     "name": "MongoDB",
     "color": "#47a248",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "redis",
     "name": "Redis",
     "color": "#dc382d",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "cassandra",
     "name": "Cassandra",
     "color": "#1287b1",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "oracle",
     "name": "Oracle",
     "color": "#f80000",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "sqlserver",
     "name": "SQL Server",
     "color": "#cc2927",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "sqlite",
     "name": "SQLite",
     "color": "#f3f3f3",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "dynamodb",
     "name": "DynamoDB",
     "color": "#4053d6",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "elasticsearch",
     "name": "Elasticsearch",
     "color": "#f3f3f3",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "neo4j",
     "name": "Neo4j",
     "color": "#008cc1",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "couchdb",
     "name": "CouchDB",
     "color": "#e42528",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   },
   {
     "id": "influxdb",
     "name": "InfluxDB",
     "color": "#22ADF6",
-    "levels": ["container", "connection"]
+    "levels": ["container", "connection"],
+    "shape": "database"
   }
 ]
