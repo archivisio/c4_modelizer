@@ -1,4 +1,5 @@
 import { getTechnologyById } from "@/data/technologies";
+import { useClonePath } from "@/hooks/useClonePath";
 import { useFlatModelActions } from "@/hooks/useFlatModelActions";
 import { ColorStyle } from "@/theme/theme";
 import { BaseBlock } from "@/types/c4";
@@ -18,6 +19,7 @@ import {
   EditTitleInput,
   HeaderContainer,
   hexToRgb,
+  PathText,
   StyledCard,
   StyledCardContent,
   TitleContainer,
@@ -60,6 +62,8 @@ const C4Block: React.FC<C4BlockProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const { handleElementSave } = useFlatModelActions();
   const [title, setTitle] = useState(name);
+  const clonePath = useClonePath(item);
+  const isClone = item.original;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
     ? {
@@ -148,7 +152,9 @@ const C4Block: React.FC<C4BlockProps> = ({
                     />
                   ) : (
                     <Tooltip title={title} arrow>
-                      <Typography noWrap variant="subtitle1">{title}</Typography>
+                      <Typography noWrap variant="subtitle1">
+                        {title}
+                      </Typography>
                     </Tooltip>
                   )}
                 </BlockTitle>
@@ -168,7 +174,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                   </Tooltip>
                 )}
 
-                {!item.original && (
+                {!isClone && (
                   <Tooltip title={t("edit")} arrow>
                     <ActionIconButton
                       size="small"
@@ -188,6 +194,10 @@ const C4Block: React.FC<C4BlockProps> = ({
             )}
 
             {children}
+
+            {isClone && clonePath && (
+              <PathText variant="caption">{clonePath}</PathText>
+            )}
           </StyledCardContent>
         </StyledCard>
       </BlockContainer>

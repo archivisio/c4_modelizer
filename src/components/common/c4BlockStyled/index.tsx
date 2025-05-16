@@ -24,7 +24,7 @@ export const StyledCard = styled(Card)<{
   'data-has-description'?: string;
 }>(({ colorstyles, selected, ...props }) => ({
   width: 250,
-  height: props['data-has-description'] === 'true' ? 120 : 60,
+  height: props['data-has-description'] === 'true' ? 120 : 80,
   borderRadius: 8,
   position: "relative",
   overflow: "hidden",
@@ -49,6 +49,9 @@ export const StyledCardContent = styled(CardContent)(() => ({
   flex: 1,
   display: "flex",
   flexDirection: "column",
+  "&:last-child": {
+    paddingBottom: 0,
+  },
 }));
 
 export const HeaderContainer = styled(Box)(() => ({
@@ -165,3 +168,15 @@ export const createHandleStyle = (
   height: isSource ? 10 : 8,
   boxShadow: isSource ? `0 0 5px ${colorstyles.border}` : undefined,
 });
+
+export const PathText = styled(Typography)(() => ({
+  marginTop: 'auto',
+  padding: '4px 0 0 0',
+  color: "#ffffff",
+  fontSize: '10px',
+  textAlign: 'right',
+  fontStyle: 'italic',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}));

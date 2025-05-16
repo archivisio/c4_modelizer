@@ -11,7 +11,7 @@ const markerStart = (technologyId: string | undefined) => {
     type: MarkerType.ArrowClosed,
     width: 18,
     height: 18,
-    color: technology?.color,
+    color: technology?.color || '#fff',
   };
 }
 
@@ -21,7 +21,7 @@ const markerEnd = (technologyId: string | undefined) => {
     type: MarkerType.ArrowClosed,
     width: 18,
     height: 18,
-    color: technology?.color,
+    color: technology?.color || '#fff',
   };
 }
 
