@@ -1,8 +1,29 @@
+import { getTechnologyById } from '@/data/technologies';
 import { useDialogs } from '@contexts/DialogContext';
-import { ConnectionInfo } from '../types/connection';
-import { useFlatC4Store, useFilteredEntities } from '@store/flatC4Store';
-import { Connection, Edge } from '@xyflow/react';
+import { useFilteredEntities, useFlatC4Store } from '@store/flatC4Store';
+import { Connection, Edge, MarkerType } from '@xyflow/react';
 import { useCallback, useMemo } from 'react';
+import { ConnectionInfo } from '../types/connection';
+
+const markerStart = (technologyId: string | undefined) => {
+  const technology = getTechnologyById(technologyId as string);
+  return {
+    type: MarkerType.ArrowClosed,
+    width: 18,
+    height: 18,
+    color: technology?.color || '#fff',
+  };
+}
+
+const markerEnd = (technologyId: string | undefined) => {
+  const technology = getTechnologyById(technologyId as string);
+  return {
+    type: MarkerType.ArrowClosed,
+    width: 18,
+    height: 18,
+    color: technology?.color || '#fff',
+  };
+}
 
 export function useFlatEdges() {
   const {
@@ -37,6 +58,8 @@ export function useFlatEdges() {
             bidirectional: conn.bidirectional,
           },
           type: conn.technology || conn.label ? 'technology' : 'default',
+          markerStart: markerStart(conn.technology),
+          markerEnd: markerEnd(conn.technology),
         }))
       );
     } else if (viewLevel === 'container') {
@@ -54,6 +77,8 @@ export function useFlatEdges() {
             labelPosition: conn.labelPosition,
             bidirectional: conn.bidirectional,
           },
+          markerStart: markerStart(conn.technology),
+          markerEnd: markerEnd(conn.technology),
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );
@@ -72,6 +97,8 @@ export function useFlatEdges() {
             labelPosition: conn.labelPosition,
             bidirectional: conn.bidirectional,
           },
+          markerStart: markerStart(conn.technology),
+          markerEnd: markerEnd(conn.technology),
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );
@@ -90,6 +117,8 @@ export function useFlatEdges() {
             labelPosition: conn.labelPosition,
             bidirectional: conn.bidirectional,
           },
+          markerStart: markerStart(conn.technology),
+          markerEnd: markerEnd(conn.technology),
           type: conn.technology || conn.label ? 'technology' : 'default',
         }))
       );

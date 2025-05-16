@@ -12,6 +12,12 @@ describe('C4 Modelizer - Code Level', () => {
     cy.get('body').should('contain', 'Code')
   })
 
+  it('should add a node and modify its name inline', () => {
+    const node = cy.addNode()
+    cy.editNodeNameInline(node, 'Custom System Name')
+    node.get('[data-testid=block-title]').should('contain', 'Custom System Name')
+  })
+
   it('should add a code block and modify its name', () => {
     cy.addNode()
     cy.editNodeProperty('name', 'Custom Code Name')

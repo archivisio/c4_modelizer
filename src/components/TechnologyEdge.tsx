@@ -1,5 +1,7 @@
+import { getTechnologyById, Technology } from "@/data/technologies";
 import { BaseBlock } from "@/types/c4";
 import TechnologyIcon from "@components/TechnologyIcon";
+import { styled } from "@mui/system";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -7,11 +9,10 @@ import {
   type EdgeProps,
 } from "@xyflow/react";
 import React from "react";
-import { styled } from "@mui/system";
 
 const ICON_SIZE = 18;
 
-const EdgeLabelContainer = styled('div')(() => ({
+const EdgeLabelContainer = styled("div")(() => ({
   position: "absolute",
   transform: "translate(-50%, -50%)",
   pointerEvents: "all",
@@ -20,10 +21,10 @@ const EdgeLabelContainer = styled('div')(() => ({
   alignItems: "center",
   minWidth: 40,
   minHeight: 24,
-  zIndex: 1
+  zIndex: 1,
 }));
 
-const EdgeLabel = styled('span')(() => ({
+const EdgeLabel = styled("span")(() => ({
   marginTop: 2,
   background: "rgba(255,255,255,0.95)",
   borderRadius: 4,
@@ -36,15 +37,17 @@ const EdgeLabel = styled('span')(() => ({
   maxWidth: 70,
   overflow: "hidden",
   textOverflow: "ellipsis",
-  border: "1px solid #eee"
+  border: "1px solid #eee",
 }));
 
-const createEdgeStyle = (style: React.CSSProperties | undefined, isBidirectional: boolean, id: string) => ({
+const createEdgeStyle = (
+  style: React.CSSProperties | undefined,
+  isBidirectional: boolean,
+  technology: Technology | undefined
+) => ({
   ...style,
-  markerStart: isBidirectional
-    ? `url(#bidirectional-marker-${id})`
-    : undefined,
   animation: isBidirectional ? "none" : style?.animation,
+  stroke: technology?.color,
 });
 
 function cubicBezierPoint(
@@ -73,6 +76,7 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
   targetPosition,
   style,
   markerEnd,
+  markerStart,
   ...props
 }) => {
   const isBidirectional = props.data?.bidirectional === true;
@@ -87,6 +91,9 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
   };
 
   const [edgePath] = getBezierPath(edgePathParams);
+  const technology = props.data?.technologyId
+    ? getTechnologyById(props.data.technologyId as string)
+    : undefined;
 
   const labelPosition =
     typeof props.data?.labelPosition === "number"
@@ -107,39 +114,21 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
     bezierY = cubicBezierPoint(t, y1, y2, y3, y4);
   }
 
+  // {markerEnd: "url('#1__color=#51a2ff&height=18&type=arrowclosed&width=18')"}markerEnd: "url('#1__color=#51a2ff&height=18&type=arrowclosed&width=18')"[[Prototype]]: Object
+
   return (
     <>
-      {isBidirectional && (
-        <svg>
-          <defs>
-            <marker
-              id={`bidirectional-marker-${id}`}
-              markerWidth="8"
-              markerHeight="8"
-              refX="0"
-              refY="4"
-              orient="auto"
-            >
-              <polyline
-                points="0,0 0,8 8,4 0,0"
-                fill="#51a2ff"
-                transform="translate(8, 0) scale(-1, 1)"
-              />
-            </marker>
-          </defs>
-        </svg>
-      )}
-
       <BaseEdge
         id={id}
         path={edgePath}
+        markerStart={isBidirectional ? markerStart : undefined}
         markerEnd={markerEnd}
-        style={createEdgeStyle(style, isBidirectional, id)}
+        style={createEdgeStyle(style, isBidirectional, technology)}
       />
       <EdgeLabelRenderer>
         <EdgeLabelContainer
           style={{
-            transform: `translate(-50%, -50%) translate(${bezierX}px,${bezierY}px)`
+            transform: `translate(-50%, -50%) translate(${bezierX}px,${bezierY}px)`,
           }}
           className="nodrag nopan"
         >
@@ -149,7 +138,11 @@ const TechnologyEdge: React.FC<EdgeProps> = ({
             showTooltip={true}
           />
           {props.label && (
-            <EdgeLabel>
+            <EdgeLabel
+              style={{
+                color: technology?.color,
+              }}
+            >
               {props.label}
             </EdgeLabel>
           )}

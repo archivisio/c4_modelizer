@@ -12,6 +12,12 @@ describe('C4 Modelizer - Container Level', () => {
     cy.get('body').should('not.contain', 'Code')
   })
 
+  it('should add a node and modify its name inline', () => {
+    const node = cy.addNode()
+    cy.editNodeNameInline(node, 'Custom Container Name')
+    node.get('[data-testid=block-title]').should('contain', 'Custom Container Name')
+  })
+
   it('should add a node and modify its name', () => {
     cy.addNode()
     cy.editNodeProperty('name', 'Custom Container Name')

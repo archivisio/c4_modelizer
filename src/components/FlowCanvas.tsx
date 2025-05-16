@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDialogs } from "@/contexts/DialogContext";
 import useFlatStore from "@/hooks/useFlatStore";
+import { useFlatC4Store } from "@/store/flatC4Store";
 import { ViewLevel } from "../types/c4";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
@@ -56,8 +57,14 @@ const defaultEdgeStyle = {
     height: 18,
     color: "#51a2ff",
   },
+  markerStart: {
+    type: MarkerType.ArrowClosed,
+    width: 18,
+    height: 18,
+    color: "#51a2ff",
+  },
   style: {
-    strokeWidth: 2.5,
+    strokeWidth: 1.5,
     stroke: "#51a2ff",
     opacity: 0.8,
     filter: "drop-shadow(0 0 5px rgba(81, 162, 255, 0.5))",
@@ -124,6 +131,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
   const [isSelectionMode, setIsSelectionMode] = useState(true);
   const { setPendingConnection } = useDialogs();
   const { getBlockById } = useFlatStore();
+  const { removeSystem, removeContainer, removeComponent, removeCodeElement } =
+    useFlatC4Store();
   const reactFlowInstance = useReactFlow();
 
   const toggleInteractionMode = useCallback(() => {
@@ -156,6 +165,23 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
       }
     },
     [onNodeDoubleClick, reactFlowInstance]
+  );
+
+  const handleDeleteNode = useCallback(
+    ({ nodes }: { nodes: Node[]; edges: Edge[] }) => {
+      nodes.forEach((node) => {
+        if (node.type === "system") {
+          removeSystem(node.id);
+        } else if (node.type === "container") {
+          removeContainer(node.id);
+        } else if (node.type === "component") {
+          removeComponent(node.id);
+        } else if (node.type === "code") {
+          removeCodeElement(node.id);
+        }
+      });
+    },
+    [removeCodeElement, removeComponent, removeContainer, removeSystem]
   );
 
   const defaultEdgeOptions = defaultEdgeStyle;
@@ -225,6 +251,7 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         zoomOnScroll={false}
         zoomOnPinch={true}
         panOnScroll={true}
+        onDelete={handleDeleteNode}
         panOnScrollMode={PanOnScrollMode.Free}
         isValidConnection={(connectionState) =>
           isValidConnection(connectionState)

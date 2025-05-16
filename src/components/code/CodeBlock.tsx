@@ -73,7 +73,7 @@ const CodeBlock: React.FC<NodeData<CodeBlockType>> = memo(
               backdropFilter: "blur(4px)",
               "& .MuiChip-label": { px: 1.5 },
               position: "absolute",
-              top: 50,
+              top: 35,
               right: 10,
             }}
             variant="outlined"

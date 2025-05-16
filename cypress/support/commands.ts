@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
+import '@4tw/cypress-drag-drop';
 import 'cypress-file-upload';
-import '@4tw/cypress-drag-drop'
 
 /**
  * Add a new node to the diagram by clicking on the add button
@@ -24,7 +24,7 @@ Cypress.Commands.add('addNode', () => {
 
 Cypress.Commands.add('moveNode', (node, x, y) => {
   node.move({ deltaX: x, deltaY: y, force: true });
-  
+
   cy.wait(300);
   return node;
 });
@@ -73,6 +73,14 @@ Cypress.Commands.add('importModel', (fixturePath: string) => {
 });
 
 /**
+ * Add a node and modify its name inline
+ */
+Cypress.Commands.add('editNodeNameInline', (node, newName) => {
+  node.get('[data-testid=block-title]').click()
+  node.get('[data-testid=block-title-input]').clear().type(newName).type('{enter}')
+})
+
+/**
  * Edit node properties
  * @param {string} property - Property to edit (name, description, technology, url)
  * @param {string} value - New value for the property
@@ -102,15 +110,15 @@ Cypress.Commands.add('editNodeProperty', (property: string, value: string) => {
 Cypress.Commands.add('connectNodes', (sourceNode, targetNode, name) => {
   sourceNode.find('[data-testid^="source-"]').first().as('sourceHandle');
   targetNode.find('[data-testid^="target-"]').first().as('targetHandle');
-  
+
   cy.get('@sourceHandle').drag('@targetHandle', { force: true })
   cy.get('@targetHandle').click({ force: true });
-  
+
   cy.get('.MuiDialog-root').should('be.visible');
-  
+
   cy.get(`[data-testid=input_label]`).clear().type(name);
   cy.get('[data-testid=dialog-save-button]').click();
-  
+
   cy.wait(500);
   cy.get('.react-flow__controls-fitview').click();
   return cy.get('.react-flow__edge').should('exist');
@@ -216,6 +224,14 @@ declare global {
        * @example cy.importModel('basicModel-v2.json')
        */
       importModel(fixturePath: string): Chainable<JQuery<HTMLElement>>;
+
+      /**
+       * Edit node name inline
+       * @param {Chainable<JQuery<HTMLElement>>} node - Node to edit
+       * @param {string} newName - New name for the node
+       * @example cy.editNodeNameInline(cy.get('.react-flow__node').first(), 'New System Name')
+       */
+      editNodeNameInline(node: Chainable<JQuery<HTMLElement>>, newName: string): Chainable<JQuery<HTMLElement>>;
 
       /**
        * Edit node properties

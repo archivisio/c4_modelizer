@@ -1,5 +1,5 @@
 import { ColorStyle } from "@/theme/theme";
-import { Box, Card, CardContent, IconButton, Typography } from "@mui/material";
+import { Box, Card, CardContent, IconButton, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 export const hexToRgb = (hex: string): string => {
@@ -23,7 +23,7 @@ export const StyledCard = styled(Card)<{
   selected: boolean;
   'data-has-description'?: string;
 }>(({ colorstyles, selected, ...props }) => ({
-  width: 200,
+  width: 250,
   height: props['data-has-description'] === 'true' ? 120 : 80,
   borderRadius: 8,
   position: "relative",
@@ -49,6 +49,9 @@ export const StyledCardContent = styled(CardContent)(() => ({
   flex: 1,
   display: "flex",
   flexDirection: "column",
+  "&:last-child": {
+    paddingBottom: 0,
+  },
 }));
 
 export const HeaderContainer = styled(Box)(() => ({
@@ -63,9 +66,10 @@ export const TitleContainer = styled(Box)(() => ({
   alignItems: "center",
   gap: 8,
   minWidth: 0,
+  cursor: "text",
 }));
 
-export const BlockTitle = styled(Typography)(() => ({
+export const BlockTitle = styled(Box)(() => ({
   fontWeight: "bold",
   color: "#fff",
   textShadow: "0 0 10px rgba(255,255,255,0.3)",
@@ -73,6 +77,32 @@ export const BlockTitle = styled(Typography)(() => ({
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   maxWidth: "130px",
+}));
+
+export const EditTitleInput = styled(TextField)(() => ({
+  width: "100%",
+  '& .MuiInputBase-root': {
+    backgroundColor: 'rgba(0,0,0,0.15)',
+    borderRadius: '4px',
+    border: '1px solid rgba(255,255,255,0.1)',
+    transition: 'all 0.2s ease',
+    overflow: 'hidden',
+    '&:hover, &.Mui-focused': {
+      backgroundColor: 'rgba(0,0,0,0.25)',
+      border: '1px solid rgba(255,255,255,0.2)',
+      boxShadow: '0 0 8px rgba(255,255,255,0.1)'
+    }
+  },
+  '& .MuiInputBase-input': {
+    padding: '2px',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: '1rem',
+    textShadow: '0 0 10px rgba(255,255,255,0.3)'
+  },
+  '& .MuiOutlinedInput-notchedOutline': {
+    border: 'none'
+  }
 }));
 
 export const ActionsContainer = styled(Box)(() => ({
@@ -112,7 +142,7 @@ export const ActionIconButton = styled(IconButton)<{ colorstyles: ColorStyle }>(
 );
 
 export const DescriptionText = styled(Typography)(() => ({
-  marginTop: 12,
+  marginTop: 15,
   color: "rgba(255,255,255,0.8)",
   backgroundColor: "rgba(0,0,0,0.2)",
   padding: 8,
@@ -138,3 +168,15 @@ export const createHandleStyle = (
   height: isSource ? 10 : 8,
   boxShadow: isSource ? `0 0 5px ${colorstyles.border}` : undefined,
 });
+
+export const PathText = styled(Typography)(() => ({
+  marginTop: 'auto',
+  padding: '4px 0 0 0',
+  color: "#ffffff",
+  fontSize: '10px',
+  textAlign: 'right',
+  fontStyle: 'italic',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+}));

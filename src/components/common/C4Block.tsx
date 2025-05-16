@@ -1,11 +1,13 @@
 import { getTechnologyById } from "@/data/technologies";
+import { useClonePath } from "@/hooks/useClonePath";
+import { useFlatModelActions } from "@/hooks/useFlatModelActions";
 import { ColorStyle } from "@/theme/theme";
 import { BaseBlock } from "@/types/c4";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { Tooltip, useTheme } from "@mui/material";
+import { Tooltip, Typography, useTheme } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TechnologyIcon from "../TechnologyIcon";
 import {
@@ -14,8 +16,10 @@ import {
   BlockContainer,
   BlockTitle,
   DescriptionText,
+  EditTitleInput,
   HeaderContainer,
   hexToRgb,
+  PathText,
   StyledCard,
   StyledCardContent,
   TitleContainer,
@@ -38,8 +42,8 @@ export interface C4BlockProps {
 const createHandleStyle = (colorStyles: ColorStyle, isSource = false) => ({
   background: colorStyles.border,
   border: `2px solid ${colorStyles.border}`,
-  width: isSource ? 10 : 8,
-  height: isSource ? 10 : 8,
+  width: 6,
+  height: 6,
   ...(isSource && { boxShadow: `0 0 5px ${colorStyles.border}` }),
 });
 
@@ -55,6 +59,11 @@ const C4Block: React.FC<C4BlockProps> = ({
   const theme = useTheme();
   const { technology, name, description, url } = item;
   const techData = technology ? getTechnologyById(technology) : undefined;
+  const [isEditing, setIsEditing] = useState(false);
+  const { handleElementSave } = useFlatModelActions();
+  const [title, setTitle] = useState(name);
+  const clonePath = useClonePath(item);
+  const isClone = item.original;
   const defaultColorStyle = colors;
   const colorStyles: ColorStyle = techData
     ? {
@@ -71,6 +80,14 @@ const C4Block: React.FC<C4BlockProps> = ({
         glow: `0 0 15px rgba(${hexToRgb(techData.color)}, 0.3)`,
       }
     : defaultColorStyle;
+
+  const onTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+  };
+
+  useEffect(() => {
+    setTitle(name);
+  }, [name]);
 
   return (
     <>
@@ -110,7 +127,46 @@ const C4Block: React.FC<C4BlockProps> = ({
                     size={24}
                   />
                 )}
-                <BlockTitle variant="subtitle1">{name}</BlockTitle>
+
+                <BlockTitle onClick={() => setIsEditing(true)}>
+                  {isEditing || title.length === 0 ? (
+                    <EditTitleInput
+                      type="text"
+                      value={title}
+                      data-testid="block-title-input"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          handleElementSave(item.id, {
+                            ...item,
+                            name: title,
+                          });
+                          setIsEditing(false);
+                        }
+                        if (e.key === "Escape") {
+                          setTitle(name);
+                          setIsEditing(false);
+                        }
+                      }}
+                      onDoubleClick={(e) => e.stopPropagation()}
+                      onChange={(e) => onTitleChange(e.target.value)}
+                      onBlur={() => {
+                        handleElementSave(item.id, { ...item, name: title });
+                        setIsEditing(false);
+                      }}
+                      autoFocus
+                    />
+                  ) : (
+                    <Tooltip title={title} arrow>
+                      <Typography
+                        noWrap
+                        variant="subtitle1"
+                        data-testid="block-title"
+                      >
+                        {title}
+                      </Typography>
+                    </Tooltip>
+                  )}
+                </BlockTitle>
               </TitleContainer>
 
               <ActionsContainer>
@@ -127,7 +183,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                   </Tooltip>
                 )}
 
-                {!item.original && (
+                {!isClone && (
                   <Tooltip title={t("edit")} arrow>
                     <ActionIconButton
                       size="small"
@@ -147,6 +203,10 @@ const C4Block: React.FC<C4BlockProps> = ({
             )}
 
             {children}
+
+            {isClone && clonePath && (
+              <PathText variant="caption">{clonePath}</PathText>
+            )}
           </StyledCardContent>
         </StyledCard>
       </BlockContainer>

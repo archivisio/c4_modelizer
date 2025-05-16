@@ -12,6 +12,12 @@ describe('C4 Modelizer - Component Level', () => {
     cy.get('body').should('not.contain', 'Code')
   })
 
+  it('should add a node and modify its name inline', () => {
+    const node = cy.addNode()
+    cy.editNodeNameInline(node, 'Custom Component Name')
+    node.get('[data-testid=block-title]').should('contain', 'Custom Component Name')
+  })
+
   it('should add a node and modify its name', () => {
     cy.addNode()
 
