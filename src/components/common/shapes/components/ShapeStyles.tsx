@@ -3,10 +3,14 @@ import { styled } from "@mui/material/styles";
 
 export const UserCard = styled(StyledCard)({
   borderRadius: "50% 50% 0 0",
+  width: 100,
+  height: 100,
 });
 
 export const DatabaseCard = styled(StyledCard)({
   borderRadius: "0 0 50% 50%",
+  width: 150,
+  height: 150,
   "&::before": {
     content: '""',
     position: "absolute",
@@ -31,6 +35,8 @@ export const DatabaseCard = styled(StyledCard)({
 
 export const StorageCard = styled(StyledCard)({
   position: "relative",
+  width: 150,
+  height: 100,
   "&::before": {
     content: '""',
     position: "absolute",
