@@ -129,6 +129,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                     <EditTitleInput
                       type="text"
                       value={title}
+                      data-testid="block-title-input"
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
                           handleElementSave(item.id, {
@@ -152,7 +153,7 @@ const C4Block: React.FC<C4BlockProps> = ({
                     />
                   ) : (
                     <Tooltip title={title} arrow>
-                      <Typography noWrap variant="subtitle1">
+                      <Typography noWrap variant="subtitle1" data-testid="block-title">
                         {title}
                       </Typography>
                     </Tooltip>
