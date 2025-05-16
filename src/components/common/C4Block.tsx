@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Tooltip, Typography, useTheme } from "@mui/material";
 import { Handle, Position } from "@xyflow/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TechnologyIcon from "../TechnologyIcon";
 import {
@@ -85,6 +85,10 @@ const C4Block: React.FC<C4BlockProps> = ({
     setTitle(newTitle);
   };
 
+  useEffect(() => {
+    setTitle(name);
+  }, [name]);
+
   return (
     <>
       {Array.isArray(handlePositions.target) ? (
@@ -153,7 +157,11 @@ const C4Block: React.FC<C4BlockProps> = ({
                     />
                   ) : (
                     <Tooltip title={title} arrow>
-                      <Typography noWrap variant="subtitle1" data-testid="block-title">
+                      <Typography
+                        noWrap
+                        variant="subtitle1"
+                        data-testid="block-title"
+                      >
                         {title}
                       </Typography>
                     </Tooltip>
