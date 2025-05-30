@@ -263,8 +263,8 @@ const FlowCanvas: React.FC<FlowCanvasProps> = ({
         }}
       >
         <StyledBackground variant={BackgroundVariant.Dots} gap={20} size={1} />
-        <MiniMap zoomable pannable />
-        <Controls>
+        <MiniMap zoomable pannable style={{ position: "absolute", bottom: 20, right: 0 }} />
+        <Controls style={{ position: "absolute", bottom: 20, left: 0 }}>
           <SelectionPanToggle
             isSelectionMode={isSelectionMode}
             onToggle={toggleInteractionMode}
