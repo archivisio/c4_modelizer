@@ -69,5 +69,10 @@
   "bidirectional_connection": "Bidirectional connection",
   "connection": "Connection",
   "switchToPanMode": "Switch to pan mode",
-  "switchToSelectMode": "Switch to select mode"
+  "switchToSelectMode": "Switch to select mode",
+  "updateNotification": {
+    "update": "Update",
+    "later": "Later",
+    "newVersionAvailable": "A new version is available!"
+  }
 }

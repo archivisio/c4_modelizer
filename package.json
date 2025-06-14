@@ -2,7 +2,7 @@
   "name": "c4_modelizer",
   "private": true,
   "author": "eth3rnit3",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "type": "module",
   "license": "CC-BY-NC-4.0",
   "scripts": {
@@ -58,6 +58,7 @@
     "ts-jest": "^29.3.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
-    "vite": "^6.3.4"
+    "vite": "^6.3.4",
+    "vite-plugin-pwa": "^1.0.0"
   }
 }
