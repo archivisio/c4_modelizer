@@ -118,7 +118,7 @@ describe('useFileOperations', () => {
         target: {
           files: [mockFile],
         },
-      } as React.ChangeEvent<HTMLInputElement>;
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
 
       act(() => {
         result.current.handleFileInputChange(mockEvent, mockSetNotificationError);
@@ -154,7 +154,7 @@ describe('useFileOperations', () => {
         target: {
           files: [file1, file2],
         },
-      } as React.ChangeEvent<HTMLInputElement>;
+      } as unknown as React.ChangeEvent<HTMLInputElement>;
 
       act(() => {
         result.current.handleFileInputChange(mockEvent, mockSetNotificationError);

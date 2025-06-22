@@ -28,7 +28,7 @@ describe('lazyRegistry', () => {
 
   describe('Component Loading', () => {
     it('should load component from registry', async () => {
-      mockRegistry.getComponent.mockResolvedValue(TestComponent);
+      mockRegistry.getComponent.mockResolvedValue(TestComponent as React.ComponentType<unknown>);
 
       const LazyComponent = lazyRegistry<{ message: string }>('test-component');
 
@@ -94,7 +94,7 @@ describe('lazyRegistry', () => {
         <div data-testid="no-props-component">No props needed</div>
       );
 
-      mockRegistry.getComponent.mockResolvedValue(NoPropsComponent);
+      mockRegistry.getComponent.mockResolvedValue(NoPropsComponent as React.ComponentType<unknown>);
 
       const LazyNoPropsComponent = lazyRegistry('no-props-component');
 

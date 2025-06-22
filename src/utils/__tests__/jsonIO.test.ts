@@ -31,13 +31,13 @@ describe('jsonIO', () => {
       },
       setModel: jest.fn(),
     };
-    mockUseFlatC4Store.getState.mockReturnValue(mockStore);
+    mockUseFlatC4Store.getState.mockReturnValue(mockStore as unknown as ReturnType<typeof useFlatC4Store.getState>);
   });
 
   describe('exportModel', () => {
     it('should export model with current schema version', () => {
       const testModel: FlatC4Model = {
-        systems: [{ id: 'sys1', name: 'System 1', connections: [] }],
+        systems: [{ id: 'sys1', name: 'System 1', connections: [], type: 'system', position: { x: 0, y: 0 } }],
         containers: [],
         components: [],
         codeElements: [],
@@ -68,7 +68,7 @@ describe('jsonIO', () => {
     it('should import valid v2 flat model', () => {
       const validV2Model = {
         schemaVersion: 2,
-        systems: [{ id: 'sys1', name: 'System 1', connections: [] }],
+        systems: [{ id: 'sys1', name: 'System 1', connections: [], type: 'system', position: { x: 0, y: 0 } }],
         containers: [],
         components: [],
         codeElements: [],
@@ -82,33 +82,45 @@ describe('jsonIO', () => {
     });
 
     it('should import and convert valid v1 nested model', () => {
-      const validV1Model: C4Model = {
+      const validV1Model = {
         schemaVersion: 1,
         systems: [{
           id: 'sys1',
           name: 'System 1',
+          type: 'system',
+          position: { x: 0, y: 0 },
           connections: [],
           containers: [{
             id: 'cont1',
             name: 'Container 1',
             systemId: 'sys1',
+            type: 'container',
+            position: { x: 0, y: 0 },
             connections: [],
             components: [{
               id: 'comp1',
               name: 'Component 1',
               containerId: 'cont1',
+              systemId: 'sys1',
+              type: 'component',
+              position: { x: 0, y: 0 },
               connections: [],
               codeElements: [{
                 id: 'code1',
                 name: 'Code 1',
                 componentId: 'comp1',
+                containerId: 'cont1',
+                systemId: 'sys1',
                 connections: [],
+                codeType: 'class',
+                type: 'code',
+                position: { x: 0, y: 0 },
               }],
             }],
           }],
         }],
         viewLevel: 'system',
-      };
+      } as unknown as C4Model;
 
       const result = importModel(JSON.stringify(validV1Model));
 
@@ -172,27 +184,39 @@ describe('jsonIO', () => {
 
   describe('convertToFlatModel', () => {
     it('should convert nested model to flat structure', () => {
-      const nestedModel: C4Model = {
+      const nestedModel = {
         schemaVersion: 1,
         systems: [{
           id: 'sys1',
           name: 'System 1',
-          connections: [{ id: 'conn1', from: 'sys1', to: 'sys2', label: 'uses' }],
+          type: 'system',
+          position: { x: 0, y: 0 },
+          connections: [{ from: 'sys1', to: 'sys2', label: 'uses' }],
           containers: [{
             id: 'cont1',
             name: 'Container 1',
             systemId: 'sys1',
-            connections: [{ id: 'conn2', from: 'cont1', to: 'cont2', label: 'calls' }],
+            type: 'container',
+            position: { x: 0, y: 0 },
+            connections: [{ from: 'cont1', to: 'cont2', label: 'calls' }],
             components: [{
               id: 'comp1',
               name: 'Component 1',
               containerId: 'cont1',
-              connections: [{ id: 'conn3', from: 'comp1', to: 'comp2', label: 'invokes' }],
+              systemId: 'sys1',
+              type: 'component',
+              position: { x: 0, y: 0 },
+              connections: [{ from: 'comp1', to: 'comp2', label: 'invokes' }],
               codeElements: [{
                 id: 'code1',
                 name: 'Code 1',
                 componentId: 'comp1',
-                connections: [{ id: 'conn4', from: 'code1', to: 'code2', label: 'calls' }],
+                containerId: 'cont1',
+                systemId: 'sys1',
+                codeType: 'class',
+                type: 'code',
+                position: { x: 0, y: 0 },
+                connections: [{ from: 'code1', to: 'code2', label: 'calls' }],
               }],
             }],
           }],
@@ -201,59 +225,66 @@ describe('jsonIO', () => {
         activeSystemId: 'sys1',
         activeContainerId: 'cont1',
         activeComponentId: 'comp1',
-      } as C4Model;
+      } as unknown as C4Model;
 
       const result = convertToFlatModel(nestedModel);
 
-      expect(result).toEqual(expect.objectContaining({
-        systems: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'sys1',
-            name: 'System 1',
-            connections: [{ id: 'conn1', from: 'sys1', to: 'sys2', label: 'uses' }],
-          })
-        ]),
-        containers: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'cont1',
-            name: 'Container 1',
-            systemId: 'sys1',
-            connections: [{ id: 'conn2', from: 'cont1', to: 'cont2', label: 'calls' }],
-          })
-        ]),
-        components: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'comp1',
-            name: 'Component 1',
-            containerId: 'cont1',
-            connections: [{ id: 'conn3', from: 'comp1', to: 'comp2', label: 'invokes' }],
-          })
-        ]),
-        codeElements: expect.arrayContaining([
-          expect.objectContaining({
-            id: 'code1',
-            name: 'Code 1',
-            componentId: 'comp1',
-            connections: [{ id: 'conn4', from: 'code1', to: 'code2', label: 'calls' }],
-          })
-        ]),
-        viewLevel: 'container',
-        activeSystemId: 'sys1',
-        activeContainerId: 'cont1',
-        activeComponentId: 'comp1',
+      // Check basic structure
+      expect(result.viewLevel).toBe('container');
+      expect(result.activeSystemId).toBe('sys1');
+      expect(result.activeContainerId).toBe('cont1');
+      expect(result.activeComponentId).toBe('comp1');
+      
+      // Check that arrays are created and contain expected elements
+      expect(result.systems).toHaveLength(1);
+      expect(result.containers).toHaveLength(1);
+      expect(result.components).toHaveLength(1);
+      expect(result.codeElements).toHaveLength(1);
+      
+      // Check system
+      expect(result.systems[0]).toEqual(expect.objectContaining({
+        id: 'sys1',
+        name: 'System 1',
+        connections: [{ from: 'sys1', to: 'sys2', label: 'uses' }],
+      }));
+      
+      // Check container
+      expect(result.containers[0]).toEqual(expect.objectContaining({
+        id: 'cont1',
+        name: 'Container 1',
+        systemId: 'sys1',
+        connections: [{ from: 'cont1', to: 'cont2', label: 'calls' }],
+      }));
+      
+      // Check component
+      expect(result.components[0]).toEqual(expect.objectContaining({
+        id: 'comp1',
+        name: 'Component 1',
+        containerId: 'cont1',
+        connections: [{ from: 'comp1', to: 'comp2', label: 'invokes' }],
+      }));
+      
+      // Check code element
+      expect(result.codeElements[0]).toEqual(expect.objectContaining({
+        id: 'code1',
+        name: 'Code 1',
+        componentId: 'comp1',
+        connections: [{ from: 'code1', to: 'code2', label: 'calls' }],
       }));
     });
 
     it('should handle model with empty nested arrays', () => {
-      const minimalModel: C4Model = {
+      const minimalModel = {
         schemaVersion: 1,
         systems: [{
           id: 'sys1',
           name: 'System 1',
+          type: 'system',
+          position: { x: 0, y: 0 },
           connections: [],
         }],
         viewLevel: 'system',
-      };
+      } as unknown as C4Model;
 
       const result = convertToFlatModel(minimalModel);
 
@@ -265,10 +296,10 @@ describe('jsonIO', () => {
     });
 
     it('should default viewLevel to system if not provided', () => {
-      const modelWithoutViewLevel: C4Model = {
+      const modelWithoutViewLevel = {
         schemaVersion: 1,
         systems: [],
-      };
+      } as unknown as C4Model;
 
       const result = convertToFlatModel(modelWithoutViewLevel);
 
@@ -276,21 +307,21 @@ describe('jsonIO', () => {
     });
 
     it('should preserve all connection arrays independently', () => {
-      const modelWithConnections: C4Model = {
+      const modelWithConnections = {
         schemaVersion: 1,
         systems: [{
           id: 'sys1',
           name: 'System 1',
-          connections: [{ id: 'conn1', from: 'sys1', to: 'sys2', label: 'uses' }],
+          connections: [{ from: 'sys1', to: 'sys2', label: 'uses' }],
           containers: [{
             id: 'cont1',
             name: 'Container 1',
             systemId: 'sys1',
-            connections: [{ id: 'conn2', from: 'cont1', to: 'cont2', label: 'calls' }],
+            connections: [{ from: 'cont1', to: 'cont2', label: 'calls' }],
           }],
         }],
         viewLevel: 'system',
-      };
+      } as unknown as C4Model;
 
       const result = convertToFlatModel(modelWithConnections);
 
@@ -299,8 +330,8 @@ describe('jsonIO', () => {
       expect(result.containers[0].connections).not.toBe(modelWithConnections.systems[0].containers![0].connections);
       
       // But content should be identical
-      expect(result.systems[0].connections).toEqual([{ id: 'conn1', from: 'sys1', to: 'sys2', label: 'uses' }]);
-      expect(result.containers[0].connections).toEqual([{ id: 'conn2', from: 'cont1', to: 'cont2', label: 'calls' }]);
+      expect(result.systems[0].connections).toEqual([{ from: 'sys1', to: 'sys2', label: 'uses' }]);
+      expect(result.containers[0].connections).toEqual([{ from: 'cont1', to: 'cont2', label: 'calls' }]);
     });
   });
 });

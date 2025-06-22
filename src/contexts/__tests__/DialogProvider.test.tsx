@@ -10,7 +10,7 @@ jest.mock("@archivisio/c4-modelizer-sdk", () => ({
   useFlatC4Store: jest.fn(),
 }));
 
-const mockUseFlatC4Store = useFlatC4Store as jest.Mocked<typeof useFlatC4Store>;
+const mockUseFlatC4Store = useFlatC4Store as jest.MockedFunction<typeof useFlatC4Store>;
 
 // Test component to access context
 const TestComponent: React.FC = () => {
@@ -38,20 +38,33 @@ describe("DialogProvider", () => {
 
   beforeEach(() => {
     mockModel = {
-      systems: [{ id: "sys1", name: "System 1", connections: [] }],
+      systems: [{ id: "sys1", name: "System 1", connections: [], type: "system", position: { x: 0, y: 0 } }],
       containers: [
-        { id: "cont1", name: "Container 1", systemId: "sys1", connections: [] },
+        { id: "cont1", name: "Container 1", systemId: "sys1", connections: [], type: "container", position: { x: 0, y: 0 } },
       ],
       components: [
         {
           id: "comp1",
           name: "Component 1",
           containerId: "cont1",
+          systemId: "sys1",
           connections: [],
+          type: "component",
+          position: { x: 0, y: 0 },
         },
       ],
       codeElements: [
-        { id: "code1", name: "Code 1", componentId: "comp1", connections: [] },
+        { 
+          id: "code1", 
+          name: "Code 1", 
+          componentId: "comp1", 
+          containerId: "cont1",
+          systemId: "sys1",
+          connections: [], 
+          codeType: "class",
+          type: "code",
+          position: { x: 0, y: 0 }
+        },
       ],
       viewLevel: "system",
       activeSystemId: "sys1",
@@ -59,7 +72,7 @@ describe("DialogProvider", () => {
       activeComponentId: "comp1",
     };
 
-    mockUseFlatC4Store.mockReturnValue({ model: mockModel });
+    (mockUseFlatC4Store as jest.MockedFunction<typeof useFlatC4Store>).mockReturnValue({ model: mockModel });
   });
 
   describe("Basic Functionality", () => {
@@ -93,7 +106,7 @@ describe("DialogProvider", () => {
 
     it("should handle element finding based on view level", () => {
       mockModel.viewLevel = "system";
-      mockUseFlatC4Store.mockReturnValue({ model: mockModel });
+      (mockUseFlatC4Store as jest.MockedFunction<typeof useFlatC4Store>).mockReturnValue({ model: mockModel });
 
       const TestElementComponent: React.FC = () => {
         const { openEditDialog, editingElement } = useDialogs();

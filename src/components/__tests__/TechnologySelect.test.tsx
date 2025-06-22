@@ -32,14 +32,14 @@ const mockTechnologies = [
     name: "React",
     icon: "react",
     color: "#61dafb",
-    levels: ["component", "code"],
+    levels: ["component", "code"] as TechnologyLevel[],
   },
   {
     id: "node",
     name: "Node.js",
     icon: "nodejs",
     color: "#339933",
-    levels: ["component", "code"],
+    levels: ["component", "code"] as TechnologyLevel[],
   },
 ];
 
