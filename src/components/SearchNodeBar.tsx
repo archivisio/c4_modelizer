@@ -1,12 +1,14 @@
 import TechnologyIcon from "@/components/TechnologyIcon";
 import { useDialogs } from "@/contexts/DialogContext";
-import { useFlatModelActions } from "@/hooks/useFlatModelActions";
-import { useFlatSearch } from "@/hooks/useFlatSearch";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
-import { useFlatC4Store } from "@/store/flatC4Store";
-import { BaseBlock } from "@/types/c4";
 import CloseIcon from "@mui/icons-material/Close";
 import { Stack } from "@mui/material";
+import {
+  BaseBlock,
+  useFlatC4Store,
+  useFlatModelActions,
+  useFlatSearch,
+} from "c4-modelizer-sdk/core";
 import { useRef } from "react";
 import Draggable from "react-draggable";
 import {
@@ -28,7 +30,7 @@ import {
 const SearchNodeBar: React.FC = () => {
   const { searchValue, setSearchValue, searchResults } = useFlatSearch();
   const { pendingConnection, setPendingConnection } = useDialogs();
-  const { AddElement } = useFlatModelActions();
+  const { addElement } = useFlatModelActions();
   const {
     model,
     connectSystems,
@@ -60,7 +62,7 @@ const SearchNodeBar: React.FC = () => {
     const sourceNodeId = connectionState.fromNode.id;
     const id = crypto.randomUUID();
 
-    AddElement({
+    addElement({
       id,
       name: result.name,
       description: result.description,

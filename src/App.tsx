@@ -9,26 +9,26 @@ import FlowCanvas from "@components/FlowCanvas";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
 import { useFileOperations } from "@hooks/useFileOperations";
-import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
-import { useFlatEdges } from "@hooks/useFlatEdges";
-import { useFlatModelActions } from "@hooks/useFlatModelActions";
-import { useFlatNavigation } from "@hooks/useFlatNavigation";
-import { useFlatNodes } from "@hooks/useFlatNodes";
 import { Box } from "@mui/material";
 import FooterSlot from "@slots/FooterSlot";
 import NavBarSlot from "@slots/NavBarSlot";
 import ToolbarSlot from "@slots/ToolbarSlot";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import React, { useRef } from "react";
-import useFlatStore from "./hooks/useFlatStore";
-import "./i18n";
 import {
   CodeBlock,
   ComponentBlock,
   ContainerBlock,
   SystemBlock,
-} from "./types/c4";
+  useFlatActiveElements,
+  useFlatEdges,
+  useFlatModelActions,
+  useFlatNavigation,
+  useFlatNodes,
+  useFlatStore,
+} from "c4-modelizer-sdk/core";
+import React, { useRef } from "react";
+import "./i18n";
 
 function App() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);

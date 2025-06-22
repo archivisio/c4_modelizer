@@ -1,4 +1,4 @@
-import { useFlatC4Store } from '@/store/flatC4Store'
+import { useFlatC4Store } from "c4-modelizer-sdk/core";
 import { pluginLoaders } from './bundle'
 import { C4Plugin, registry } from './registry'
 

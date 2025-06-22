@@ -1,6 +1,5 @@
-import { ConnectionInfo } from "@interfaces/connection";
-import { useFlatC4Store } from "@store/flatC4Store";
 import { FinalConnectionState } from "@xyflow/react";
+import { ConnectionInfo, useFlatC4Store } from "c4-modelizer-sdk/core";
 import React, { useState } from "react";
 import { DialogContext, DialogContextType } from "./DialogContext";
 
@@ -15,8 +14,13 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
   const [editingConnection, setEditingConnection] =
     useState<ConnectionInfo | null>(null);
   const [openConfirmReset, setOpenConfirmReset] = useState(false);
-  const [notificationError, setNotificationError] = useState<string | null>(null);
-  const [pendingConnection, setPendingConnection] = useState<{ event: MouseEvent | TouchEvent, connectionState: FinalConnectionState } | null>(null);
+  const [notificationError, setNotificationError] = useState<string | null>(
+    null
+  );
+  const [pendingConnection, setPendingConnection] = useState<{
+    event: MouseEvent | TouchEvent;
+    connectionState: FinalConnectionState;
+  } | null>(null);
 
   const editingElement = editId
     ? (model.viewLevel === "code"
@@ -62,7 +66,7 @@ export const DialogProvider: React.FC<{ children: React.ReactNode }> = ({
     notificationError,
     editingElement,
     pendingConnection,
-    
+
     setEditId,
     setDialogOpen,
     setIsEditingContainer,
