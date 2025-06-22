@@ -1,10 +1,10 @@
-import {
+import type {
   CodeBlock,
   ComponentBlock,
   ContainerBlock,
   SystemBlock,
-} from "@interfaces/c4";
-import { ConnectionInfo } from "@interfaces/connection";
+  ConnectionInfo,
+} from "c4-modelizer-sdk/core";
 import { FinalConnectionState } from "@xyflow/react";
 import { createContext, useContext } from "react";
 

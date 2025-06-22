@@ -1,5 +1,5 @@
 import { ColorStyle } from "@/theme/theme";
-import { CodeBlock as CodeBlockType, NodeData } from "@/types/c4";
+import type { CodeBlock as CodeBlockType, NodeData } from "c4-modelizer-sdk/core";
 import C4Block from "@components/common/C4Block";
 import { Box, Chip, useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";

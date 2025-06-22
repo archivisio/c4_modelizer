@@ -51,12 +51,19 @@ function App() {
     closeConnectionDialog,
     handleOpenResetDialog,
     handleCloseResetDialog,
+    openEditDialog,
+    openConnectionDialog,
   } = useDialogs();
 
   const { activeSystem, activeContainer, activeComponent } =
     useFlatActiveElements();
 
-  const { currentNodes, handleNodePositionChange } = useFlatNodes();
+  const { currentNodes, handleNodePositionChange } = useFlatNodes({
+    onEditSystem: (id: string) => openEditDialog(id, false),
+    onEditContainer: (id: string) => openEditDialog(id, true),
+    onEditComponent: (id: string) => openEditDialog(id, false),
+    onEditCode: (id: string) => openEditDialog(id, false),
+  });
   const { getBlockById } = useFlatStore();
 
   const {
@@ -65,7 +72,9 @@ function App() {
     handleEdgeClick,
     handleConnectionSave,
     handleConnectionDelete,
-  } = useFlatEdges();
+  } = useFlatEdges({
+    onConnectionDialog: openConnectionDialog,
+  });
 
   const {
     model,
@@ -283,8 +292,14 @@ function App() {
             open={connectionDialogOpen}
             connection={editingConnection}
             onClose={closeConnectionDialog}
-            onSave={handleConnectionSave}
-            onDelete={handleConnectionDelete}
+            onSave={(connectionInfo) => {
+              handleConnectionSave(connectionInfo);
+              closeConnectionDialog();
+            }}
+            onDelete={(connectionInfo) => {
+              handleConnectionDelete(connectionInfo);
+              closeConnectionDialog();
+            }}
           />
         )}
         <FooterSlot />

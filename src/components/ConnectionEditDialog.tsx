@@ -1,7 +1,7 @@
 import BaseEditDialog from "@components/common/BaseEditDialog";
 import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
-import { ConnectionInfo } from "@interfaces/connection";
+import type { ConnectionInfo } from "c4-modelizer-sdk/core";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelText, StyledCheckbox, StyledFormControlLabel, StyledFormControlWrapper, StyledSlider } from "./connectionEditDialogStyled";

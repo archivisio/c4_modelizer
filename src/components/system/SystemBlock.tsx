@@ -1,4 +1,4 @@
-import { NodeData, SystemBlock as SystemBlockType } from "@/types/c4";
+import type { NodeData, SystemBlock as SystemBlockType } from "c4-modelizer-sdk/core";
 import C4Block from "@components/common/C4Block";
 import { useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";

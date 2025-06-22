@@ -1,4 +1,4 @@
-import { ContainerBlock as ContainerBlockType, NodeData } from "@/types/c4";
+import type { ContainerBlock as ContainerBlockType, NodeData } from "c4-modelizer-sdk/core";
 import C4Block from "@components/common/C4Block";
 import { useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";
