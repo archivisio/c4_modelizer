@@ -1,5 +1,5 @@
-import BaseEditDialog from "@/components/common/BaseEditDialog";
-import ThemedTextField from "@/components/common/ThemedTextField";
+import BaseEditDialog from "@components/common/BaseEditDialog";
+import ThemedTextField from "@components/common/ThemedTextField";
 import TechnologySelect from "@components/TechnologySelect";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

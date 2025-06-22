@@ -1,4 +1,4 @@
-import { ColorStyle } from "@/theme/theme";
+import { ColorStyle } from "@theme/theme";
 import { SxProps, Theme } from "@mui/material";
 import { CSSProperties } from "react";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";

@@ -1,6 +1,6 @@
-import TechnologyIcon from "@/components/TechnologyIcon";
-import { useDialogs } from "@/contexts/DialogContext";
-import useOnClickOutside from "@/hooks/useOnClickOutside";
+import TechnologyIcon from "@components/TechnologyIcon";
+import { useDialogs } from "@contexts/DialogContext";
+import useOnClickOutside from "@hooks/useOnClickOutside";
 import CloseIcon from "@mui/icons-material/Close";
 import { Stack } from "@mui/material";
 import {

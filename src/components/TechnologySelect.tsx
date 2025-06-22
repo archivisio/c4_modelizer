@@ -1,5 +1,5 @@
+import { TechnologyLevel } from "@archivisio/c4-modelizer-sdk";
 import { getTechnologiesByLevel, Technology } from "@data/technologies";
-import { TechnologyLevel } from "@interfaces/c4";
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect, useState } from "react";
@@ -15,28 +15,30 @@ interface TechColorProps {
 const TechColorDot = styled(Box)<{ bgcolor: string }>(({ bgcolor }) => ({
   width: 20,
   height: 20,
-  borderRadius: '50%',
+  borderRadius: "50%",
   backgroundColor: bgcolor,
-  display: 'inline-block',
+  display: "inline-block",
   marginRight: 8,
-  boxShadow: `0 0 5px ${bgcolor}80`
+  boxShadow: `0 0 5px ${bgcolor}80`,
 }));
 
 const TechOptionText = styled(Typography)(() => ({
-  color: '#0a1929'
+  color: "#0a1929",
 }));
 
-const StyledTextField = styled(TextField)<{ colors: TechColorProps }>(({ colors }) => ({
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': { borderColor: colors.border },
-    '&:hover fieldset': { borderColor: colors.borderHover },
-    '&.Mui-focused fieldset': { borderColor: colors.borderFocus }
-  },
-  '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' },
-  '& .MuiInputLabel-root.Mui-focused': { color: colors.labelFocus },
-  '& .MuiInputBase-input': { color: '#fff' },
-  '& .MuiSvgIcon-root': { color: 'rgba(255, 255, 255, 0.7)' }
-}));
+const StyledTextField = styled(TextField)<{ colors: TechColorProps }>(
+  ({ colors }) => ({
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": { borderColor: colors.border },
+      "&:hover fieldset": { borderColor: colors.borderHover },
+      "&.Mui-focused fieldset": { borderColor: colors.borderFocus },
+    },
+    "& .MuiInputLabel-root": { color: "rgba(255, 255, 255, 0.7)" },
+    "& .MuiInputLabel-root.Mui-focused": { color: colors.labelFocus },
+    "& .MuiInputBase-input": { color: "#fff" },
+    "& .MuiSvgIcon-root": { color: "rgba(255, 255, 255, 0.7)" },
+  })
+);
 
 interface TechnologySelectProps {
   fullWidth?: boolean;
@@ -129,14 +131,12 @@ const TechnologySelect = ({
           <Box
             key={key}
             component="li"
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{ display: "flex", alignItems: "center" }}
             data-testid={`technology_option_${option.id}`}
             {...otherProps}
           >
             <TechColorDot bgcolor={option.color} />
-            <TechOptionText variant="body2">
-              {option.name}
-            </TechOptionText>
+            <TechOptionText variant="body2">{option.name}</TechOptionText>
           </Box>
         );
       }}

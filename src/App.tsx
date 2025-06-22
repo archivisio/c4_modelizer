@@ -1,20 +1,3 @@
-import SearchNodeBar from "@/components/SearchNodeBar";
-import CodeEditDialog from "@components/code/CodeEditDialog";
-import ConfirmDialog from "@components/common/ConfirmDialog";
-import ComponentEditDialog from "@components/component/ComponentEditDialog";
-import ConnectionEditDialog from "@components/ConnectionEditDialog";
-import ContainerEditDialog from "@components/container/ContainerEditDialog";
-import ErrorNotification from "@components/ErrorNotification";
-import FlowCanvas from "@components/FlowCanvas";
-import SystemEditDialog from "@components/system/SystemEditDialog";
-import { useDialogs } from "@contexts/DialogContext";
-import { useFileOperations } from "@hooks/useFileOperations";
-import { Box } from "@mui/material";
-import FooterSlot from "@slots/FooterSlot";
-import NavBarSlot from "@slots/NavBarSlot";
-import ToolbarSlot from "@slots/ToolbarSlot";
-import { ReactFlowProvider } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import {
   CodeBlock,
   ComponentBlock,
@@ -27,6 +10,23 @@ import {
   useFlatNodes,
   useFlatStore,
 } from "@archivisio/c4-modelizer-sdk";
+import CodeEditDialog from "@components/code/CodeEditDialog";
+import ConfirmDialog from "@components/common/ConfirmDialog";
+import ComponentEditDialog from "@components/component/ComponentEditDialog";
+import ConnectionEditDialog from "@components/ConnectionEditDialog";
+import ContainerEditDialog from "@components/container/ContainerEditDialog";
+import ErrorNotification from "@components/ErrorNotification";
+import FlowCanvas from "@components/FlowCanvas";
+import SearchNodeBar from "@components/SearchNodeBar";
+import SystemEditDialog from "@components/system/SystemEditDialog";
+import { useDialogs } from "@contexts/DialogContext";
+import { useFileOperations } from "@hooks/useFileOperations";
+import { Box } from "@mui/material";
+import FooterSlot from "@slots/FooterSlot";
+import NavBarSlot from "@slots/NavBarSlot";
+import ToolbarSlot from "@slots/ToolbarSlot";
+import { ReactFlowProvider } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
 import "./i18n";
 

@@ -1,5 +1,5 @@
+import { FlatC4Model } from "@archivisio/c4-modelizer-sdk";
 import { ToolbarIconButton } from "@components/common/ToolbarIconButton";
-import { FlatC4Model } from "@interfaces/flatC4Model";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -8,7 +8,7 @@ import {
   AppBar,
   Toolbar as MuiToolbar,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import PortalTarget from "@slots/PortalTarget";

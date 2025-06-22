@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { lazyRegistry } from "@/plugins/lazyRegistry";
+import { lazyRegistry } from "@plugins/lazyRegistry";
 
 const FooterSlot: React.FC = () => {
   const FooterCredit = lazyRegistry("footer:credit");

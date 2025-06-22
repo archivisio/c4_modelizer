@@ -1,4 +1,4 @@
-import PortalTarget from "@/slots/PortalTarget";
+import PortalTarget from "@slots/PortalTarget";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
 import { styled } from "@mui/system";

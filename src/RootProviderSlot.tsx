@@ -1,4 +1,4 @@
-import { registry } from '@/plugins/registry'
+import { registry } from '@plugins/registry'
 import { ReactNode, Suspense, useEffect, useRef, useState } from 'react'
 
 type Props = {

@@ -22,7 +22,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useDialogs } from "@/contexts/DialogContext";
+import { useDialogs } from "@contexts/DialogContext";
 import { useFlatStore, useFlatC4Store, ViewLevel } from "@archivisio/c4-modelizer-sdk";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";

@@ -1,4 +1,4 @@
-import { ColorStyle } from "@/theme/theme";
+import { ColorStyle } from "@theme/theme";
 import type { CodeBlock as CodeBlockType, NodeData } from "@archivisio/c4-modelizer-sdk";
 import C4Block from "@components/common/C4Block";
 import { Box, Chip, useTheme } from "@mui/material";

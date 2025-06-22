@@ -1,6 +1,6 @@
-import { getTechnologyById } from "@/data/technologies";
+import { getTechnologyById } from "@data/technologies";
 import { useClonePath, useFlatModelActions, BaseBlock } from "@archivisio/c4-modelizer-sdk";
-import { ColorStyle } from "@/theme/theme";
+import { ColorStyle } from "@theme/theme";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Tooltip, Typography, useTheme } from "@mui/material";
