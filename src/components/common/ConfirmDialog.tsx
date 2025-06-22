@@ -1,4 +1,4 @@
-import { useFlatC4Store } from "@/store/flatC4Store";
+import { useFlatC4Store } from "@archivisio/c4-modelizer-sdk"
 import { useTheme } from "@mui/material";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";

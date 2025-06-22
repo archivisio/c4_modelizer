@@ -1,6 +1,6 @@
+import { BaseBlock } from "@archivisio/c4-modelizer-sdk";
 import { getTechnologyById } from "@data/technologies";
 import { getIconComponent } from "@icons/TechnologyIcons";
-import { BaseBlock } from "@interfaces/c4";
 import { Box, Tooltip } from "@mui/material";
 import { styled } from "@mui/system";
 

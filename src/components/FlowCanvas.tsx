@@ -22,10 +22,8 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useDialogs } from "@/contexts/DialogContext";
-import useFlatStore from "@/hooks/useFlatStore";
-import { useFlatC4Store } from "@/store/flatC4Store";
-import { ViewLevel } from "../types/c4";
+import { useDialogs } from "@contexts/DialogContext";
+import { useFlatStore, useFlatC4Store, ViewLevel } from "@archivisio/c4-modelizer-sdk";
 import CodeBlock from "./code/CodeBlock";
 import ComponentBlock from "./component/ComponentBlock";
 import ContainerBlock from "./container/ContainerBlock";

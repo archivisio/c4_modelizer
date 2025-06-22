@@ -1,4 +1,4 @@
-import { ColorStyle } from "@/theme/theme";
+import { ColorStyle } from "@theme/theme";
 import {
   Button,
   Dialog,

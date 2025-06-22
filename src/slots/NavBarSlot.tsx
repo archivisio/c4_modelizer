@@ -1,5 +1,5 @@
-import { NavBarProps } from "@/components/NavBar";
-import { lazyRegistry } from "@/plugins/lazyRegistry";
+import { NavBarProps } from "@components/NavBar";
+import { lazyRegistry } from "@plugins/lazyRegistry";
 import { Suspense } from "react";
 
 const NavBar = lazyRegistry<NavBarProps>("navbar:main");

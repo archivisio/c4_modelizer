@@ -1,4 +1,15 @@
-import SearchNodeBar from "@/components/SearchNodeBar";
+import {
+  CodeBlock,
+  ComponentBlock,
+  ContainerBlock,
+  SystemBlock,
+  useFlatActiveElements,
+  useFlatEdges,
+  useFlatModelActions,
+  useFlatNavigation,
+  useFlatNodes,
+  useFlatStore,
+} from "@archivisio/c4-modelizer-sdk";
 import CodeEditDialog from "@components/code/CodeEditDialog";
 import ConfirmDialog from "@components/common/ConfirmDialog";
 import ComponentEditDialog from "@components/component/ComponentEditDialog";
@@ -6,14 +17,10 @@ import ConnectionEditDialog from "@components/ConnectionEditDialog";
 import ContainerEditDialog from "@components/container/ContainerEditDialog";
 import ErrorNotification from "@components/ErrorNotification";
 import FlowCanvas from "@components/FlowCanvas";
+import SearchNodeBar from "@components/SearchNodeBar";
 import SystemEditDialog from "@components/system/SystemEditDialog";
 import { useDialogs } from "@contexts/DialogContext";
 import { useFileOperations } from "@hooks/useFileOperations";
-import { useFlatActiveElements } from "@hooks/useFlatActiveElements";
-import { useFlatEdges } from "@hooks/useFlatEdges";
-import { useFlatModelActions } from "@hooks/useFlatModelActions";
-import { useFlatNavigation } from "@hooks/useFlatNavigation";
-import { useFlatNodes } from "@hooks/useFlatNodes";
 import { Box } from "@mui/material";
 import FooterSlot from "@slots/FooterSlot";
 import NavBarSlot from "@slots/NavBarSlot";
@@ -21,14 +28,7 @@ import ToolbarSlot from "@slots/ToolbarSlot";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import React, { useRef } from "react";
-import useFlatStore from "./hooks/useFlatStore";
 import "./i18n";
-import {
-  CodeBlock,
-  ComponentBlock,
-  ContainerBlock,
-  SystemBlock,
-} from "./types/c4";
 
 function App() {
   const resetButtonRef = useRef<HTMLButtonElement>(null);
@@ -51,12 +51,19 @@ function App() {
     closeConnectionDialog,
     handleOpenResetDialog,
     handleCloseResetDialog,
+    openEditDialog,
+    openConnectionDialog,
   } = useDialogs();
 
   const { activeSystem, activeContainer, activeComponent } =
     useFlatActiveElements();
 
-  const { currentNodes, handleNodePositionChange } = useFlatNodes();
+  const { currentNodes, handleNodePositionChange } = useFlatNodes({
+    onEditSystem: (id: string) => openEditDialog(id, false),
+    onEditContainer: (id: string) => openEditDialog(id, true),
+    onEditComponent: (id: string) => openEditDialog(id, false),
+    onEditCode: (id: string) => openEditDialog(id, false),
+  });
   const { getBlockById } = useFlatStore();
 
   const {
@@ -65,7 +72,9 @@ function App() {
     handleEdgeClick,
     handleConnectionSave,
     handleConnectionDelete,
-  } = useFlatEdges();
+  } = useFlatEdges({
+    onConnectionDialog: openConnectionDialog,
+  });
 
   const {
     model,
@@ -252,7 +261,7 @@ function App() {
             open={dialogOpen}
             initialName={editingElement.name}
             initialDescription={editingElement.description || ""}
-            initialCodeType={(editingElement as CodeBlock).codeType || "class"}
+            initialCodeType={((editingElement as CodeBlock).codeType as "function" | "class" | "interface" | "variable" | "other") || "class"}
             initialLanguage={(editingElement as CodeBlock).technology || ""}
             initialCode={(editingElement as CodeBlock).code || ""}
             initialUrl={editingElement.url || ""}
@@ -283,8 +292,14 @@ function App() {
             open={connectionDialogOpen}
             connection={editingConnection}
             onClose={closeConnectionDialog}
-            onSave={handleConnectionSave}
-            onDelete={handleConnectionDelete}
+            onSave={(connectionInfo) => {
+              handleConnectionSave(connectionInfo);
+              closeConnectionDialog();
+            }}
+            onDelete={(connectionInfo) => {
+              handleConnectionDelete(connectionInfo);
+              closeConnectionDialog();
+            }}
           />
         )}
         <FooterSlot />

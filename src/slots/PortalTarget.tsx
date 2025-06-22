@@ -1,4 +1,4 @@
-import { registry } from "@/plugins/registry";
+import { registry } from "@plugins/registry";
 
 interface Props {
   id: string;

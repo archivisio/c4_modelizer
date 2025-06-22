@@ -1,4 +1,4 @@
-import { TechnologyLevel } from '@interfaces/c4';
+import { TechnologyLevel } from '@archivisio/c4-modelizer-sdk';
 import cloud from './technologies/cloud.json';
 import codes from './technologies/codes.json';
 import databases from './technologies/databases.json';

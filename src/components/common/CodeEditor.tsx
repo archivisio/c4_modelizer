@@ -1,4 +1,4 @@
-import { ColorStyle } from "@/theme/theme";
+import { ColorStyle } from "@theme/theme";
 import { Box, FormLabel, SxProps, TextField, Theme } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

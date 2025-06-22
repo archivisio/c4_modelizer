@@ -1,5 +1,5 @@
-import { ToolbarProps } from "@/components/Toolbar";
-import { lazyRegistry } from "@/plugins/lazyRegistry";
+import { ToolbarProps } from "@components/Toolbar";
+import { lazyRegistry } from "@plugins/lazyRegistry";
 import { Suspense } from "react";
 
 const Toolbar = lazyRegistry<ToolbarProps>("toolbar:main");

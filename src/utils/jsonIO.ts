@@ -1,6 +1,4 @@
-import { C4Model } from '@interfaces/c4';
-import { FlatC4Model } from '@interfaces/flatC4Model';
-import { useFlatC4Store } from '@store/flatC4Store';
+import { C4Model, FlatC4Model, useFlatC4Store } from '@archivisio/c4-modelizer-sdk';
 
 export const CURRENT_SCHEMA_VERSION = 2;
 
@@ -18,15 +16,15 @@ export function importModel(json: string): boolean {
     const obj = JSON.parse(json);
     if (obj && Array.isArray(obj.systems)) {
       const store = useFlatC4Store.getState();
-      
+
       // Version 2 (Flat structure)
       if (typeof obj.schemaVersion === "number" && obj.schemaVersion === CURRENT_SCHEMA_VERSION &&
-          Array.isArray(obj.containers) &&
-          Array.isArray(obj.components) &&
-          Array.isArray(obj.codeElements)) {
+        Array.isArray(obj.containers) &&
+        Array.isArray(obj.components) &&
+        Array.isArray(obj.codeElements)) {
         store.setModel(obj as FlatC4Model);
         return true;
-      } 
+      }
       // Version 1 (Nested structure) - Automatic conversion
       else if (typeof obj.schemaVersion === "number" && obj.schemaVersion === 1) {
         const flatModel = convertToFlatModel(obj as C4Model);

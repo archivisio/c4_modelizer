@@ -1,10 +1,9 @@
-import PortalTarget from "@/slots/PortalTarget";
-import { useFlatNavigation } from "@hooks/useFlatNavigation";
+import PortalTarget from "@slots/PortalTarget";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Box, Breadcrumbs, Link } from "@mui/material";
 import { styled } from "@mui/system";
-import { useFlatC4Store } from "@store/flatC4Store";
 import { useReactFlow } from "@xyflow/react";
+import { useFlatC4Store, useFlatNavigation } from "@archivisio/c4-modelizer-sdk";
 import React from "react";
 import { useTranslation } from "react-i18next";
 

@@ -1,6 +1,6 @@
-import { getTechnologyById, Technology } from "@/data/technologies";
-import { BaseBlock } from "@/types/c4";
+import { BaseBlock } from "@archivisio/c4-modelizer-sdk";
 import TechnologyIcon from "@components/TechnologyIcon";
+import { getTechnologyById, Technology } from "@data/technologies";
 import { styled } from "@mui/system";
 import {
   BaseEdge,
