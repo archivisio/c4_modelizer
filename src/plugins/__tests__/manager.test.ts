@@ -1,5 +1,5 @@
-import { registry } from '../registry';
 import { useFlatC4Store } from '@archivisio/c4-modelizer-sdk';
+import { registry } from '../registry';
 
 // Mock dependencies
 jest.mock('@archivisio/c4-modelizer-sdk', () => ({
@@ -22,7 +22,7 @@ describe('Plugin Manager', () => {
       // Test that the required components are available
       expect(registry.registerMethod).toBeDefined();
       expect(useFlatC4Store).toBeDefined();
-      
+
       // This test verifies the plugin system is set up correctly
       // The actual loadPlugins function has complex import.meta dependencies
       // that are difficult to test in Jest environment

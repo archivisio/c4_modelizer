@@ -1,16 +1,5 @@
-import { getTechnologiesByLevel, getTechnologyById, technologies, Technology } from '../technologies';
 import { TechnologyLevel } from '@archivisio/c4-modelizer-sdk';
-
-// Mock data for testing
-const mockTechnologies: Technology[] = [
-  { id: 'java', name: 'Java', icon: 'java', color: '#f89820', levels: ['code'] },
-  { id: 'python', name: 'Python', icon: 'python', color: '#3776ab', levels: ['code'] },
-  { id: 'docker', name: 'Docker', icon: 'docker', color: '#2496ed', levels: ['container'] },
-  { id: 'kubernetes', name: 'Kubernetes', icon: 'kubernetes', color: '#326ce5', levels: ['container', 'system'] },
-  { id: 'nginx', name: 'Nginx', icon: 'nginx', color: '#009639', levels: ['component'] },
-  { id: 'react', name: 'React', icon: 'react', color: '#61dafb', levels: ['component', 'code'] },
-  { id: 'aws', name: 'AWS', icon: 'aws', color: '#ff9900', levels: ['system'] },
-];
+import { getTechnologiesByLevel, getTechnologyById, technologies } from '../technologies';
 
 // Mock the imported JSON files
 jest.mock('../technologies/cloud.json', () => ({
@@ -55,7 +44,7 @@ describe('technologies', () => {
     it('should return technologies for code level', () => {
       const codeLevel: TechnologyLevel = 'code';
       const result = getTechnologiesByLevel(codeLevel);
-      
+
       expect(result).toHaveLength(3);
       expect(result.map(t => t.id)).toEqual(['java', 'python', 'react']);
     });
@@ -63,7 +52,7 @@ describe('technologies', () => {
     it('should return technologies for container level', () => {
       const containerLevel: TechnologyLevel = 'container';
       const result = getTechnologiesByLevel(containerLevel);
-      
+
       expect(result).toHaveLength(2);
       expect(result.map(t => t.id)).toEqual(['docker', 'kubernetes']);
     });
@@ -71,7 +60,7 @@ describe('technologies', () => {
     it('should return technologies for component level', () => {
       const componentLevel: TechnologyLevel = 'component';
       const result = getTechnologiesByLevel(componentLevel);
-      
+
       expect(result).toHaveLength(2);
       expect(result.map(t => t.id)).toEqual(['nginx', 'react']);
     });
@@ -79,7 +68,7 @@ describe('technologies', () => {
     it('should return technologies for system level', () => {
       const systemLevel: TechnologyLevel = 'system';
       const result = getTechnologiesByLevel(systemLevel);
-      
+
       expect(result).toHaveLength(2);
       expect(result.map(t => t.id)).toEqual(['aws', 'kubernetes']);
     });
@@ -87,7 +76,7 @@ describe('technologies', () => {
     it('should return technologies sorted alphabetically by name', () => {
       const codeLevel: TechnologyLevel = 'code';
       const result = getTechnologiesByLevel(codeLevel);
-      
+
       const names = result.map(t => t.name);
       const sortedNames = [...names].sort();
       expect(names).toEqual(sortedNames);
@@ -96,14 +85,14 @@ describe('technologies', () => {
     it('should return empty array for level with no technologies', () => {
       // Create a mock with no technologies for a specific level
       const mockEmptyLevel = 'code' as TechnologyLevel;
-      
+
       // Temporarily mock technologies array to be empty for this test
       const originalFilter = Array.prototype.filter;
       Array.prototype.filter = jest.fn().mockReturnValue([]);
-      
+
       const result = getTechnologiesByLevel(mockEmptyLevel);
       expect(result).toHaveLength(0);
-      
+
       // Restore original filter
       Array.prototype.filter = originalFilter;
     });
@@ -112,10 +101,10 @@ describe('technologies', () => {
       // Test that technologies appearing at multiple levels are included in all relevant results
       const containerLevel: TechnologyLevel = 'container';
       const systemLevel: TechnologyLevel = 'system';
-      
+
       const containerResult = getTechnologiesByLevel(containerLevel);
       const systemResult = getTechnologiesByLevel(systemLevel);
-      
+
       // Kubernetes should appear in both container and system results
       expect(containerResult.some(t => t.id === 'kubernetes')).toBe(true);
       expect(systemResult.some(t => t.id === 'kubernetes')).toBe(true);
@@ -125,7 +114,7 @@ describe('technologies', () => {
   describe('getTechnologyById', () => {
     it('should return technology when found', () => {
       const result = getTechnologyById('java');
-      
+
       expect(result).toBeDefined();
       expect(result?.id).toBe('java');
       expect(result?.name).toBe('Java');
@@ -135,7 +124,7 @@ describe('technologies', () => {
 
     it('should return technology for multi-level technology', () => {
       const result = getTechnologyById('kubernetes');
-      
+
       expect(result).toBeDefined();
       expect(result?.id).toBe('kubernetes');
       expect(result?.name).toBe('Kubernetes');
@@ -144,26 +133,26 @@ describe('technologies', () => {
 
     it('should return undefined when technology not found', () => {
       const result = getTechnologyById('nonexistent');
-      
+
       expect(result).toBeUndefined();
     });
 
     it('should handle empty string id', () => {
       const result = getTechnologyById('');
-      
+
       expect(result).toBeUndefined();
     });
 
     it('should be case sensitive', () => {
       const result = getTechnologyById('JAVA');
-      
+
       expect(result).toBeUndefined();
     });
 
     it('should return first match if there are duplicates', () => {
       // This test ensures consistent behavior even if there were duplicate IDs
       const result = getTechnologyById('java');
-      
+
       expect(result).toBeDefined();
       expect(result?.id).toBe('java');
     });

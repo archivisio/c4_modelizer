@@ -1,14 +1,14 @@
 // Mock Blob constructor for FileOperations tests
-global.Blob = jest.fn().mockImplementation((chunks: any[], options?: any) => ({
+global.Blob = jest.fn().mockImplementation((chunks: BlobPart[], options?: BlobPropertyBag) => ({
   chunks,
   options,
-})) as any;
+})) as jest.MockedClass<typeof Blob>;
 
 // Mock URL for FileOperations tests
 global.URL = {
   createObjectURL: jest.fn(() => 'blob:mock-url'),
   revokeObjectURL: jest.fn(),
-} as any;
+} as unknown as typeof URL;
 
 // Mock FileReader for FileOperations tests
 global.FileReader = class MockFileReader {
@@ -24,7 +24,7 @@ global.FileReader = class MockFileReader {
       }
     }, 0);
   }
-} as any;
+} as unknown as typeof FileReader;
 
 // Mock import.meta for manager tests
 Object.defineProperty(globalThis, 'import', {
@@ -35,6 +35,21 @@ Object.defineProperty(globalThis, 'import', {
   },
   configurable: true
 });
+
+// Add TypeScript declarations for custom matchers
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeInTheDocument(): R;
+      toHaveTextContent(expected: string): R;
+      toHaveAttribute(attr: string, value?: string): R;
+      toHaveValue(expected: string): R;
+      toHaveDisplayValue(expected: string): R;
+    }
+  }
+}
+/* eslint-enable @typescript-eslint/no-namespace */
 
 // Add custom matchers
 expect.extend({

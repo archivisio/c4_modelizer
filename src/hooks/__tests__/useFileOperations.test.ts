@@ -1,6 +1,6 @@
-import { renderHook, act } from '@testing-library/react';
-import { useFileOperations } from '../useFileOperations';
 import { handleExportModel, handleImportModel } from '@components/FileOperations';
+import { act, renderHook } from '@testing-library/react';
+import { useFileOperations } from '../useFileOperations';
 
 // Mock the FileOperations module
 jest.mock('@components/FileOperations', () => ({
@@ -21,9 +21,9 @@ describe('useFileOperations', () => {
       const { result, rerender } = renderHook(() => useFileOperations());
 
       const firstResult = result.current;
-      
+
       rerender();
-      
+
       const secondResult = result.current;
 
       // Functions should be the same reference due to useCallback
@@ -69,7 +69,7 @@ describe('useFileOperations', () => {
   describe('handleImport', () => {
     it('should call handleImportModel with correct parameters', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const mockFile = new File(['{"test": "data"}'], 'test.json', { type: 'application/json' });
       const mockSetNotificationError = jest.fn();
 
@@ -83,7 +83,7 @@ describe('useFileOperations', () => {
 
     it('should handle different file types', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const jsonFile = new File(['{"systems": []}'], 'model.json', { type: 'application/json' });
       const textFile = new File(['{"systems": []}'], 'model.txt', { type: 'text/plain' });
       const mockSetError = jest.fn();
@@ -112,7 +112,7 @@ describe('useFileOperations', () => {
 
     it('should handle file input change with valid file', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const mockFile = new File(['{"test": "data"}'], 'test.json', { type: 'application/json' });
       const mockEvent = {
         target: {
@@ -130,7 +130,7 @@ describe('useFileOperations', () => {
 
     it('should handle file input change with no files', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const mockEvent = {
         target: {
           files: null,
@@ -146,10 +146,10 @@ describe('useFileOperations', () => {
 
     it('should handle multiple files by using only the first one', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const file1 = new File(['{"test": "data1"}'], 'test1.json', { type: 'application/json' });
       const file2 = new File(['{"test": "data2"}'], 'test2.json', { type: 'application/json' });
-      
+
       const mockEvent = {
         target: {
           files: [file1, file2],
@@ -168,7 +168,7 @@ describe('useFileOperations', () => {
   describe('Integration Scenarios', () => {
     it('should work in export-import workflow', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       // Export first
       act(() => {
         result.current.handleExport();
@@ -189,7 +189,7 @@ describe('useFileOperations', () => {
 
     it('should handle rapid successive operations', () => {
       const { result } = renderHook(() => useFileOperations());
-      
+
       const mockFile1 = new File(['{}'], 'file1.json');
       const mockFile2 = new File(['{}'], 'file2.json');
       const mockSetError = jest.fn();

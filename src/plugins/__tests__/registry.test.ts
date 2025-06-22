@@ -1,9 +1,8 @@
-import { PluginRegistry, C4Plugin } from '../registry';
 import * as React from 'react';
+import { C4Plugin, PluginRegistry } from '../registry';
 
 // Mock React
 const mockComponent = () => React.createElement('div', { testId: 'mock-component' });
-const mockAsyncComponent = () => Promise.resolve(mockComponent);
 
 describe('PluginRegistry', () => {
   let registry: PluginRegistry;
@@ -31,7 +30,7 @@ describe('PluginRegistry', () => {
     it('should handle multiple components with different IDs', async () => {
       const component1 = () => React.createElement('div', { testId: 'component1' });
       const component2 = () => React.createElement('div', { testId: 'component2' });
-      
+
       registry.registerComponent('comp1', () => Promise.resolve(component1));
       registry.registerComponent('comp2', () => Promise.resolve(component2));
 
@@ -45,7 +44,7 @@ describe('PluginRegistry', () => {
     it('should overwrite component if registered with same ID', async () => {
       const component1 = () => React.createElement('div', { testId: 'component1' });
       const component2 = () => React.createElement('div', { testId: 'component2' });
-      
+
       registry.registerComponent('comp', () => Promise.resolve(component1));
       registry.registerComponent('comp', () => Promise.resolve(component2));
 

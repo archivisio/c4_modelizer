@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { RefObject, createRef } from 'react';
+import { RefObject } from 'react';
 import useOnClickOutside from '../useOnClickOutside';
 
 describe('useOnClickOutside', () => {
@@ -11,7 +11,7 @@ describe('useOnClickOutside', () => {
     mockHandler = jest.fn();
     mockElement = document.createElement('div');
     mockRef = { current: mockElement };
-    
+
     // Add the element to the document body for contains() to work properly
     document.body.appendChild(mockElement);
   });
@@ -217,7 +217,7 @@ describe('useOnClickOutside', () => {
       document.body.appendChild(outsideElement);
 
       const keys = ['Tab', 'Space', 'ArrowUp', 'ArrowDown', 'Enter'];
-      
+
       keys.forEach(key => {
         const keyEvent = new KeyboardEvent('keydown', {
           key,
@@ -240,7 +240,7 @@ describe('useOnClickOutside', () => {
 
   describe('Ref Handling', () => {
     it('should not call handler when ref.current is null', () => {
-      const nullRef: RefObject<HTMLDivElement> = { current: null };
+      const nullRef: RefObject<HTMLDivElement | null> = { current: null };
       renderHook(() => useOnClickOutside(nullRef, mockHandler));
 
       const outsideElement = document.createElement('div');
@@ -259,7 +259,7 @@ describe('useOnClickOutside', () => {
 
       // Should NOT call handler when ref is null, because the hook doesn't know what element to check against
       expect(mockHandler).not.toHaveBeenCalled();
-      
+
       document.body.removeChild(outsideElement);
     });
 

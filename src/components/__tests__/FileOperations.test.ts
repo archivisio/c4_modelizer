@@ -1,5 +1,5 @@
-import { handleExportModel, handleImportModel } from '../FileOperations';
 import { exportModel, importModel } from '@utils/jsonIO';
+import { handleExportModel, handleImportModel } from '../FileOperations';
 
 // Mock the utils
 jest.mock('@utils/jsonIO', () => ({
@@ -25,8 +25,8 @@ describe('FileOperations', () => {
         download: '',
         click: jest.fn(),
       };
-      
-      jest.spyOn(document, 'createElement').mockReturnValue(mockAnchor as any);
+
+      jest.spyOn(document, 'createElement').mockReturnValue(mockAnchor as unknown as HTMLAnchorElement);
 
       handleExportModel();
 
