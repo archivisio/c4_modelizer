@@ -4,7 +4,7 @@ import type {
   ContainerBlock,
   SystemBlock,
   ConnectionInfo,
-} from "c4-modelizer-sdk/core";
+} from "@archivisio/c4-modelizer-sdk";
 import { FinalConnectionState } from "@xyflow/react";
 import { createContext, useContext } from "react";
 

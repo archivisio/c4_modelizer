@@ -8,7 +8,7 @@ import {
   useFlatC4Store,
   useFlatModelActions,
   useFlatSearch,
-} from "c4-modelizer-sdk/core";
+} from "@archivisio/c4-modelizer-sdk";
 import { useRef } from "react";
 import Draggable from "react-draggable";
 import {

@@ -1,4 +1,4 @@
-import type { ComponentBlock as ComponentBlockType, NodeData } from "c4-modelizer-sdk/core";
+import type { ComponentBlock as ComponentBlockType, NodeData } from "@archivisio/c4-modelizer-sdk";
 import C4Block from "@components/common/C4Block";
 import { useTheme } from "@mui/material";
 import { Position } from "@xyflow/react";

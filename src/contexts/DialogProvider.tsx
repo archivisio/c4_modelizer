@@ -1,5 +1,5 @@
 import { FinalConnectionState } from "@xyflow/react";
-import { ConnectionInfo, useFlatC4Store } from "c4-modelizer-sdk/core";
+import { ConnectionInfo, useFlatC4Store } from "@archivisio/c4-modelizer-sdk";
 import React, { useState } from "react";
 import { DialogContext, DialogContextType } from "./DialogContext";
 

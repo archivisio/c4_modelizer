@@ -26,7 +26,7 @@ import {
   useFlatNavigation,
   useFlatNodes,
   useFlatStore,
-} from "c4-modelizer-sdk/core";
+} from "@archivisio/c4-modelizer-sdk";
 import React, { useRef } from "react";
 import "./i18n";
 
@@ -261,7 +261,7 @@ function App() {
             open={dialogOpen}
             initialName={editingElement.name}
             initialDescription={editingElement.description || ""}
-            initialCodeType={(editingElement as CodeBlock).codeType || "class"}
+            initialCodeType={((editingElement as CodeBlock).codeType as "function" | "class" | "interface" | "variable" | "other") || "class"}
             initialLanguage={(editingElement as CodeBlock).technology || ""}
             initialCode={(editingElement as CodeBlock).code || ""}
             initialUrl={editingElement.url || ""}

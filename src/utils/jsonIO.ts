@@ -1,4 +1,4 @@
-import { C4Model, FlatC4Model, useFlatC4Store } from 'c4-modelizer-sdk/core';
+import { C4Model, FlatC4Model, useFlatC4Store } from '@archivisio/c4-modelizer-sdk';
 
 export const CURRENT_SCHEMA_VERSION = 2;
 
