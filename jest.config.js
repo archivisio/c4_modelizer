@@ -1,8 +1,9 @@
 export default {
   roots: ["<rootDir>"],
   preset: "ts-jest",
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   verbose: true,
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   moduleNameMapper: {
     "^@components/(.*)$": "<rootDir>/src/components/$1",
     "^@assets/(.*)$": "<rootDir>/src/assets/$1",

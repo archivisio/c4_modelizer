@@ -15,7 +15,9 @@ export class PluginRegistry {
   }
 
   async getComponent<P = unknown>(id: string) {
-    return (await this.components.get(id)?.()) as React.ComponentType<P> | null
+    const resolver = this.components.get(id);
+    if (!resolver) return null;
+    return (await resolver()) as React.ComponentType<P> | null;
   }
 
   private portals = new Map<string, React.ReactNode>()
